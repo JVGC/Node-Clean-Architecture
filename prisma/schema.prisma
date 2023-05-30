@@ -11,20 +11,26 @@ datasource db {
 }
 
 model Company {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
-  code String @unique
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  code      String    @unique
+  createdAt DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  deletedAt DateTime?
 
   user User[]
   unit Unit[]
 }
 
 model User {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
-  email    String    @unique
-  password String
-  Role     UserRoles @default(User)
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String    @unique
+  password  String
+  Role      UserRoles @default(User)
+  createdAt DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  deletedAt DateTime?
 
   Asset Asset[]
 
@@ -39,9 +45,12 @@ enum UserRoles {
 }
 
 model Unit {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String
+  createdAt   DateTime  @default(now())
+  updateAt    DateTime  @updatedAt
+  deletedAt   DateTime?
 
   asset Asset[]
 
@@ -56,6 +65,9 @@ model Asset {
   model       String
   status      AssetStatus @default(Running)
   healthLevel Int
+  createdAt   DateTime    @default(now())
+  updateAt    DateTime    @updatedAt
+  deletedAt   DateTime?
 
   userId String @db.ObjectId
   owner  User   @relation(fields: [userId], references: [id])
