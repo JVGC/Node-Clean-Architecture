@@ -1,9 +1,8 @@
 import { Asset } from "../../models/asset";
 
 
-// DECISION: From my perspective, the asset health level would come from other source besides the user.
-// So, with that assumption in mind, I don't see the user using this route to update the health level together with the other properties.
-// That's why I'm not allowing health- level and status to be update here.
+// DECISION: From my perspective, the status depends on the health level
+// So it's not a property that the user can edit. That's why I'm not allowing it to be edit here.
 
 // DECISION: User will only be able to update the owner if it has role >= ADMIN.
 
@@ -13,6 +12,7 @@ export interface UpdateAssetParams {
     model?: string;
     owner_id?: string;
     unit_id?: string;
+    health_level?: number
 }
 
 export interface UpdateAsset {
