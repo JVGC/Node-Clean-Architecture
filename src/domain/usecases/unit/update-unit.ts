@@ -9,5 +9,5 @@ export interface UpdateUnitParams {
 }
 
 export interface UpdateUnit {
-    update: (data: UpdateUnitParams) => Promise<Unit>
+    update: (unit_id: string, data: UpdateUnitParams) => Promise<Unit>
 }

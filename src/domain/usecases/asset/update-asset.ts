@@ -14,5 +14,5 @@ export interface UpdateAssetParams {
 }
 
 export interface UpdateAsset {
-    update: (data: UpdateAssetParams) => Promise<Asset>
+    update: (asset_id: string, data: UpdateAssetParams) => Promise<Asset>
 }
