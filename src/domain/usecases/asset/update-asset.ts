@@ -1,9 +1,6 @@
-import { Asset } from "../../models/asset";
+import { Asset, AssetsStatus } from "../../models/asset";
 
-
-// DECISION: From my perspective, the status depends on the health level
-// So it's not a property that the user can edit. That's why I'm not allowing it to be edit here.
-
+// DUVIDA: Does health level has any relation with status?
 // DECISION: User will only be able to update the owner if it has role >= ADMIN.
 
 export interface UpdateAssetParams {
@@ -13,6 +10,7 @@ export interface UpdateAssetParams {
     owner_id?: string;
     unit_id?: string;
     health_level?: number
+    status?: AssetsStatus
 }
 
 export interface UpdateAsset {
