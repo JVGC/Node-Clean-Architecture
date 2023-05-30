@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "tsx": "^3.12.7",
     "typescript": "^5.0.4"
   }
 }
