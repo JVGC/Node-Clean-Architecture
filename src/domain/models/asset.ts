@@ -2,6 +2,7 @@ import { Unit } from './unit';
 import { User } from './user';
 
 
+// TODO: Adicionar image
 export interface Asset{
     id: string;
     name: string;
