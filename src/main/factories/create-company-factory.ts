@@ -2,7 +2,7 @@ import { CreateCompanyUseCase } from "../../domain/usecases/create-company-useca
 import { PrismaCompanyRepository } from "../../infra/prisma/repositories/prisma-company-repository";
 import { CreateCompanyController } from "../../presentation/controller/create-company-controller";
 
-export const makeCreateCompanyFactory = (): CreateCompanyController => {
+export const makeCreateCompany = (): CreateCompanyController => {
     const prismaCompanyRepository = new PrismaCompanyRepository()
     const createCompanyUseCase = new CreateCompanyUseCase(prismaCompanyRepository)
     return new CreateCompanyController(createCompanyUseCase)
