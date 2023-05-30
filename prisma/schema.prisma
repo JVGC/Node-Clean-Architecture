@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  code String @unique
+
+  user User[]
+  unit Unit[]
+}
+
+model User {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  email    String    @unique
+  password String
+  Role     UserRoles @default(User)
+
+  Asset Asset[]
+
+  companyId String  @db.ObjectId
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
+
+enum UserRoles {
+  SuperAdmin
+  Admin
+  User
+}
+
+model Unit {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+
+  asset Asset[]
+
+  companyId String  @db.ObjectId
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
+
+model Asset {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  model       String
+  status      AssetStatus @default(Running)
+  healthLevel Int
+
+  userId String @db.ObjectId
+  owner  User   @relation(fields: [userId], references: [id])
+
+  unitId String @db.ObjectId
+  unit   Unit   @relation(fields: [unitId], references: [id], onDelete: Cascade)
+}
+
+enum AssetStatus {
+  Running
+  Alerting
+  Stopped
+}
