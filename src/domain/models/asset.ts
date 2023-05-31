@@ -18,3 +18,13 @@ export enum AssetsStatus{
     alerting = "Alerting",
     stopped = "Stopped"
 }
+
+export interface AssetModelResponse {
+    name: string;
+    description: string;
+    model: string;
+    owner: string;
+    status: AssetsStatus;
+    healthLevel: number;
+    unitName: string;
+}
