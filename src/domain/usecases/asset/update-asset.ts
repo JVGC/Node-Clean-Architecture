@@ -1,3 +1,4 @@
+import { AssetNotFoundError } from "../../errors";
 import { AssetModelResponse, AssetsStatus } from "../../models/asset";
 import { AssetRepository } from "../../protocols/repositories/asset-repository";
 
@@ -18,5 +19,9 @@ export class UpdateAssetUseCase {
     constructor(
         private readonly assetRepository: AssetRepository,
     ){}
-    update: (asset_id: string, data: UpdateAssetParams) => Promise<AssetModelResponse>
+    async update(asset_id: string, data: UpdateAssetParams): Promise<AssetModelResponse>{
+        const asset = await this.assetRepository.update(asset_id, data)
+        if(!asset)  throw new AssetNotFoundError()
+        return asset
+    }
 }

@@ -1,3 +1,4 @@
+import { UnitNotFoundError } from "../../errors";
 import { AssetModelResponse } from "../../models/asset";
 import { AssetRepository } from "../../protocols/repositories/asset-repository";
 import { UnitRepository } from "../../protocols/repositories/unit-repository";
@@ -15,5 +16,11 @@ export class CreateAssetUseCase {
         private readonly assetRepository: AssetRepository,
         private readonly unitRepository: UnitRepository,
     ){}
-    create: (data: CreateAssetParams) => Promise<AssetModelResponse>
+    async create(data: CreateAssetParams): Promise<AssetModelResponse>{
+        const unit = await this.unitRepository.getById(data.unitId)
+        if(!unit) throw new UnitNotFoundError()
+        const asset = await this.assetRepository.create(data)
+
+        return asset
+    }
 }

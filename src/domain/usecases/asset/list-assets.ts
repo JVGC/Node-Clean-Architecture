@@ -6,5 +6,7 @@ export class ListAssetsUseCase {
   constructor(
     private readonly assetRepository: AssetRepository,
 ){}
-  list: () => Promise<AssetModelResponse[]>
+  async list(): Promise<AssetModelResponse[]>{
+    return await this.assetRepository.getMany()
+  }
 }
