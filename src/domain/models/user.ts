@@ -17,6 +17,7 @@ export enum UserRoles{
 }
 
 export interface UserModelResponse {
+    id: string;
     name: string;
     email: string
     password: string;
