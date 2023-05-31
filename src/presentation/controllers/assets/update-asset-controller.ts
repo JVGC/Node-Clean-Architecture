@@ -12,9 +12,9 @@ export class UpdateAssetController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const { id: asset_id } = httpRequest.params
-      const { description, name } = httpRequest.body
+      const { description, name, healthLevel, model, owner, status, unitId } = httpRequest.body
       const result = await this.updateAssetUseCase.update(asset_id, {
-        name, description
+        name, description, healthLevel, model, status, unitId, owner
       })
       return ok(result)
     } catch (error: any) {

@@ -9,15 +9,15 @@ export interface UpdateAssetParams {
     name?: string;
     description?: string;
     model?: string;
-    owner_id?: string;
-    unit_id?: string;
-    health_level?: number
+    owner?: string;
+    unitId?: string;
+    healthLevel?: number
     status?: AssetsStatus
 }
 
 export class UpdateAssetUseCase {
     constructor(
-        private readonly assetRepository: AssetRepository,
+        private readonly assetRepository: AssetRepository
     ){}
     async update(asset_id: string, data: UpdateAssetParams): Promise<AssetModelResponse>{
         const asset = await this.assetRepository.update(asset_id, data)
