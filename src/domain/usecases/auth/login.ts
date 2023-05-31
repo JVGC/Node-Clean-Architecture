@@ -10,7 +10,7 @@ export interface LoginResponse{
     accessToken: string;
 }
 
-export class Login{
+export class LoginUseCase{
     constructor(
         private readonly userRepository: UserRepository,
         private readonly encrypter: Encrypter
