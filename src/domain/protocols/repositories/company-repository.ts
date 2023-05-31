@@ -6,4 +6,5 @@ export interface CompanyRepository{
     getById: (id: string) => Promise<CompanyModel | null>
     getByCode: (code: string) => Promise<CompanyModel | null>
     getMany: () => Promise<CompanyModel[]>
+    deleteById: (id: string) => Promise<boolean>
 }

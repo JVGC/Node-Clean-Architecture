@@ -5,6 +5,16 @@ import { CreateCompanyParams } from "../../../domain/usecases/create-company";
 import prisma from "../client";
 
 export class PrismaCompanyRepository implements CompanyRepository{
+    async deleteById(id: string): Promise<boolean>{
+        const isIdValid = ObjectId.isValid(id)
+        if(!isIdValid) return false
+        await prisma.company.delete({
+            where:{
+                id: new ObjectId(id).toString()
+            }
+        })
+        return true
+    }
     async getMany(): Promise<CompanyModel[]>{
         return await prisma.company.findMany()
     }

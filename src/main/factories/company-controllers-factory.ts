@@ -1,8 +1,10 @@
 import { CreateCompanyUseCase } from "../../domain/usecases/create-company";
+import { DeleteCompanyByIdUseCase } from "../../domain/usecases/delete-company";
 import { GetCompanyByIdUseCase } from "../../domain/usecases/get-company-by-id";
 import { ListCompaniesUseCase } from "../../domain/usecases/list-companies";
 import { PrismaCompanyRepository } from "../../infra/prisma/repositories/prisma-company-repository";
 import { CreateCompanyController } from "../../presentation/controller/create-company-controller";
+import { DeleteCompanyByIdController } from "../../presentation/controller/delete-company-by-id-controller";
 import { GetCompanyByIdController } from "../../presentation/controller/get-company-by-id-controller";
 import { ListCompaniesController } from "../../presentation/controller/list-companies-controller";
 
@@ -22,4 +24,10 @@ export const makeListCompanies = (): ListCompaniesController => {
     const prismaCompanyRepository = new PrismaCompanyRepository()
     const listCompaniesUseCase = new ListCompaniesUseCase(prismaCompanyRepository)
     return new ListCompaniesController(listCompaniesUseCase)
+}
+
+export const makeDeleteCompanyById = (): DeleteCompanyByIdController => {
+    const prismaCompanyRepository = new PrismaCompanyRepository()
+    const deleteCompanyByIdUseCase = new DeleteCompanyByIdUseCase(prismaCompanyRepository)
+    return new DeleteCompanyByIdController(deleteCompanyByIdUseCase)
 }
