@@ -12,9 +12,8 @@ export class LoginController implements Controller{
         try{
             const result = await this.loginUseCase.login({email, password})
             return ok(result)
-
         }catch(error: any){
-            if(error instanceof UserNotFoundError) throw badRequest(error)
+            if(error instanceof UserNotFoundError) return badRequest(error)
             return serverError(error)
         }
 
