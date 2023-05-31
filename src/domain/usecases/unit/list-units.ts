@@ -1,5 +1,11 @@
-import { Unit } from "../../models/unit";
+import { UnitModelResponse } from "../../models/unit";
+import { UnitRepository } from "../../protocols/repositories/unit-repository";
 
-export interface ListUnits {
-  list: () => Promise<Unit[]>
+export class ListUnitsUseCase {
+  constructor(
+    private readonly unitRepository: UnitRepository
+  ){}
+  async list(): Promise<UnitModelResponse[]>{
+    return await this.unitRepository.getMany()
+  }
 }

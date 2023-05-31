@@ -1,4 +1,6 @@
-import { Unit } from "../../models/unit";
+import { UnitNotFoundError } from "../../errors";
+import { UnitModelResponse } from "../../models/unit";
+import { UnitRepository } from "../../protocols/repositories/unit-repository";
 
 // DECISION: User will only be able to update the company if it has role == SUPERADMIN.
 
@@ -8,6 +10,13 @@ export interface UpdateUnitParams {
     company_id?: string
 }
 
-export interface UpdateUnit {
-    update: (unit_id: string, data: UpdateUnitParams) => Promise<Unit>
+export class UpdateUnitUseCase {
+    constructor(
+        private readonly unitRepository: UnitRepository
+    ){}
+    async update(unit_id: string, data: UpdateUnitParams): Promise<UnitModelResponse>{
+        const user = await this.unitRepository.update(unit_id, data)
+        if(!user)  throw new UnitNotFoundError()
+        return user
+    }
 }

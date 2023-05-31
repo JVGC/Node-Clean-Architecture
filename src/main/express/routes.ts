@@ -1,6 +1,7 @@
 import { Express, Router } from 'express'
 import { adaptRoute } from '../adapters/express-adapter'
 import { makeCreateCompany, makeDeleteCompanyById, makeGetCompanyById, makeListCompanies, makeUpdateCompany } from '../factories/company-controllers-factory'
+import { makeCreateUnit, makeDeleteUnitById, makeGetUnitById, makeListUnits, makeUpdateUnit } from '../factories/unit-controllers-factory'
 import { makeCreateUser, makeDeleteUserById, makeGetUserById, makeListUsers, makeUpdateUser } from '../factories/user-controllers-factory'
 
 export default (app: Express): void => {
@@ -19,4 +20,10 @@ export default (app: Express): void => {
     router.delete('/user/:id', adaptRoute(makeDeleteUserById()))
     router.get('/user', adaptRoute(makeListUsers()))
     router.patch('/user/:id', adaptRoute(makeUpdateUser()))
+
+    router.post('/unit', adaptRoute(makeCreateUnit()))
+    router.get('/unit/:id', adaptRoute(makeGetUnitById()))
+    router.delete('/unit/:id', adaptRoute(makeDeleteUnitById()))
+    router.get('/unit', adaptRoute(makeListUnits()))
+    router.patch('/unit/:id', adaptRoute(makeUpdateUnit()))
   }
