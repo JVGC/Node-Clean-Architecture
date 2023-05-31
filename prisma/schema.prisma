@@ -32,8 +32,6 @@ model User {
   updateAt  DateTime  @updatedAt
   deletedAt DateTime?
 
-  Asset Asset[]
-
   companyId String  @db.ObjectId
   company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
 }
@@ -63,14 +61,12 @@ model Asset {
   name        String
   description String
   model       String
+  owner       String
   status      AssetStatus @default(Running)
   healthLevel Int
   createdAt   DateTime    @default(now())
   updateAt    DateTime    @updatedAt
   deletedAt   DateTime?
-
-  userId String @db.ObjectId
-  owner  User   @relation(fields: [userId], references: [id])
 
   unitId String @db.ObjectId
   unit   Unit   @relation(fields: [unitId], references: [id], onDelete: Cascade)
