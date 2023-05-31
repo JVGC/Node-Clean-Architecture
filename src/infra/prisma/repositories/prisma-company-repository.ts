@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { Company } from "../../../domain/models/company";
 import { CompanyRepository } from "../../../domain/protocols/repositories/company-repository";
 import { CreateCompanyParams } from "../../../domain/usecases/create-company-usecase";
@@ -13,9 +14,11 @@ export class PrismaCompanyRepository implements CompanyRepository{
         return company
     }
     async getById(id: string): Promise<Company | null>{
+        const isIdValid = ObjectId.isValid(id)
+        if(!isIdValid) return null
         const company = await prisma.company.findUnique({
             where:{
-                id
+                id: new ObjectId(id).toString()
             }
         })
         return company
