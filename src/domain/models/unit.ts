@@ -6,3 +6,9 @@ export interface Unit{
     description: string;
     company: CompanyModel;
 }
+
+export interface UnitModelResponse {
+    name: string;
+    description: string;
+    companyName: string;
+}
