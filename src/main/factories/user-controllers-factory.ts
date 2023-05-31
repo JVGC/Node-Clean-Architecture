@@ -3,6 +3,7 @@ import { DeleteUserByIdUseCase } from "../../domain/usecases/users/delete-user"
 import { GetUserByIdUseCase } from "../../domain/usecases/users/get-user-by-id"
 import { ListUsersUseCase } from "../../domain/usecases/users/list-users"
 import { UpdateUserUseCase } from "../../domain/usecases/users/update-user"
+import { PrismaCompanyRepository } from "../../infra/prisma/repositories/prisma-company-repository"
 import { PrismaUserRepository } from "../../infra/prisma/repositories/prisma-user-repository"
 import { CreateUserController } from "../../presentation/controllers/users/create-user-controller"
 import { DeleteUserByIdController } from "../../presentation/controllers/users/delete-user-by-id-controller"
@@ -12,7 +13,8 @@ import { UpdateUserController } from "../../presentation/controllers/users/updat
 
 export const makeCreateUser = (): CreateUserController => {
     const prismaUserRepository = new PrismaUserRepository()
-    const createUserUseCase = new CreateUserUseCase(prismaUserRepository)
+    const prismacompanyRepository = new PrismaCompanyRepository()
+    const createUserUseCase = new CreateUserUseCase(prismaUserRepository, prismacompanyRepository)
     return new CreateUserController(createUserUseCase)
 }
 
