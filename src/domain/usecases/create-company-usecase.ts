@@ -1,3 +1,4 @@
+import { CodeAlreadyInUse } from "../errors";
 import { Company } from "../models/company";
 import { CompanyRepository } from "../protocols/repositories/company-repository";
 
@@ -12,6 +13,8 @@ export class CreateCompanyUseCase{
     ){}
 
     async create(data: CreateCompanyParams): Promise<Company>{
+        const company = await this.companyRepository.getByCode(data.code)
+        if(company) throw new CodeAlreadyInUse()
         return await this.companyRepository.create(data)
     }
 }
