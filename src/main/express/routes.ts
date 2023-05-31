@@ -1,6 +1,6 @@
 import { Express, Router } from 'express'
 import { adaptRoute } from '../adapters/express-adapter'
-import { makeCreateCompany, makeGetCompanyById } from '../factories/create-company-factory'
+import { makeCreateCompany, makeGetCompanyById } from '../factories/company-controllers-factory'
 
 export default (app: Express): void => {
 
