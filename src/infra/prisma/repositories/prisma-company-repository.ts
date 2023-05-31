@@ -1,6 +1,6 @@
 import { Company } from "../../../domain/models/company";
 import { CompanyRepository } from "../../../domain/protocols/repositories/company-repository";
-import { CreateCompanyParams } from "../../../domain/protocols/usecases/company/create-company";
+import { CreateCompanyParams } from "../../../domain/usecases/create-company-usecase";
 import prisma from "../client";
 
 export class PrismaCompanyRepository implements CompanyRepository{
