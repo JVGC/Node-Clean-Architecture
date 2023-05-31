@@ -6,8 +6,8 @@ export class GetUnitByIdUseCase {
   constructor(
     private readonly unitRepository: UnitRepository
   ){}
-  async get(Unit_id: string): Promise<UnitModelResponse>{
-      const unit = await this.unitRepository.getById(Unit_id)
+  async get(unit_id: string): Promise<UnitModelResponse>{
+      const unit = await this.unitRepository.getById(unit_id)
       if(!unit) throw new UnitNotFoundError()
       return unit
   }

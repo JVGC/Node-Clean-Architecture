@@ -15,8 +15,8 @@ export class UpdateUnitUseCase {
         private readonly unitRepository: UnitRepository
     ){}
     async update(unit_id: string, data: UpdateUnitParams): Promise<UnitModelResponse>{
-        const user = await this.unitRepository.update(unit_id, data)
-        if(!user)  throw new UnitNotFoundError()
-        return user
+        const unit = await this.unitRepository.update(unit_id, data)
+        if(!unit)  throw new UnitNotFoundError()
+        return unit
     }
 }
