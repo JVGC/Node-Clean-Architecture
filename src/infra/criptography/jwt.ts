@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { Encrypter } from "../../domain/protocols/criptography";
+import { Decrypter, Encrypter } from "../../domain/protocols/criptography";
 
 export class JWTEncrypter implements Encrypter{
     constructor(
@@ -7,5 +7,14 @@ export class JWTEncrypter implements Encrypter{
     ){}
     encrypt(value: string): string{
         return jwt.sign({ id: value }, this.secret)
+    }
+}
+
+export class JWTDecrypter implements Decrypter{
+    constructor(
+        private readonly secret: string
+    ){}
+    decrypt(token: string): string{
+        return jwt.verify(token, this.secret) as string
     }
 }
