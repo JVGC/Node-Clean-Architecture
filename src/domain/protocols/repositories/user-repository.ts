@@ -1,4 +1,5 @@
-import { CreateUserParams, UserModelResponse } from "../../usecases/users/create-user";
+import { UserModelResponse } from "../../models/user";
+import { CreateUserParams } from "../../usecases/users/create-user";
 import { UpdateUserParams } from "../../usecases/users/update-user";
 
 

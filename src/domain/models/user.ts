@@ -15,3 +15,11 @@ export enum UserRoles{
     Admin = 'Admin', // DECISION: Cannot create companies, and only can create users for its own company.
     User = 'User' // DECISION: Cannot get any information about other users, and other companies.
 }
+
+export interface UserModelResponse {
+    name: string;
+    email: string
+    password: string;
+    companyName: string;
+    role: UserRoles
+}

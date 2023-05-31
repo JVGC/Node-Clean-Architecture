@@ -1,5 +1,5 @@
 import { CompanyNotFoundError, EmailAlreadyInUse } from "../../errors";
-import { UserRoles } from "../../models/user";
+import { UserModelResponse, UserRoles } from "../../models/user";
 import { CompanyRepository } from "../../protocols/repositories/company-repository";
 import { UserRepository } from "../../protocols/repositories/user-repository";
 
@@ -11,13 +11,6 @@ export interface CreateUserParams {
     role: UserRoles
 }
 
-export interface UserModelResponse {
-    name: string;
-    email: string
-    password: string;
-    companyName: string;
-    role: UserRoles
-}
 export class CreateUserUseCase {
     constructor(
         private readonly userRepository: UserRepository,

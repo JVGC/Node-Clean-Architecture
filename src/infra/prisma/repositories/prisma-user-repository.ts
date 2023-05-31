@@ -1,8 +1,8 @@
 import { Prisma } from "@prisma/client";
 import { ObjectId } from "mongodb";
-import { UserRoles } from "../../../domain/models/user";
+import { UserModelResponse, UserRoles } from "../../../domain/models/user";
 import { UserRepository } from "../../../domain/protocols/repositories/user-repository";
-import { CreateUserParams, UserModelResponse } from "../../../domain/usecases/users/create-user";
+import { CreateUserParams } from "../../../domain/usecases/users/create-user";
 import { UpdateUserParams } from "../../../domain/usecases/users/update-user";
 import prisma from "../client";
 
