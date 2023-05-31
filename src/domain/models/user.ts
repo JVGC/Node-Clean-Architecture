@@ -1,11 +1,11 @@
-import { Company } from "./company"
+import { CompanyModel } from "./company"
 
 export interface User{
     id: string
     name: string
     email: string
     password: string
-    company: Company
+    company: CompanyModel
     role: UserRoles
 }
 

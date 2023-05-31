@@ -1,8 +1,8 @@
-import { Company } from "./company";
+import { CompanyModel } from "./company";
 
 export interface Unit{
     id: string;
     name: string;
     description: string;
-    company: Company;
+    company: CompanyModel;
 }

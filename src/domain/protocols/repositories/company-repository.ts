@@ -1,8 +1,8 @@
-import { Company } from "../../models/company";
+import { CompanyModel } from "../../models/company";
 import { CreateCompanyParams } from "../../usecases/create-company-usecase";
 
 export interface CompanyRepository{
-    create: (data: CreateCompanyParams) => Promise<Company>
-    getById: (id: string) => Promise<Company | null>
-    getByCode: (code: string) => Promise<Company | null>
+    create: (data: CreateCompanyParams) => Promise<CompanyModel>
+    getById: (id: string) => Promise<CompanyModel | null>
+    getByCode: (code: string) => Promise<CompanyModel | null>
 }
