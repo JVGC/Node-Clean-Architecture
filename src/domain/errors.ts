@@ -17,3 +17,10 @@ export class UserNotFoundError extends Error {
     this.name = 'UserNotFoundError'
   }
 }
+
+export class EmailAlreadyInUse extends Error {
+  constructor () {
+    super('Email is already in use')
+    this.name = 'EmailAlreadyInUse'
+  }
+}
