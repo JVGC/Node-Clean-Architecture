@@ -1,5 +1,5 @@
-import { CreateCompanyUseCase } from "../../domain/usecases/create-company-usecase";
-import { GetCompanyByIdUseCase } from "../../domain/usecases/get-company-by-id-usecase";
+import { CreateCompanyUseCase } from "../../domain/usecases/create-company";
+import { GetCompanyByIdUseCase } from "../../domain/usecases/get-company-by-id";
 import { PrismaCompanyRepository } from "../../infra/prisma/repositories/prisma-company-repository";
 import { CreateCompanyController } from "../../presentation/controller/create-company-controller";
 import { GetCompanyByIdController } from "../../presentation/controller/get-company-by-id-controller";

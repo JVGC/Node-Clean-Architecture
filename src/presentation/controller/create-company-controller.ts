@@ -1,5 +1,5 @@
 import { CodeAlreadyInUse } from "../../domain/errors"
-import { CreateCompanyUseCase } from "../../domain/usecases/create-company-usecase"
+import { CreateCompanyUseCase } from "../../domain/usecases/create-company"
 import { badRequest, ok, serverError } from "../helpers/http-helper"
 import { Controller } from "../protocols/controller"
 import { HttpRequest, HttpResponse } from "../protocols/http"
