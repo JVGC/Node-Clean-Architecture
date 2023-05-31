@@ -4,11 +4,11 @@ import { GetCompanyByIdUseCase } from "../../domain/usecases/companies/get-compa
 import { ListCompaniesUseCase } from "../../domain/usecases/companies/list-companies";
 import { UpdateCompanyUseCase } from "../../domain/usecases/companies/update-company";
 import { PrismaCompanyRepository } from "../../infra/prisma/repositories/prisma-company-repository";
-import { CreateCompanyController } from "../../presentation/controller/create-company-controller";
-import { DeleteCompanyByIdController } from "../../presentation/controller/delete-company-by-id-controller";
-import { GetCompanyByIdController } from "../../presentation/controller/get-company-by-id-controller";
-import { ListCompaniesController } from "../../presentation/controller/list-companies-controller";
-import { UpdateCompanyController } from "../../presentation/controller/update-company-controller";
+import { CreateCompanyController } from "../../presentation/controller/companies/create-company-controller";
+import { DeleteCompanyByIdController } from "../../presentation/controller/companies/delete-company-by-id-controller";
+import { GetCompanyByIdController } from "../../presentation/controller/companies/get-company-by-id-controller";
+import { ListCompaniesController } from "../../presentation/controller/companies/list-companies-controller";
+import { UpdateCompanyController } from "../../presentation/controller/companies/update-company-controller";
 
 export const makeCreateCompany = (): CreateCompanyController => {
     const prismaCompanyRepository = new PrismaCompanyRepository()

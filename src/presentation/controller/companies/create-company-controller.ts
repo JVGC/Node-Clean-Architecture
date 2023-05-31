@@ -1,8 +1,8 @@
-import { CodeAlreadyInUse } from "../../domain/errors"
-import { CreateCompanyUseCase } from "../../domain/usecases/companies/create-company"
-import { badRequest, ok, serverError } from "../helpers/http-helper"
-import { Controller } from "../protocols/controller"
-import { HttpRequest, HttpResponse } from "../protocols/http"
+import { CodeAlreadyInUse } from "../../../domain/errors"
+import { CreateCompanyUseCase } from "../../../domain/usecases/companies/create-company"
+import { badRequest, ok, serverError } from "../../helpers/http-helper"
+import { Controller } from "../../protocols/controller"
+import { HttpRequest, HttpResponse } from "../../protocols/http"
 
 export class CreateCompanyController implements Controller {
   constructor (

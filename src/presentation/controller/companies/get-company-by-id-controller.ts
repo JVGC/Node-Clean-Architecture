@@ -1,8 +1,8 @@
-import { CompanyNotFoundError } from "../../domain/errors"
-import { GetCompanyByIdUseCase } from "../../domain/usecases/companies/get-company-by-id"
-import { notFound, ok, serverError } from "../helpers/http-helper"
-import { Controller } from "../protocols/controller"
-import { HttpRequest, HttpResponse } from "../protocols/http"
+import { CompanyNotFoundError } from "../../../domain/errors"
+import { GetCompanyByIdUseCase } from "../../../domain/usecases/companies/get-company-by-id"
+import { notFound, ok, serverError } from "../../helpers/http-helper"
+import { Controller } from "../../protocols/controller"
+import { HttpRequest, HttpResponse } from "../../protocols/http"
 
 export class GetCompanyByIdController implements Controller {
   constructor (

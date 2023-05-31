@@ -1,8 +1,8 @@
-import { CompanyNotFoundError } from "../../domain/errors"
-import { DeleteCompanyByIdUseCase } from "../../domain/usecases/companies/delete-company"
-import { notFound, ok, serverError } from "../helpers/http-helper"
-import { Controller } from "../protocols/controller"
-import { HttpRequest, HttpResponse } from "../protocols/http"
+import { CompanyNotFoundError } from "../../../domain/errors"
+import { DeleteCompanyByIdUseCase } from "../../../domain/usecases/companies/delete-company"
+import { notFound, ok, serverError } from "../../helpers/http-helper"
+import { Controller } from "../../protocols/controller"
+import { HttpRequest, HttpResponse } from "../../protocols/http"
 
 export class DeleteCompanyByIdController implements Controller {
   constructor (

@@ -1,8 +1,8 @@
-import { CodeAlreadyInUse } from "../../domain/errors"
-import { ListCompaniesUseCase } from "../../domain/usecases/companies/list-companies"
-import { badRequest, ok, serverError } from "../helpers/http-helper"
-import { Controller } from "../protocols/controller"
-import { HttpRequest, HttpResponse } from "../protocols/http"
+import { CodeAlreadyInUse } from "../../../domain/errors"
+import { ListCompaniesUseCase } from "../../../domain/usecases/companies/list-companies"
+import { badRequest, ok, serverError } from "../../helpers/http-helper"
+import { Controller } from "../../protocols/controller"
+import { HttpRequest, HttpResponse } from "../../protocols/http"
 
 export class ListCompaniesController implements Controller {
   constructor (
