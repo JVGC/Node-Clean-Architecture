@@ -6,6 +6,7 @@ import { CreateCompanyParams } from "../../../domain/usecases/create-company";
 import prisma from "../client";
 
 export class PrismaCompanyRepository implements CompanyRepository{
+    // TODO: Impletement Soft Delete
     async deleteById(id: string): Promise<boolean>{
         const isIdValid = ObjectId.isValid(id)
         if(!isIdValid) return false
