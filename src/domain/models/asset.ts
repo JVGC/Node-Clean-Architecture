@@ -14,9 +14,9 @@ export interface Asset{
 }
 
 export enum AssetsStatus{
-    running = "Running",
-    alerting = "Alerting",
-    stopped = "Stopped"
+    Running = "Running",
+    Alerting = "Alerting",
+    Stopped = "Stopped"
 }
 
 export interface AssetModelResponse {

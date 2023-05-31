@@ -6,7 +6,7 @@ export interface CreateAssetParams {
     name: string;
     description: string;
     model: string;
-    ownerId: string;
+    owner: string;
     unitId: string;
 }
 
