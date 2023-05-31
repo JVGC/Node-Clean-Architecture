@@ -10,3 +10,10 @@ export class CodeAlreadyInUse extends Error {
       this.name = 'CodeAlreadyInUse'
     }
 }
+
+export class UserNotFoundError extends Error {
+  constructor () {
+    super('User not found')
+    this.name = 'UserNotFoundError'
+  }
+}
