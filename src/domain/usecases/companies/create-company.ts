@@ -1,6 +1,6 @@
-import { CodeAlreadyInUse } from "../errors";
-import { CompanyModel } from "../models/company";
-import { CompanyRepository } from "../protocols/repositories/company-repository";
+import { CodeAlreadyInUse } from "../../errors";
+import { CompanyModel } from "../../models/company";
+import { CompanyRepository } from "../../protocols/repositories/company-repository";
 
 export interface CreateCompanyParams {
     name: string;

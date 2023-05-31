@@ -1,6 +1,6 @@
-import { CompanyNotFoundError } from "../errors";
-import { CompanyModel } from "../models/company";
-import { CompanyRepository } from "../protocols/repositories/company-repository";
+import { CompanyNotFoundError } from "../../errors";
+import { CompanyModel } from "../../models/company";
+import { CompanyRepository } from "../../protocols/repositories/company-repository";
 
 export class GetCompanyByIdUseCase {
     constructor(

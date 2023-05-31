@@ -1,5 +1,5 @@
 import { CompanyNotFoundError } from "../../domain/errors"
-import { DeleteCompanyByIdUseCase } from "../../domain/usecases/delete-company"
+import { DeleteCompanyByIdUseCase } from "../../domain/usecases/companies/delete-company"
 import { notFound, ok, serverError } from "../helpers/http-helper"
 import { Controller } from "../protocols/controller"
 import { HttpRequest, HttpResponse } from "../protocols/http"

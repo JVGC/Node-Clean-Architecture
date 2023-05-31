@@ -1,5 +1,5 @@
-import { CompanyModel } from "../models/company";
-import { CompanyRepository } from "../protocols/repositories/company-repository";
+import { CompanyModel } from "../../models/company";
+import { CompanyRepository } from "../../protocols/repositories/company-repository";
 
 export class ListCompaniesUseCase {
     constructor(

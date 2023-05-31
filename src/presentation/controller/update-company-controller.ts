@@ -1,5 +1,5 @@
 import { CodeAlreadyInUse, CompanyNotFoundError } from "../../domain/errors"
-import { UpdateCompanyUseCase } from "../../domain/usecases/update-company"
+import { UpdateCompanyUseCase } from "../../domain/usecases/companies/update-company"
 import { badRequest, notFound, ok, serverError } from "../helpers/http-helper"
 import { Controller } from "../protocols/controller"
 import { HttpRequest, HttpResponse } from "../protocols/http"

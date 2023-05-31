@@ -1,8 +1,8 @@
-import { CreateCompanyUseCase } from "../../domain/usecases/create-company";
-import { DeleteCompanyByIdUseCase } from "../../domain/usecases/delete-company";
-import { GetCompanyByIdUseCase } from "../../domain/usecases/get-company-by-id";
-import { ListCompaniesUseCase } from "../../domain/usecases/list-companies";
-import { UpdateCompanyUseCase } from "../../domain/usecases/update-company";
+import { CreateCompanyUseCase } from "../../domain/usecases/companies/create-company";
+import { DeleteCompanyByIdUseCase } from "../../domain/usecases/companies/delete-company";
+import { GetCompanyByIdUseCase } from "../../domain/usecases/companies/get-company-by-id";
+import { ListCompaniesUseCase } from "../../domain/usecases/companies/list-companies";
+import { UpdateCompanyUseCase } from "../../domain/usecases/companies/update-company";
 import { PrismaCompanyRepository } from "../../infra/prisma/repositories/prisma-company-repository";
 import { CreateCompanyController } from "../../presentation/controller/create-company-controller";
 import { DeleteCompanyByIdController } from "../../presentation/controller/delete-company-by-id-controller";

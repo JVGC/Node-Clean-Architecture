@@ -1,5 +1,5 @@
-import { CompanyNotFoundError } from "../errors";
-import { CompanyRepository } from "../protocols/repositories/company-repository";
+import { CompanyNotFoundError } from "../../errors";
+import { CompanyRepository } from "../../protocols/repositories/company-repository";
 
 // DUVIDA: What to do with the units and users that belongs to the company?
 export class DeleteCompanyByIdUseCase {

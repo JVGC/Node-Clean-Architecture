@@ -1,6 +1,6 @@
 import { CompanyModel } from "../../models/company";
-import { CreateCompanyParams } from "../../usecases/create-company";
-import { UpdateCompanyParams } from "../../usecases/update-company";
+import { CreateCompanyParams } from "../../usecases/companies/create-company";
+import { UpdateCompanyParams } from "../../usecases/companies/update-company";
 
 export interface CompanyRepository{
     create: (data: CreateCompanyParams) => Promise<CompanyModel>

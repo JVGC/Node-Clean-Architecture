@@ -1,6 +1,6 @@
-import { CodeAlreadyInUse, CompanyNotFoundError } from "../errors";
-import { CompanyModel } from "../models/company";
-import { CompanyRepository } from "../protocols/repositories/company-repository";
+import { CodeAlreadyInUse, CompanyNotFoundError } from "../../errors";
+import { CompanyModel } from "../../models/company";
+import { CompanyRepository } from "../../protocols/repositories/company-repository";
 
 // DECISION: User will only be able to update the company if it has role == SUPERADMIN.
 

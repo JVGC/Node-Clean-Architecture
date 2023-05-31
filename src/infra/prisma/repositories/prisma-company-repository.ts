@@ -2,8 +2,8 @@ import { Prisma } from "@prisma/client";
 import { ObjectId } from "mongodb";
 import { CompanyModel } from "../../../domain/models/company";
 import { CompanyRepository } from "../../../domain/protocols/repositories/company-repository";
-import { CreateCompanyParams } from "../../../domain/usecases/create-company";
-import { UpdateCompanyParams } from "../../../domain/usecases/update-company";
+import { CreateCompanyParams } from "../../../domain/usecases/companies/create-company";
+import { UpdateCompanyParams } from "../../../domain/usecases/companies/update-company";
 import prisma from "../client";
 
 export class PrismaCompanyRepository implements CompanyRepository{
