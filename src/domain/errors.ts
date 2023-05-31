@@ -31,3 +31,10 @@ export class UnitNotFoundError extends Error {
     this.name = 'UnitNotFoundError'
   }
 }
+
+export class AssetNotFoundError extends Error {
+  constructor () {
+    super('Asset not found')
+    this.name = 'AssetNotFoundError'
+  }
+}
