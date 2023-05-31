@@ -1,4 +1,4 @@
-import { User, UserRoles } from "../../models/user";
+import { UserModel, UserRoles } from "../../models/user";
 import { UserRepository } from "../../protocols/repositories/user-repository";
 
 export interface CreateUserParams {
@@ -14,7 +14,7 @@ export class CreateUserUseCase {
     constructor(
         private readonly userRepository: UserRepository
     ){}
-    async create(data: CreateUserParams): Promise<User>{
+    async create(data: CreateUserParams): Promise<UserModel>{
         
     }
 }

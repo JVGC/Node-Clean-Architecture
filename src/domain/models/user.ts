@@ -1,6 +1,6 @@
 import { CompanyModel } from "./company"
 
-export interface User{
+export interface UserModel{
     id: string
     name: string
     email: string
