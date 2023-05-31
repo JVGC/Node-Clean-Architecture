@@ -1,5 +1,6 @@
+import { CodeAlreadyInUse } from "../../domain/errors"
 import { CreateCompanyUseCase } from "../../domain/usecases/create-company-usecase"
-import { ok, serverError } from "../helpers/http-helper"
+import { badRequest, ok, serverError } from "../helpers/http-helper"
 import { Controller } from "../protocols/controller"
 import { HttpRequest, HttpResponse } from "../protocols/http"
 
@@ -17,6 +18,9 @@ export class CreateCompanyController implements Controller {
       })
       return ok(result)
     } catch (error: any) {
+      if(error instanceof CodeAlreadyInUse){
+        return badRequest(error)
+      }
       return serverError(error)
     }
   }
