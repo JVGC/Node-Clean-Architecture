@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { ObjectId } from "mongodb";
 import { CompanyModel } from "../../../domain/models/company";
 import { CompanyRepository } from "../../../domain/protocols/repositories/company-repository";
@@ -8,12 +9,20 @@ export class PrismaCompanyRepository implements CompanyRepository{
     async deleteById(id: string): Promise<boolean>{
         const isIdValid = ObjectId.isValid(id)
         if(!isIdValid) return false
-        await prisma.company.delete({
-            where:{
-                id: new ObjectId(id).toString()
+        try{
+            await prisma.company.delete({
+                where:{
+                    id: new ObjectId(id).toString()
+                }
+            })
+            return true
+        }catch(error: any){
+            if(error instanceof Prisma.PrismaClientKnownRequestError){
+                if(error.code !== 'P2025')
+                    return false
             }
-        })
-        return true
+            throw error
+        }
     }
     async getMany(): Promise<CompanyModel[]>{
         return await prisma.company.findMany()
