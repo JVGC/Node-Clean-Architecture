@@ -5,6 +5,9 @@ import { CreateCompanyParams } from "../../../domain/usecases/create-company";
 import prisma from "../client";
 
 export class PrismaCompanyRepository implements CompanyRepository{
+    async getMany(): Promise<CompanyModel[]>{
+        return await prisma.company.findMany()
+    }
     async getByCode(code: string): Promise<CompanyModel | null>{
         const company = await prisma.company.findUnique({
             where:{

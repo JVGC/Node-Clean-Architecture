@@ -5,4 +5,5 @@ export interface CompanyRepository{
     create: (data: CreateCompanyParams) => Promise<CompanyModel>
     getById: (id: string) => Promise<CompanyModel | null>
     getByCode: (code: string) => Promise<CompanyModel | null>
+    getMany: () => Promise<CompanyModel[]>
 }
