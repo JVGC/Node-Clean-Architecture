@@ -3,9 +3,32 @@ import { ObjectId } from "mongodb";
 import { CompanyModel } from "../../../domain/models/company";
 import { CompanyRepository } from "../../../domain/protocols/repositories/company-repository";
 import { CreateCompanyParams } from "../../../domain/usecases/create-company";
+import { UpdateCompanyParams } from "../../../domain/usecases/update-company";
 import prisma from "../client";
 
 export class PrismaCompanyRepository implements CompanyRepository{
+    async update(id: string, {code, name}: UpdateCompanyParams): Promise<CompanyModel | null>{
+        const isIdValid = ObjectId.isValid(id)
+        if(!isIdValid) return null
+        try{
+            const company = await prisma.company.update({
+                where:{
+                    id: new ObjectId(id).toString()
+                },
+                data:{
+                    name,
+                    code
+                }
+            })
+            return company
+        }catch(error: any){
+            if(error instanceof Prisma.PrismaClientKnownRequestError){
+                if(error.code === 'P2025')
+                    return null
+            }
+            throw error
+        }
+    }
     // TODO: Impletement Soft Delete
     async deleteById(id: string): Promise<boolean>{
         const isIdValid = ObjectId.isValid(id)
@@ -19,7 +42,7 @@ export class PrismaCompanyRepository implements CompanyRepository{
             return true
         }catch(error: any){
             if(error instanceof Prisma.PrismaClientKnownRequestError){
-                if(error.code !== 'P2025')
+                if(error.code === 'P2025')
                     return false
             }
             throw error
