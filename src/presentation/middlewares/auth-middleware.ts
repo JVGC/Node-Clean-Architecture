@@ -9,10 +9,10 @@ export class AuthMiddleware{
     ){}
     async handle(httpRequest: HttpRequest): Promise<HttpResponse>{
         try{
-            const accessToken = httpRequest.headers['Authorization']
+            const accessToken = httpRequest.headers['authorization']
             if(!accessToken) return forbidden(new AccessDeniedError())
 
-            const userId = this.getUserByToken.get(accessToken)
+            const userId = await this.getUserByToken.get(accessToken)
             if(!userId) return forbidden(new AccessDeniedError())
             console.log(userId)
             return ok(userId)
