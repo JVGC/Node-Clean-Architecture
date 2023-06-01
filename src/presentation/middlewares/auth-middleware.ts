@@ -1,6 +1,5 @@
 import { GetUserByTokenUseCase } from "../../domain/usecases/auth/get-user-by-token";
-import { AccessDeniedError } from "../helpers/errors";
-import { forbidden, ok, serverError } from "../helpers/http-helper";
+import { ok, serverError, unauthorized } from "../helpers/http-helper";
 import { HttpRequest, HttpResponse } from "../protocols/http";
 
 export class AuthMiddleware{
@@ -10,12 +9,11 @@ export class AuthMiddleware{
     async handle(httpRequest: HttpRequest): Promise<HttpResponse>{
         try{
             const accessToken = httpRequest.headers['authorization']
-            if(!accessToken) return forbidden(new AccessDeniedError())
+            if(!accessToken) return unauthorized()
 
-            const userId = await this.getUserByToken.get(accessToken)
-            if(!userId) return forbidden(new AccessDeniedError())
-            console.log(userId)
-            return ok(userId)
+            const user = await this.getUserByToken.get(accessToken)
+            if(!user) return unauthorized()
+            return ok(user)
         }catch (error: any) {
             return serverError(error)
         }

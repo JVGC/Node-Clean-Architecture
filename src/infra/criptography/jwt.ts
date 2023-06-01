@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Decrypter, Encrypter } from "../../domain/protocols/criptography";
 
 export class JWTEncrypter implements Encrypter{
@@ -15,6 +15,7 @@ export class JWTDecrypter implements Decrypter{
         private readonly secret: string
     ){}
     decrypt(token: string): string{
-        return jwt.verify(token, this.secret) as string
+        const payload = jwt.verify(token, this.secret) as JwtPayload
+        return payload['id']
     }
 }
