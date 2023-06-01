@@ -12,6 +12,8 @@ export class GetUserByTokenUseCase {
             const userId = this.decrypter.decrypt(token)
             if(!userId) return null
             const user = await this.userRepository.getById(userId)
+            if(!user) return null
+            delete user.password
             return user
         }catch(error: any){
             return null
