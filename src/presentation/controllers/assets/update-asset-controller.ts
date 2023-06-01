@@ -14,9 +14,9 @@ export class UpdateAssetController implements Controller {
     try {
       const loggedUser = httpRequest.loggedUser as UserModelResponse
       const { id: assetId } = httpRequest.params
-      const { description, name, healthLevel, model, owner, status, unitId } = httpRequest.body
+      const { description, name, healthLevel, model, owner, status, unitId, image } = httpRequest.body
       const result = await this.updateAssetUseCase.update(assetId, {
-        name, description, healthLevel, model, status, unitId, owner
+        name, description, healthLevel, model, status, unitId, owner, image
       }, loggedUser)
       return ok(result)
     } catch (error: any) {

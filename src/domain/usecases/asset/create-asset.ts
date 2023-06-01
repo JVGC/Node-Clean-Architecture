@@ -8,6 +8,7 @@ export interface CreateAssetParams {
     name: string;
     description: string;
     model: string;
+    image?: string;
     owner: string;
     unitId: string;
 }

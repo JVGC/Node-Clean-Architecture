@@ -64,9 +64,11 @@ model Asset {
   owner       String
   status      AssetStatus @default(Running)
   healthLevel Int
-  createdAt   DateTime    @default(now())
-  updateAt    DateTime    @updatedAt
-  deletedAt   DateTime?
+
+  image     String
+  createdAt DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  deletedAt DateTime?
 
   unitId String @db.ObjectId
   unit   Unit   @relation(fields: [unitId], references: [id], onDelete: Cascade)
