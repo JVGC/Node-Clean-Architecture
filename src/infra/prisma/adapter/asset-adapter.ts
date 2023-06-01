@@ -1,11 +1,14 @@
 import { Asset } from "@prisma/client";
 import { AssetModelResponse, AssetsStatus } from "../../../domain/models/asset";
 
-type AssetAndUnit = (Asset & {
+type AssetAndUnit = Asset & {
     unit: {
         name: string;
+        company: {
+            id: string;
+        };
     };
-})
+}
 
 export const adaptAsset = (asset: AssetAndUnit): AssetModelResponse => {
     return {
@@ -17,5 +20,6 @@ export const adaptAsset = (asset: AssetAndUnit): AssetModelResponse => {
         model: asset.model,
         owner: asset.owner,
         status: AssetsStatus[asset.status],
+        companyId: asset.unit.company.id
     }
 }

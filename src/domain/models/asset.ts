@@ -28,4 +28,5 @@ export interface AssetModelResponse {
     status: AssetsStatus;
     healthLevel: number;
     unitName: string;
+    companyId: string;
 }

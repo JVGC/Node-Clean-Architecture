@@ -1,4 +1,5 @@
 import { AssetNotFoundError } from "../../../domain/errors"
+import { UserModelResponse } from "../../../domain/models/user"
 import { DeleteAssetByIdUseCase } from "../../../domain/usecases/asset/delete-asset"
 import { notFound, ok, serverError } from "../../helpers/http-helper"
 import { Controller } from "../../protocols/controller"
@@ -11,8 +12,9 @@ export class DeleteAssetByIdController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { id: asset_id } = httpRequest.params
-      const result = await this.deleteAssetById.delete(asset_id)
+      const loggedUser = httpRequest.loggedUser as UserModelResponse
+      const { id: assetId } = httpRequest.params
+      const result = await this.deleteAssetById.delete(assetId, loggedUser)
       return ok(result)
     } catch (error: any) {
       if(error instanceof AssetNotFoundError){

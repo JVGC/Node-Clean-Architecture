@@ -21,7 +21,12 @@ export class PrismaAssetRepository implements AssetRepository{
             include:{
                 unit:{
                     select:{
-                        name: true
+                        name: true,
+                        company:{
+                            select:{
+                                id: true
+                            }
+                        }
                     }
                 }
             }
@@ -40,7 +45,12 @@ export class PrismaAssetRepository implements AssetRepository{
             include:{
                 unit:{
                     select:{
-                        name: true
+                        name: true,
+                        company:{
+                            select:{
+                                id: true
+                            }
+                        }
                     }
                 }
             }
@@ -54,7 +64,12 @@ export class PrismaAssetRepository implements AssetRepository{
             include:{
                 unit:{
                     select:{
-                        name: true
+                        name: true,
+                        company:{
+                            select:{
+                                id: true
+                            }
+                        }
                     }
                 }
             }
@@ -101,7 +116,12 @@ export class PrismaAssetRepository implements AssetRepository{
                 include:{
                     unit:{
                         select:{
-                            name: true
+                            name: true,
+                            company:{
+                                select:{
+                                    id: true
+                                }
+                            }
                         }
                     }
                 }
