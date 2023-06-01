@@ -3,6 +3,7 @@ import { DeleteUserByIdUseCase } from "../../domain/usecases/users/delete-user"
 import { GetUserByIdUseCase } from "../../domain/usecases/users/get-user-by-id"
 import { ListUsersUseCase } from "../../domain/usecases/users/list-users"
 import { UpdateUserUseCase } from "../../domain/usecases/users/update-user"
+import { BcryptAdapter } from "../../infra/criptography/bcrypt"
 import { PrismaCompanyRepository } from "../../infra/prisma/repositories/prisma-company-repository"
 import { PrismaUserRepository } from "../../infra/prisma/repositories/prisma-user-repository"
 import { CreateUserController } from "../../presentation/controllers/users/create-user-controller"
@@ -12,9 +13,11 @@ import { ListUsersController } from "../../presentation/controllers/users/list-u
 import { UpdateUserController } from "../../presentation/controllers/users/update-user-controller"
 
 export const makeCreateUser = (): CreateUserController => {
+    const salt = 12
+    const bcryptHasher = new BcryptAdapter(salt)
     const prismaUserRepository = new PrismaUserRepository()
     const prismacompanyRepository = new PrismaCompanyRepository()
-    const createUserUseCase = new CreateUserUseCase(prismaUserRepository, prismacompanyRepository)
+    const createUserUseCase = new CreateUserUseCase(prismaUserRepository, prismacompanyRepository, bcryptHasher)
     return new CreateUserController(createUserUseCase)
 }
 
