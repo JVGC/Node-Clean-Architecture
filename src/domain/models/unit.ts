@@ -8,6 +8,7 @@ export interface Unit{
 }
 
 export interface UnitModelResponse {
+    id: string;
     name: string;
     description: string;
     companyName: string;

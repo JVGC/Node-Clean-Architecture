@@ -20,6 +20,7 @@ export enum AssetsStatus{
 }
 
 export interface AssetModelResponse {
+    id: string;
     name: string;
     description: string;
     model: string;

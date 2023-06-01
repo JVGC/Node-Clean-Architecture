@@ -1,9 +1,10 @@
 import { Prisma } from "@prisma/client"
 import { ObjectId } from "mongodb"
-import { AssetModelResponse, AssetsStatus } from "../../../domain/models/asset"
+import { AssetModelResponse } from "../../../domain/models/asset"
 import { AssetRepository } from "../../../domain/protocols/repositories/asset-repository"
 import { CreateAssetParams } from "../../../domain/usecases/asset/create-asset"
 import { UpdateAssetParams } from "../../../domain/usecases/asset/update-asset"
+import { adaptAsset } from "../adapter/asset-adapter"
 import prisma from "../client"
 
 export class PrismaAssetRepository implements AssetRepository{
@@ -27,11 +28,7 @@ export class PrismaAssetRepository implements AssetRepository{
         })
 
         // TODO: Create a mapping between two objects
-        return {
-            ...asset,
-            status: AssetsStatus[asset.status],
-            unitName: asset.unit.name
-        }
+        return adaptAsset(asset)
     }
     async getById(id: string): Promise<AssetModelResponse | null>{
         const isIdValid = ObjectId.isValid(id)
@@ -49,11 +46,7 @@ export class PrismaAssetRepository implements AssetRepository{
             }
         })
         if(!asset) return null
-        return {
-            ...asset,
-            status: AssetsStatus[asset.status],
-            unitName: asset.unit.name
-        }
+        return adaptAsset(asset)
 
     }
     async getMany(): Promise<AssetModelResponse[]>{
@@ -66,13 +59,7 @@ export class PrismaAssetRepository implements AssetRepository{
                 }
             }
         })
-        return assets.map(asset => (
-            {
-                ...asset,
-                status: AssetsStatus[asset.status],
-                unitName: asset.unit.name
-            }
-        ))
+        return assets.map(asset => adaptAsset(asset))
 
     }
     async deleteById(id: string): Promise<boolean>{
@@ -119,11 +106,7 @@ export class PrismaAssetRepository implements AssetRepository{
                     }
                 }
             })
-            return {
-                ...asset,
-                status: AssetsStatus[asset.status],
-                unitName: asset.unit.name
-            }
+            return adaptAsset(asset)
         }catch(error: any){
             if(error instanceof Prisma.PrismaClientKnownRequestError){
                 if(error.code === 'P2025')

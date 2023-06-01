@@ -4,6 +4,7 @@ import { UnitModelResponse } from "../../../domain/models/unit";
 import { UnitRepository } from "../../../domain/protocols/repositories/unit-repository";
 import { CreateUnitParams } from "../../../domain/usecases/unit/create-unit";
 import { UpdateUnitParams } from "../../../domain/usecases/unit/update-unit";
+import { adaptUnit } from "../adapter/unit-adapter";
 import prisma from "../client";
 
 export class PrismaUnitRepository implements UnitRepository{
@@ -24,10 +25,7 @@ export class PrismaUnitRepository implements UnitRepository{
         })
 
         // TODO: Create a mapping between two objects
-        return {
-            ...unit,
-            companyName: unit.company.name
-        }
+        return adaptUnit(unit)
     }
     async getById(id: string): Promise<UnitModelResponse | null>{
         const isIdValid = ObjectId.isValid(id)
@@ -45,10 +43,7 @@ export class PrismaUnitRepository implements UnitRepository{
             }
         })
         if(!unit) return null
-        return {
-            ...unit,
-            companyName: unit.company.name
-        }
+        return adaptUnit(unit)
 
     }
     async getMany(): Promise<UnitModelResponse[]>{
@@ -61,12 +56,7 @@ export class PrismaUnitRepository implements UnitRepository{
                 }
             }
         })
-        return units.map(unit => (
-            {
-                ...unit,
-                companyName: unit.company.name
-            }
-        ))
+        return units.map(unit => adaptUnit(unit))
 
     }
     async deleteById(id: string): Promise<boolean>{
@@ -108,10 +98,7 @@ export class PrismaUnitRepository implements UnitRepository{
                     }
                 }
             })
-            return {
-                ...unit,
-                companyName: unit.company.name
-            }
+            return adaptUnit(unit)
         }catch(error: any){
             if(error instanceof Prisma.PrismaClientKnownRequestError){
                 if(error.code === 'P2025')

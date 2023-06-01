@@ -4,6 +4,7 @@ import { CompanyModel } from "../../../domain/models/company";
 import { CompanyRepository } from "../../../domain/protocols/repositories/company-repository";
 import { CreateCompanyParams } from "../../../domain/usecases/companies/create-company";
 import { UpdateCompanyParams } from "../../../domain/usecases/companies/update-company";
+import { adaptCompany } from "../adapter/company-adapter";
 import prisma from "../client";
 
 export class PrismaCompanyRepository implements CompanyRepository{
@@ -20,7 +21,7 @@ export class PrismaCompanyRepository implements CompanyRepository{
                     code
                 }
             })
-            return company
+            return adaptCompany(company)
         }catch(error: any){
             if(error instanceof Prisma.PrismaClientKnownRequestError){
                 if(error.code === 'P2025')
@@ -49,7 +50,8 @@ export class PrismaCompanyRepository implements CompanyRepository{
         }
     }
     async getMany(): Promise<CompanyModel[]>{
-        return await prisma.company.findMany()
+        const companies =  await prisma.company.findMany()
+        return companies.map(company=> adaptCompany(company))
     }
     async getByCode(code: string): Promise<CompanyModel | null>{
         const company = await prisma.company.findUnique({
@@ -57,7 +59,8 @@ export class PrismaCompanyRepository implements CompanyRepository{
                 code
             }
         })
-        return company
+        if(!company) return null
+        return adaptCompany(company)
     }
     async getById(id: string): Promise<CompanyModel | null>{
         const isIdValid = ObjectId.isValid(id)
@@ -67,7 +70,8 @@ export class PrismaCompanyRepository implements CompanyRepository{
                 id: new ObjectId(id).toString()
             }
         })
-        return company
+        if(!company) return null
+        return adaptCompany(company)
     }
     async create({code, name}: CreateCompanyParams): Promise<CompanyModel>{
         const company = await prisma.company.create({
@@ -78,7 +82,7 @@ export class PrismaCompanyRepository implements CompanyRepository{
         })
 
         // TODO: Create a mapping between two objects
-        return company
+        return adaptCompany(company)
     }
 
 }

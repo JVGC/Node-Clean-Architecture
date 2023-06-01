@@ -4,6 +4,7 @@ import { UserModelResponse, UserRoles } from "../../../domain/models/user";
 import { UserRepository } from "../../../domain/protocols/repositories/user-repository";
 import { CreateUserParams } from "../../../domain/usecases/users/create-user";
 import { UpdateUserParams } from "../../../domain/usecases/users/update-user";
+import { adaptUser } from "../adapter/user-adapter";
 import prisma from "../client";
 
 export class PrismaUserRepository implements UserRepository{
@@ -48,11 +49,7 @@ export class PrismaUserRepository implements UserRepository{
             }
         })
         if(!user) return null
-        return {
-            ...user,
-            role: UserRoles[user.Role],
-            companyName: user.company.name
-        }
+        return adaptUser(user)
 
     }
     async getByEmail(email: string): Promise<UserModelResponse | null>{
@@ -69,11 +66,7 @@ export class PrismaUserRepository implements UserRepository{
             }
         })
         if(!user) return null
-        return {
-            ...user,
-            role: UserRoles[user.Role],
-            companyName: user.company.name
-        }
+        return adaptUser(user)
     }
     async getMany(): Promise<UserModelResponse[]>{
         const users = await prisma.user.findMany({
@@ -85,13 +78,7 @@ export class PrismaUserRepository implements UserRepository{
                 }
             }
         })
-        return users.map(user => (
-            {
-                ...user,
-                role: UserRoles[user.Role],
-                companyName: user.company.name
-            }
-        ))
+        return users.map(user => adaptUser(user))
 
     }
     async deleteById(id: string): Promise<boolean>{
@@ -135,11 +122,7 @@ export class PrismaUserRepository implements UserRepository{
                     }
                 }
             })
-            return {
-                ...user,
-                role: UserRoles[user.Role],
-                companyName: user.company.name
-            }
+            return adaptUser(user)
         }catch(error: any){
             if(error instanceof Prisma.PrismaClientKnownRequestError){
                 if(error.code === 'P2025')
