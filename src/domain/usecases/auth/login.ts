@@ -1,5 +1,5 @@
 import { UserNotFoundError } from "../../errors";
-import { Encrypter } from "../../protocols/criptography";
+import { Encrypter, Hasher } from "../../protocols/criptography";
 import { UserRepository } from "../../protocols/repositories/user-repository";
 
 export interface LoginParams{
@@ -13,14 +13,17 @@ export interface LoginResponse{
 export class LoginUseCase{
     constructor(
         private readonly userRepository: UserRepository,
-        private readonly encrypter: Encrypter
+        private readonly encrypter: Encrypter,
+        private readonly hasher: Hasher
     ){}
 
     async login(data: LoginParams): Promise<LoginResponse>{
         const user = await this.userRepository.getByEmail(data.email)
         if(!user) throw new UserNotFoundError()
 
-        if(user.password !== data.password) throw new UserNotFoundError()
+        const isValid = await this.hasher.compare(data.password, user.password!)
+
+        if(!isValid) throw new UserNotFoundError()
 
         const accessToken = this.encrypter.encrypt(user.id)
 
