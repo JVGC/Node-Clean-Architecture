@@ -417,7 +417,7 @@
                         "description": "Unauthorized"
                     },
                     "404":{
-                        "description": "Company Not found"
+                        "description": "Unit Not found"
                     },
                     "200": {
                         "description": "OK",
@@ -622,6 +622,193 @@
                     }
                 }
             }
+        },
+        "/user":{
+            "post":{
+                "summary": "Cadastro de Usuário",
+                "description": "Essa rota será responsável por cadastrar um novo usuário. \n Super Admins podem cadastrar usuário para qualquer empresa, enquanto admins podem somente para sua própria empresa.",
+                "tags": ["Users"],
+                "security": [{ "bearerAuth": []}],
+                "requestBody":{
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            "examples": {
+                                "unit": {
+                                    "value": {
+                                        "name": "Joao",
+                                        "email": "admin@admin.com",
+                                        "password": "123",
+                                        "role": "Admin",
+                                        "companyId": "COMPANY_ID"
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Company Not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get":{
+                "summary": "Listagem de Usuários",
+                "description": "Essa rota será responsável por listar as unidades. \nAdmins verão apenas as unidades da sua empresa.\nSuper Admins poderão ver todas.",
+                "tags": ["Users"],
+                "security": [{ "bearerAuth": []}],
+                "responses":{
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "array",
+                                    "items":{
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id}":{
+            "get":{
+                "summary": "Busca um Usuário pelo ID",
+                "description": "Essa rota será reponsável por retornar as informações de um usuário pelo seu ID. \n Admins só poderão buscar informações sobre usuários da sua empresa.",
+                "tags": ["Users"],
+                "security": [{ "bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID do Usuário",
+                    "required": true
+                }],
+                "responses":{
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404":{
+                        "description": "User Not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete":{
+                "summary": "Deleta um Usuário pelo ID",
+                "description": "Essa rota será reponsável por deletar as informações de um usuário pelo seu ID. \n Admins só poderão deletar usuários da sua empresa.",
+                "tags": ["Users"],
+                "security": [{ "bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID do Usuário",
+                    "required": true
+                }],
+                "responses":{
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404":{
+                        "description": "User Not Found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch":{
+                "summary": "Atualiza os dados de um usuário",
+                "description": "Essa rota será reponsável por atualizar as informações de um usuário pelo seu ID. \n Admins só poderão atualizar usuários da sua empresa.",
+                "tags": ["Users"],
+                "security": [{ "bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID do Usuário",
+                    "required": true
+                }],
+                "requestBody":{
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            "examples": {
+                                "user": {
+                                    "value": {
+                                        "name": "Joao",
+                                        "email": "admin@admin.com",
+                                        "password": "123",
+                                        "role": "SuperAdmin"
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                },
+                "responses":{
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404":{
+                        "description": "User Not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -690,6 +877,30 @@
                     "status":{
                         "type": "string",
                         "enum": ["Running", "Alerting", "Stopped"]
+                    }
+                }
+            },
+            "User":{
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "email"
+                    },
+                    "password":{
+                        "type": "string"
+                    },
+                    "companyId": {
+                        "type": "string"
+                    },
+                    "role":{
+                        "type": "string",
+                        "enum": ["SuperAdmin", "Admin", "User"]
                     }
                 }
             }
