@@ -1,4 +1,5 @@
 import { CompanyNotFoundError } from "../../../domain/errors"
+import { UserModelResponse } from "../../../domain/models/user"
 import { GetCompanyByIdUseCase } from "../../../domain/usecases/companies/get-company-by-id"
 import { notFound, ok, serverError } from "../../helpers/http-helper"
 import { Controller } from "../../protocols/controller"
@@ -11,8 +12,9 @@ export class GetCompanyByIdController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { id: company_id } = httpRequest.params
-      const result = await this.getCompanyById.get(company_id)
+      const loggedUser = httpRequest.loggedUser as UserModelResponse
+      const { id: companyId } = httpRequest.params
+      const result = await this.getCompanyById.get(companyId, loggedUser)
       return ok(result)
     } catch (error: any) {
       if(error instanceof CompanyNotFoundError){

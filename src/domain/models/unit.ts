@@ -12,4 +12,5 @@ export interface UnitModelResponse {
     name: string;
     description: string;
     companyName: string;
+    companyId: string;
 }

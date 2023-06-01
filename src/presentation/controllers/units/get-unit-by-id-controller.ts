@@ -1,4 +1,5 @@
 import { UnitNotFoundError } from "../../../domain/errors"
+import { UserModelResponse } from "../../../domain/models/user"
 import { GetUnitByIdUseCase } from "../../../domain/usecases/unit/get-unit-by-id"
 import { notFound, ok, serverError } from "../../helpers/http-helper"
 import { Controller } from "../../protocols/controller"
@@ -11,8 +12,9 @@ export class GetUnitByIdController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { id: unit_id } = httpRequest.params
-      const result = await this.getUnitById.get(unit_id)
+      const loggedUser = httpRequest.loggedUser as UserModelResponse
+      const { id: unitId } = httpRequest.params
+      const result = await this.getUnitById.get(unitId, loggedUser)
       return ok(result)
     } catch (error: any) {
       if(error instanceof UnitNotFoundError){

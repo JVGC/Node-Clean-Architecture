@@ -13,5 +13,6 @@ export const adaptUnit = (unit: UnitAndCompany): UnitModelResponse => {
         name: unit.name,
         description: unit.description,
         companyName: unit.company.name,
+        companyId: unit.companyId
     }
 }
