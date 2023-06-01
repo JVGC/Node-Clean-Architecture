@@ -11,8 +11,9 @@ export class GetAssetByIdController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { id: asset_id } = httpRequest.params
-      const result = await this.getAssetById.get(asset_id)
+      const loggedUser = httpRequest.loggedUser
+      const { id: assetId } = httpRequest.params
+      const result = await this.getAssetById.get(assetId, loggedUser)
       return ok(result)
     } catch (error: any) {
       if(error instanceof AssetNotFoundError){
