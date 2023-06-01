@@ -1,4 +1,5 @@
 import { CompanyNotFoundError, EmailAlreadyInUse } from "../../../domain/errors"
+import { UserModelResponse, UserRoles } from "../../../domain/models/user"
 import { CreateUserUseCase } from "../../../domain/usecases/users/create-user"
 import { badRequest, ok, serverError } from "../../helpers/http-helper"
 import { Controller } from "../../protocols/controller"
@@ -11,10 +12,19 @@ export class CreateUserController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
+      const loggedUser = httpRequest.loggedUser as UserModelResponse
       const { email, name,  password, role, companyId } = httpRequest.body
-      const result = await this.createUserUseCase.create({
-        email, name,  password, role, companyId
-      })
+      let result: UserModelResponse
+
+      if(loggedUser.role !== UserRoles.SuperAdmin){
+        result = await this.createUserUseCase.create({
+          email, name,  password, role, companyId: loggedUser.companyId
+        })
+      }else{
+        result = await this.createUserUseCase.create({
+          email, name,  password, role, companyId
+        })
+      }
       return ok(result)
     } catch (error: any) {
       if(error instanceof EmailAlreadyInUse){

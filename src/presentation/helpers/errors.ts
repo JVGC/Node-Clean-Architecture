@@ -12,10 +12,3 @@ export class ServerError extends Error {
       this.message = message
     }
 }
-
-export class AccessDeniedError extends Error {
-  constructor () {
-    super('Access denied')
-    this.name = 'AccessDeniedError'
-  }
-}

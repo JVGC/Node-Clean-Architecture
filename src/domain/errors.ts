@@ -38,3 +38,11 @@ export class AssetNotFoundError extends Error {
     this.name = 'AssetNotFoundError'
   }
 }
+
+
+export class AccessDeniedError extends Error {
+  constructor () {
+    super('Access denied')
+    this.name = 'AccessDeniedError'
+  }
+}

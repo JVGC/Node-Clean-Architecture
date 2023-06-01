@@ -11,8 +11,9 @@ export class DeleteUserByIdController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { id: user_id } = httpRequest.params
-      const result = await this.deleteUserById.delete(user_id)
+      const loggedUser = httpRequest.loggedUser
+      const { id: userId } = httpRequest.params
+      const result = await this.deleteUserById.delete(userId, loggedUser)
       return ok(result)
     } catch (error: any) {
       if(error instanceof UserNotFoundError){
