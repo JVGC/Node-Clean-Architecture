@@ -7,7 +7,7 @@ export interface UserRepository{
     create: (data: CreateUserParams) => Promise<UserModelResponseWithPassword>
     getById: (id: string) => Promise<UserModelResponseWithPassword | null>
     getByEmail: (email: string) => Promise<UserModelResponseWithPassword | null>
-    getMany: () => Promise<UserModelResponseWithPassword[]>
+    getMany: (companyId?: string) => Promise<UserModelResponseWithPassword[]>
     deleteById: (id: string) => Promise<boolean>
     update: (id: string, updateData: UpdateUserParams) => Promise<UserModelResponseWithPassword | null>
 }

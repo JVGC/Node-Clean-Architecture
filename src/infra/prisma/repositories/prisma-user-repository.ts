@@ -68,16 +68,33 @@ export class PrismaUserRepository implements UserRepository{
         if(!user) return null
         return adaptUser(user)
     }
-    async getMany(): Promise<UserModelResponse[]>{
-        const users = await prisma.user.findMany({
-            include:{
-                company:{
-                    select:{
-                        name: true
+    async getMany(companyId?: string): Promise<UserModelResponse[]>{
+        let users
+        if(companyId){
+            users = await prisma.user.findMany({
+                where:{
+                    companyId
+                },
+               include:{
+                   company:{
+                       select:{
+                           name: true
+                       }
+                   }
+               }
+           })
+
+        }else{
+            users = await prisma.user.findMany({
+                include:{
+                    company:{
+                        select:{
+                            name: true
+                        }
                     }
                 }
-            }
-        })
+            })
+        }
         return users.map(user => adaptUser(user))
 
     }
