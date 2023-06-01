@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { AuthMiddleware } from '../../presentation/middlewares/auth-middleware'
 import { Controller } from '../../presentation/protocols/controller'
 import { HttpRequest } from '../../presentation/protocols/http'
+import { PermissionMiddleware } from '../../presentation/protocols/permission-middleware'
 
 export const adaptRoute = (controller: Controller) => {
   return async (req: Request, res: Response) => {
@@ -28,6 +29,24 @@ export const adaptAuthMiddleware = (authMiddleware: AuthMiddleware) => {
       headers: req.headers
     }
     const httpResponse= await authMiddleware.handle(httpRequest)
+    if(httpResponse.statusCode === 200){
+      Object.assign(req, httpResponse.body)
+      next()
+    }else{
+      res.status(httpResponse.statusCode).json({
+        error: httpResponse.body.message
+      })
+    }
+  }
+}
+
+export const adaptPermissionMiddleware = (permissionMiddleware: PermissionMiddleware) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const httpRequest: HttpRequest = {
+      headers: req.headers,
+      loggedUser: req.loggedUser
+    }
+    const httpResponse= await permissionMiddleware.handle(httpRequest)
     if(httpResponse.statusCode === 200){
       Object.assign(req, httpResponse.body)
       next()
