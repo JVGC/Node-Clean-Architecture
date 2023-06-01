@@ -21,6 +21,7 @@ export interface UserModelResponse {
     name: string;
     email: string
     password: string;
+    companyId: string;
     companyName: string;
     role: UserRoles
 }

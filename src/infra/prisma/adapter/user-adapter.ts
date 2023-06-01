@@ -14,6 +14,7 @@ export const adaptUser = (user: UserAndCompany): UserModelResponse => {
         name: user.name,
         password: user.password,
         companyName: user.company.name,
-        role: UserRoles[user.Role]
+        role: UserRoles[user.Role],
+        companyId: user.companyId
     }
 }
