@@ -6,6 +6,10 @@ export class ListUsersUseCase {
         private readonly userRepository: UserRepository
     ){}
     async list(): Promise<UserModelResponse[]>{
-        return await this.userRepository.getMany()
+        const users = await this.userRepository.getMany()
+        return users.map(user => {
+            delete user.password
+            return user
+        })
     }
   }

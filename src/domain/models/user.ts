@@ -20,8 +20,11 @@ export interface UserModelResponse {
     id: string;
     name: string;
     email: string
-    password: string;
     companyId: string;
     companyName: string;
     role: UserRoles
+}
+
+export type UserModelResponseWithPassword =  UserModelResponse &{
+    password?: string;
 }

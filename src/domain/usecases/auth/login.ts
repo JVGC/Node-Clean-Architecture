@@ -22,7 +22,7 @@ export class LoginUseCase{
 
         if(user.password !== data.password) throw new UserNotFoundError()
 
-        const accessToken = await this.encrypter.encrypt(user.id)
+        const accessToken = this.encrypter.encrypt(user.id)
 
         return {
             accessToken: accessToken

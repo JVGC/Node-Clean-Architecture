@@ -23,7 +23,7 @@ export class CreateUserUseCase {
         const isEmailInUse = await this.userRepository.getByEmail(data.email)
         if(isEmailInUse) throw new EmailAlreadyInUse()
         const user = await this.userRepository.create(data)
-
+        delete user.password
         return user
     }
 }

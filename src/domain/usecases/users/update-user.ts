@@ -23,6 +23,7 @@ export class UpdateUserUseCase {
         }
         const user = await this.userRepository.update(user_id, data)
         if(!user)  throw new UserNotFoundError()
+        delete user.password
         return user
     }
 }
