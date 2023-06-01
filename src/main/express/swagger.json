@@ -1,0 +1,224 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Tractian Backend Role Test",
+        "description": "Essa API tem como objetivo documentar as rotas do teste da Tractian",
+        "contact": {
+            "email": "joaovictorgarciacoelho@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [{
+        "url": "http://localhost:3000",
+        "description": "Dev API"
+    }],
+    "paths": {
+        "/company":{
+            "post":{
+                "summary": "Cadastro de empresa",
+                "description": "Essa rota será responsável por cadastrar um nova empresa. Apenas Super Admins podem acessar essa rota.",
+                "tags": ["Companies"],
+                "security": [{ "bearerAuth": []}],
+                "requestBody":{
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Company"
+                            },
+                            "examples": {
+                                "company": {
+                                    "value": {
+                                        "name": "Tractian",
+                                        "code": "Tractian CPNJ"
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "400": {
+                        "description": "Code is already in use"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Company"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get":{
+                "summary": "Listagem de Empresas",
+                "description": "Essa rota será responsável por listar todas as empresas. Apenas Super Admins podem acessar essa rota.",
+                "tags": ["Companies"],
+                "security": [{ "bearerAuth": []}],
+                "responses":{
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "array",
+                                    "items":{
+                                        "$ref": "#/components/schemas/Company"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/company/{id}":{
+            "get":{
+                "summary": "Busca uma Company pelo ID",
+                "description": "Essa rota será reponsável por retornar as informações de uma empresa pelo seu ID. Apenas Super Admins podem acessar essa rota. Admins só podem buscar pela própria empresa.",
+                "tags": ["Companies"],
+                "security": [{ "bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID da Empresa",
+                    "required": true
+                }],
+                "responses":{
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404":{
+                        "description": "Company Not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Company"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete":{
+                "summary": "Deleta uma Company pelo ID",
+                "description": "Essa rota será reponsável por deletar as informações de uma empresa pelo seu ID. Apenas Super Admins podem acessar essa rota.",
+                "tags": ["Companies"],
+                "security": [{ "bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID da Empresa",
+                    "required": true
+                }],
+                "responses":{
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404":{
+                        "description": "Company Not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Company"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch":{
+                "summary": "Atualiza os dados de uma empresa",
+                "description": "Essa rota será reponsável atualizar as informações de uma empresa pelo seu ID. Apenas Super Admins podem acessar essa rota.",
+                "tags": ["Companies"],
+                "security": [{ "bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID da Empresa",
+                    "required": true
+                }],
+                "requestBody":{
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Company"
+                            },
+                            "examples": {
+                                "company": {
+                                    "value": {
+                                        "name": "Tractian",
+                                        "code": "Tractian CPNJ"
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                },
+                "responses":{
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404":{
+                        "description": "Company Not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Company"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Company": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "code": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "securitySchemes" : {
+        "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+        }
+    }
+}
