@@ -5,7 +5,10 @@ export class ListUnitsUseCase {
   constructor(
     private readonly unitRepository: UnitRepository
   ){}
-  async list(): Promise<UnitModelResponse[]>{
-    return await this.unitRepository.getMany()
+  async list(companyId?: string): Promise<UnitModelResponse[]>{
+    if(companyId)
+      return await this.unitRepository.getMany(companyId)
+    else
+      return await this.unitRepository.getMany()
   }
 }

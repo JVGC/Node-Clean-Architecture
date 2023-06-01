@@ -46,16 +46,32 @@ export class PrismaUnitRepository implements UnitRepository{
         return adaptUnit(unit)
 
     }
-    async getMany(): Promise<UnitModelResponse[]>{
-        const units = await prisma.unit.findMany({
-            include:{
-                company:{
-                    select:{
-                        name: true
+    async getMany(companyId?: string): Promise<UnitModelResponse[]>{
+        let units
+        if(companyId){
+            units = await prisma.unit.findMany({
+                where:{
+                    companyId
+                },
+                include:{
+                    company:{
+                        select:{
+                            name: true
+                        }
                     }
                 }
-            }
-        })
+            })
+        }else{
+            units = await prisma.unit.findMany({
+                include:{
+                    company:{
+                        select:{
+                            name: true
+                        }
+                    }
+                }
+            })
+        }
         return units.map(unit => adaptUnit(unit))
 
     }
