@@ -2,7 +2,7 @@ import { CompanyNotFoundError } from "../../../domain/errors"
 import { UnitModelResponse } from "../../../domain/models/unit"
 import { UserModelResponse, UserRoles } from "../../../domain/models/user"
 import { CreateUnitUseCase } from "../../../domain/usecases/unit/create-unit"
-import { badRequest, ok, serverError } from "../../helpers/http-helper"
+import { notFound, ok, serverError } from "../../helpers/http-helper"
 import { Controller } from "../../protocols/controller"
 import { HttpRequest, HttpResponse } from "../../protocols/http"
 
@@ -29,7 +29,7 @@ export class CreateUnitController implements Controller {
       return ok(result)
     } catch (error: any) {
       if(error instanceof CompanyNotFoundError){
-        return badRequest(error)
+        return notFound(error)
       }
       return serverError(error)
     }

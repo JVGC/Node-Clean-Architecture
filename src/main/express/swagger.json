@@ -175,6 +175,192 @@
                     }
                 },
                 "responses":{
+                    "400": {
+                        "description": "Code is already in use"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404":{
+                        "description": "Company Not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Company"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/unit":{
+            "post":{
+                "summary": "Cadastro de Unidade",
+                "description": "Essa rota será responsável por cadastrar um nova unidade.",
+                "tags": ["Units"],
+                "security": [{ "bearerAuth": []}],
+                "requestBody":{
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Unit"
+                            },
+                            "examples": {
+                                "company": {
+                                    "value": {
+                                        "name": "Unit 1",
+                                        "description": "Tractian Unit 1",
+                                        "companyId": "TRACTIAN_ID"
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Company Not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Company"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get":{
+                "summary": "Listagem de Unidades",
+                "description": "Essa rota será responsável por listar as unidades. \nAdmins e usuários normais verão apenas as unidades da sua empresa.\nSuper Admins poderão ver todas.",
+                "tags": ["Units"],
+                "security": [{ "bearerAuth": []}],
+                "responses":{
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "array",
+                                    "items":{
+                                        "$ref": "#/components/schemas/Unit"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/unit/{id}":{
+            "get":{
+                "summary": "Busca uma Unidade pelo ID",
+                "description": "Essa rota será reponsável por retornar as informações de uma unidade pelo seu ID. \n Admins e usuários normais só poderão buscar informações sobre unidades da sua empresa.",
+                "tags": ["Units"],
+                "security": [{ "bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID da Unidade",
+                    "required": true
+                }],
+                "responses":{
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404":{
+                        "description": "Unit Not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Unit"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete":{
+                "summary": "Deleta uma Unidade pelo ID",
+                "description": "Essa rota será reponsável por deletar as informações de uma empresa pelo seu ID. \n Admins e usuários normais só poderão deletar da sua empresa.",
+                "tags": ["Units"],
+                "security": [{ "bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID da Unidade",
+                    "required": true
+                }],
+                "responses":{
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404":{
+                        "description": "Unit Not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Unit"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch":{
+                "summary": "Atualiza os dados de uma unidade",
+                "description": "Essa rota será reponsável atualizar as informações de uma unidade pelo seu ID. \n Admins e usuários normais só poderão atualizar unidades da sua empresa.",
+                "tags": ["Units"],
+                "security": [{ "bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID da Unidade",
+                    "required": true
+                }],
+                "requestBody":{
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Unit"
+                            },
+                            "examples": {
+                                "company": {
+                                    "value": {
+                                        "name": "Unit 1",
+                                        "description": "Nova descrição"
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                },
+                "responses":{
                     "401": {
                         "description": "Unauthorized"
                     },
@@ -208,6 +394,23 @@
                         "type": "string"
                     },
                     "code": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Unit": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "companyId":{
                         "type": "string"
                     }
                 }
