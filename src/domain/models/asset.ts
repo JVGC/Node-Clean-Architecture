@@ -27,7 +27,7 @@ export interface AssetModelResponse {
     description: string;
     model: string;
     owner: string;
-    image: string;
+    image?: string;
     status: AssetsStatus;
     healthLevel: number;
     unitName: string;

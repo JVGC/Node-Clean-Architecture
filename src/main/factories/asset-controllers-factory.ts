@@ -3,6 +3,7 @@ import { DeleteAssetByIdUseCase } from "../../domain/usecases/asset/delete-asset
 import { GetAssetByIdUseCase } from "../../domain/usecases/asset/get-asset-by-id"
 import { ListAssetsUseCase } from "../../domain/usecases/asset/list-assets"
 import { UpdateAssetUseCase } from "../../domain/usecases/asset/update-asset"
+import { LocalImageRepository } from "../../infra/image/local-image-repository"
 import { PrismaAssetRepository } from "../../infra/prisma/repositories/prisma-asset-repository"
 import { PrismaUnitRepository } from "../../infra/prisma/repositories/prisma-unit-repository"
 import { CreateAssetController } from "../../presentation/controllers/assets/create-asset-controller"
@@ -12,9 +13,10 @@ import { ListAssetsController } from "../../presentation/controllers/assets/list
 import { UpdateAssetController } from "../../presentation/controllers/assets/update-asset-controller"
 
 export const makeCreateAsset = (): CreateAssetController => {
+    const localImageRepository = new LocalImageRepository()
     const prismaAssetRepository = new PrismaAssetRepository()
     const prismaUnitRepository = new PrismaUnitRepository()
-    const createAssetUseCase = new CreateAssetUseCase(prismaAssetRepository, prismaUnitRepository)
+    const createAssetUseCase = new CreateAssetUseCase(prismaAssetRepository, prismaUnitRepository, localImageRepository)
     return new CreateAssetController(createAssetUseCase)
 }
 
