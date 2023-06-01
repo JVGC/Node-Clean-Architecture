@@ -8,4 +8,5 @@ export interface HttpRequest {
     params?: any
     query?: any
     headers?: any
+    loggedUser?: any
 }

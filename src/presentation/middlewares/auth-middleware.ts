@@ -13,7 +13,7 @@ export class AuthMiddleware{
 
             const user = await this.getUserByToken.get(accessToken)
             if(!user) return unauthorized()
-            return ok(user)
+            return ok({loggedUser: user})
         }catch (error: any) {
             return serverError(error)
         }
