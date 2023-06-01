@@ -4,7 +4,6 @@ import { bodyParser, contentType, cors } from "./middlewares/basic-middlewares"
 import setupRoutes from './routes'
 import swaggerFile from './swagger.json'
 
-console.log(swaggerFile)
 const expressApp = express()
 
 expressApp.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
