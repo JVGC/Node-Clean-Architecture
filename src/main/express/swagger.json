@@ -13,6 +13,58 @@
         "description": "Dev API"
     }],
     "paths": {
+        "/login":{
+            "post":{
+                "summary": "Login de Usuário",
+                "description": "Rota de login do usuário. Retorna um token de acesso",
+                "tags": ["Auth"],
+                "requestBody":{
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "items":{
+                                    "email":{
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "auth": {
+                                    "value": {
+                                        "email": "your@email.com",
+                                        "password": "YOUR_PASSWORD"
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                },
+                "responses": {
+                    "404": {
+                        "description": "User Not Found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "properties":{
+                                        "accessToken":{
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/company":{
             "post":{
                 "summary": "Cadastro de empresa",
@@ -211,7 +263,7 @@
                                 "$ref": "#/components/schemas/Unit"
                             },
                             "examples": {
-                                "company": {
+                                "unit": {
                                     "value": {
                                         "name": "Unit 1",
                                         "description": "Tractian Unit 1",
@@ -236,7 +288,7 @@
                             "application/json": {
                                 "schema":{
                                     "type": "object",
-                                    "$ref": "#/components/schemas/Company"
+                                    "$ref": "#/components/schemas/Unit"
                                 }
                             }
                         }
@@ -302,7 +354,7 @@
             },
             "delete":{
                 "summary": "Deleta uma Unidade pelo ID",
-                "description": "Essa rota será reponsável por deletar as informações de uma empresa pelo seu ID. \n Admins e usuários normais só poderão deletar da sua empresa.",
+                "description": "Essa rota será reponsável por deletar as informações de uma unidade pelo seu ID. \n Admins e usuários normais só poderão deletar unidades da sua empresa.",
                 "tags": ["Units"],
                 "security": [{ "bearerAuth": []}],
                 "parameters": [{
@@ -349,7 +401,7 @@
                                 "$ref": "#/components/schemas/Unit"
                             },
                             "examples": {
-                                "company": {
+                                "unit": {
                                     "value": {
                                         "name": "Unit 1",
                                         "description": "Nova descrição"
@@ -373,7 +425,197 @@
                             "application/json": {
                                 "schema":{
                                     "type": "object",
-                                    "$ref": "#/components/schemas/Company"
+                                    "$ref": "#/components/schemas/Unit"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/asset":{
+            "post":{
+                "summary": "Cadastro de Asset",
+                "description": "Essa rota será responsável por cadastrar um nova máquina.",
+                "tags": ["Assets"],
+                "security": [{ "bearerAuth": []}],
+                "requestBody":{
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Asset"
+                            },
+                            "examples": {
+                                "asset": {
+                                    "value": {
+                                        "name": "asset name",
+                                        "description": "asset description",
+                                        "unitId": "UNIT_ID",
+                                        "model": "asset model",
+                                        "owner": "Owner Name",
+                                        "imageURL": "asset image url"
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Company Not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Asset"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get":{
+                "summary": "Listagem de Assets",
+                "description": "Essa rota será responsável por listar as assets. \nAdmins e usuários normais verão apenas as máquinas da sua empresa.\nSuper Admins poderão ver todas.",
+                "tags": ["Assets"],
+                "security": [{ "bearerAuth": []}],
+                "responses":{
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "array",
+                                    "items":{
+                                        "$ref": "#/components/schemas/Asset"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/asset/{id}":{
+            "get":{
+                "summary": "Busca um Asset pelo ID",
+                "description": "Essa rota será reponsável por retornar as informações de um asset pelo seu ID. \n Admins e usuários normais só poderão buscar informações sobre assets da sua empresa.",
+                "tags": ["Assets"],
+                "security": [{ "bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID do Asset",
+                    "required": true
+                }],
+                "responses":{
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404":{
+                        "description": "Asset Not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Asset"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete":{
+                "summary": "Deleta um Asset pelo ID",
+                "description": "Essa rota será reponsável por deletar as informações de um asset pelo seu ID. \n Admins e usuários normais só poderão deletar assets da sua empresa.",
+                "tags": ["Assets"],
+                "security": [{ "bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID do Asset",
+                    "required": true
+                }],
+                "responses":{
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404":{
+                        "description": "Asset Not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Asset"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch":{
+                "summary": "Atualiza os dados de um asset",
+                "description": "Essa rota será reponsável atualizar as informações de um asset pelo seu ID. \n Admins e usuários normais só poderão atualizar assets da sua empresa.",
+                "tags": ["Assets"],
+                "security": [{ "bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID do Asset",
+                    "required": true
+                }],
+                "requestBody":{
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Asset"
+                            },
+                            "examples": {
+                                "asset": {
+                                    "value": {
+                                        "name": "asset name",
+                                        "description": "asset description",
+                                        "unitId": "UNIT_ID",
+                                        "model": "asset model",
+                                        "owner": "Owner Name",
+                                        "imageURL": "asset image url"
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                },
+                "responses":{
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404":{
+                        "description": "Company Not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Asset"
                                 }
                             }
                         }
@@ -412,6 +654,42 @@
                     },
                     "companyId":{
                         "type": "string"
+                    }
+                }
+            },
+            "Asset":{
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "unitId":{
+                        "type": "string"
+                    },
+                    "model": {
+                        "type": "string"
+                    },
+                    "owner": {
+                        "type": "string"
+                    },
+                    "imageURL": {
+                        "type": "string"
+                    },
+                    "healthLevel":{
+                        "type": "integer",
+                        "min": 0,
+                        "max": 100,
+                        "default": 100
+                    },
+                    "status":{
+                        "type": "string",
+                        "enum": ["Running", "Alerting", "Stopped"]
                     }
                 }
             }
