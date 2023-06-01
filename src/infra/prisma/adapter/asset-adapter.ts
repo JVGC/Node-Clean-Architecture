@@ -19,7 +19,7 @@ export const adaptAsset = (asset: AssetAndUnit): AssetModelResponse => {
         healthLevel: asset.healthLevel,
         model: asset.model,
         owner: asset.owner,
-        image: asset.image || undefined,
+        imageURL: asset.imageURL || undefined,
         status: AssetsStatus[asset.status],
         companyId: asset.unit.company.id
     }

@@ -11,7 +11,7 @@ export interface UpdateAssetParams {
     description?: string;
     model?: string;
     owner?: string;
-    image?: string;
+    imageURL?: string;
     unitId?: string;
     healthLevel?: number
     status?: AssetsStatus

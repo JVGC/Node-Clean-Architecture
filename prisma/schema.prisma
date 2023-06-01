@@ -65,7 +65,7 @@ model Asset {
   status      AssetStatus @default(Running)
   healthLevel Int
 
-  image     String?
+  imageURL  String?
   createdAt DateTime  @default(now())
   updateAt  DateTime  @updatedAt
   deletedAt DateTime?

@@ -13,9 +13,9 @@ export class CreateAssetController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const loggedUser = httpRequest.loggedUser as UserModelResponse
-      const { name, description, unitId, model, owner, image } = httpRequest.body
+      const { name, description, unitId, model, owner, imageURL } = httpRequest.body
       const result = await this.createAssetUseCase.create({
-        name, description, unitId, model, owner, image
+        name, description, unitId, model, owner, imageURL
       }, loggedUser)
       return ok(result)
     } catch (error: any) {

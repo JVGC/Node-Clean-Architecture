@@ -10,7 +10,7 @@ export interface Asset{
     owner: string; // DUVIDA: Esse Owner é um usuário do sistema?
     status: AssetsStatus; // DECISION: Default is RUNNING
     healthLevel: number // DECISION: Default is 100%
-    image: string;
+    imageURL: string;
 
     unit: Unit
 }
@@ -27,7 +27,7 @@ export interface AssetModelResponse {
     description: string;
     model: string;
     owner: string;
-    image?: string;
+    imageURL?: string;
     status: AssetsStatus;
     healthLevel: number;
     unitName: string;
