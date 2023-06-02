@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
   mongo:
-    build: ./mongodb
+    image: jvgc/prisma_mongo:latest
     restart: always
     env_file: .env
     ports:
@@ -10,17 +10,13 @@ services:
     networks:
       - mongo
   api:
-    build:
-      context: .
-      target: development
+    image: jvgc/tractian_node:latest
     volumes:
-      - .:/usr/app
       - /usr/app/dist
       - /usr/app/node_modules
     env_file: .env
     ports:
       - "3000:3000"
-      - "5555:5555"
     depends_on:
       - mongo
     networks:

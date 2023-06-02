@@ -10,6 +10,8 @@ RUN yarn
 
 COPY . ./
 
+RUN yarn postinstall
+
 CMD ["yarn", "run", "dev"]
 
 
@@ -19,15 +21,15 @@ RUN apk --no-cache add ca-certificates
 
 WORKDIR /usr/app
 
-COPY --from=development /usr/app ./
+COPY --from=development /usr/app .
 
 ENV NODE_ENV=production
 
 RUN yarn cache clean
 
-RUN yarn install --production --ignore-scripts --prefer-offline
-
 RUN yarn run build
+
+RUN yarn install --production --ignore-scripts --prefer-offline
 
 CMD ["yarn", "start"]
 

@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "yarn db:migrate && tsx watch src/server.ts",
     "build": "tsc",
+    "postinstall": "prisma generate",
     "seed": "tsx prisma/seed.ts",
-    "start": "node dist/server.js",
+    "start": "node dist/src/server.js",
     "db:migrate": "prisma db push"
   },
   "keywords": [],
