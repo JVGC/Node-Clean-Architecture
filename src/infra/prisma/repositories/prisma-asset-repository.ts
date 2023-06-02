@@ -4,7 +4,7 @@ import { AssetModelResponse } from "../../../domain/models/asset"
 import { AssetRepository } from "../../../domain/protocols/repositories/asset-repository"
 import { CreateAssetParams } from "../../../domain/usecases/asset/create-asset"
 import { UpdateAssetParams } from "../../../domain/usecases/asset/update-asset"
-import { adaptAsset } from "../adapter/asset-adapter"
+import { adaptAsset } from "../adapters/asset-adapter"
 import prisma from "../client"
 
 export class PrismaAssetRepository implements AssetRepository{
@@ -32,7 +32,6 @@ export class PrismaAssetRepository implements AssetRepository{
             }
         })
 
-        // TODO: Create a mapping between two objects
         return adaptAsset(asset)
     }
     async getById(id: string): Promise<AssetModelResponse | null>{

@@ -4,7 +4,7 @@ import { UserModelResponse } from "../../../domain/models/user";
 import { UserRepository } from "../../../domain/protocols/repositories/user-repository";
 import { CreateUserParams } from "../../../domain/usecases/users/create-user";
 import { UpdateUserParams } from "../../../domain/usecases/users/update-user";
-import { adaptUser } from "../adapter/user-adapter";
+import { adaptUser } from "../adapters/user-adapter";
 import prisma from "../client";
 
 export class PrismaUserRepository implements UserRepository{
@@ -26,7 +26,6 @@ export class PrismaUserRepository implements UserRepository{
             }
         })
 
-        // TODO: Create a mapping between two objects
         return adaptUser(user)
     }
     async getById(id: string): Promise<UserModelResponse | null>{

@@ -4,7 +4,7 @@ import { CompanyModel } from "../../../domain/models/company";
 import { CompanyRepository } from "../../../domain/protocols/repositories/company-repository";
 import { CreateCompanyParams } from "../../../domain/usecases/companies/create-company";
 import { UpdateCompanyParams } from "../../../domain/usecases/companies/update-company";
-import { adaptCompany } from "../adapter/company-adapter";
+import { adaptCompany } from "../adapters/company-adapter";
 import prisma from "../client";
 
 export class PrismaCompanyRepository implements CompanyRepository{
@@ -81,7 +81,6 @@ export class PrismaCompanyRepository implements CompanyRepository{
             }
         })
 
-        // TODO: Create a mapping between two objects
         return adaptCompany(company)
     }
 

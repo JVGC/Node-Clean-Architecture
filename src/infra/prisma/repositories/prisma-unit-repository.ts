@@ -4,7 +4,7 @@ import { UnitModelResponse } from "../../../domain/models/unit";
 import { UnitRepository } from "../../../domain/protocols/repositories/unit-repository";
 import { CreateUnitParams } from "../../../domain/usecases/unit/create-unit";
 import { UpdateUnitParams } from "../../../domain/usecases/unit/update-unit";
-import { adaptUnit } from "../adapter/unit-adapter";
+import { adaptUnit } from "../adapters/unit-adapter";
 import prisma from "../client";
 
 export class PrismaUnitRepository implements UnitRepository{
@@ -24,7 +24,6 @@ export class PrismaUnitRepository implements UnitRepository{
             }
         })
 
-        // TODO: Create a mapping between two objects
         return adaptUnit(unit)
     }
     async getById(id: string): Promise<UnitModelResponse | null>{
