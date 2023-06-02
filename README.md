@@ -14,7 +14,7 @@ Backend Test for Tractian's Backend Role.
 
 ### Architecture
 
-The Architecture was built following **Martin Fowler's Clean Architecture structure.**
+The Architecture was built following **Robert Cecil Martin's Clean Architecture structure.**
 
 ![](./images/clean-architecture.png)
 
