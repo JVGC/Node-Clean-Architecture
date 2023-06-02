@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<style>
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      list-style: none;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: white;
+    }
+    body{
+
+      background-color: #005efa;
+      background-image: url(https://tractian.com/images/thumb-tractian.png);
+      background-repeat: no-repeat;
+    }
+    #root{
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+  .about{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  .description{
+    margin-top: 1em;
+    display: flex;
+    height: 3rem;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+  }
+  footer{
+    margin-bottom: 1rem;
+  }
+  span{
+    font-weight: 800;
+  }
+  a{
+      font-weight: 400 !important;
+  }
+</style>
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="https://tractian.com/tractian-favicon-ia.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tractian Backend Test</title>
+  </head>
+  <body>
+    <div id="root">
+      <div class="about">
+        <h2 >REST API desenvolvida para o teste de Backend da Tractian.</h2>
+        <div class="description">
+          <span>Repositório do GitHub: <a href="https://github.com/JVGC/Tractian-Backend-Test">Tractian Backend Test</a></span>
+          <span>Documentação da API: <a href="http://tractiantest.us-east-2.elasticbeanstalk.com/docs/">Docs</a></span>
+        </div>
+      </div>
+      <footer>
+          <p>© 2023 Desenvolvida por: João Victor Garcia Coelho</p>
+      </footer>
+    </div>
+  </body>
+</html>

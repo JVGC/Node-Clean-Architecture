@@ -5,7 +5,9 @@ import setupRoutes from './routes'
 import swaggerFile from './swagger.json'
 
 const expressApp = express()
-
+expressApp.get('/',function(req,res){
+    res.sendFile('/usr/app/public/index.html');
+});
 expressApp.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 expressApp.use(bodyParser)
 expressApp.use(cors)
