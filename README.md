@@ -16,6 +16,8 @@ Backend Test for Tractian's Backend Role.
 
 The Architecture was built following **Martin Fowler's Clean Architecture structure.**
 
+![](./images/clean-architecture.png)
+
 The folders are sub-divided in 4 layers, each one represented by one folder in src:
 
 - **Domain**: Here is where all the business logic is. All the application models (not meaning the database models). All the [usecases](./src/domain/usecases/), and all the [interfaces](/src/domain/protocols/) for the other layers are here. This layers does not depends on any other layer to exist, and also does not have any external libraries dependencies.
@@ -67,6 +69,20 @@ This application has 3 roles for users, and depending on each type, you can aces
 - **SuperAdmin**: Can do anything in the application. Add new users, assets, units. It is the only user that can setup other SuperAdmin users, and also that can create, list, update, and delete companies.
 - **Admin**: This user can access any information related to your own company. CRUD new users (Admin or normal users) for them and CRUD its own company unit and assets.
 - **User**: This user can only access units and assets routes, and only for his own company. It cannot add, list or delete new users, and can only get and update it's own.
+
+### How to use the API
+
+In order to use the API, please take a look at the [swagger DOCS](tractiantest.us-east-2.elasticbeanstalk.com/docs/).
+
+### Deployment
+
+All of the project was build using Docker. So, in the root folder you can find 2 docker-compose.yml files, one for development and for production, and also, one [Dockerfile](Dockerfile) that builds a docker image using the NodeJS image.
+
+The Docker image is built using the Multi Stage feature, and also uses the Node-alpine for production which is much ligther.
+
+The deployment was done using [AWS Elastic Beanstalck](https://aws.amazon.com/pt/elasticbeanstalk/), and you can access the production URL [here](tractiantest.us-east-2.elasticbeanstalk.com/).
+
+**Note**: Unfortunately, I didn't have time to set up SSL Certificates for it, so it only uses HTTP and not HTTPS.
 
 ## Running Locally
 
