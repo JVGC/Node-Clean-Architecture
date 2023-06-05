@@ -1,6 +1,6 @@
 import { CompanyNotFoundError } from '../../errors'
 import { type CompanyModel } from '../../models/company'
-import { type UserModelResponse, UserRoles } from '../../models/user'
+import { UserRoles, type UserModelResponseWithoutPassword } from '../../models/user'
 import { type CompanyRepository } from '../../protocols/repositories/company-repository'
 
 export class GetCompanyByIdUseCase {
@@ -8,7 +8,7 @@ export class GetCompanyByIdUseCase {
     private readonly companyRepository: CompanyRepository
   ) {}
 
-  async get (companyId: string, user: UserModelResponse): Promise<CompanyModel> {
+  async get (companyId: string, user: UserModelResponseWithoutPassword): Promise<CompanyModel> {
     if (user.role === UserRoles.Admin && companyId !== user.companyId) {
       throw new CompanyNotFoundError()
     }

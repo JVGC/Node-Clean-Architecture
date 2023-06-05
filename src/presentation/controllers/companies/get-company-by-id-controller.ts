@@ -1,5 +1,5 @@
 import { CompanyNotFoundError } from '../../../domain/errors'
-import { type UserModelResponse } from '../../../domain/models/user'
+import { type UserModelResponseWithoutPassword } from '../../../domain/models/user'
 import { type GetCompanyByIdUseCase } from '../../../domain/usecases/companies/get-company-by-id'
 import { notFound, ok, serverError } from '../../helpers/http-helper'
 import { type Controller } from '../../protocols/controller'
@@ -12,7 +12,7 @@ export class GetCompanyByIdController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const loggedUser = httpRequest.loggedUser as UserModelResponse
+      const loggedUser = httpRequest.loggedUser as UserModelResponseWithoutPassword
       const { id: companyId } = httpRequest.params
       const result = await this.getCompanyById.get(companyId, loggedUser)
       return ok(result)

@@ -1,5 +1,5 @@
 import { UnitNotFoundError } from '../../../domain/errors'
-import { type UserModelResponse } from '../../../domain/models/user'
+import { type UserModelResponseWithoutPassword } from '../../../domain/models/user'
 import { type CreateAssetUseCase } from '../../../domain/usecases/asset/create-asset'
 import { badRequest, ok, serverError } from '../../helpers/http-helper'
 import { type Controller } from '../../protocols/controller'
@@ -12,7 +12,7 @@ export class CreateAssetController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const loggedUser = httpRequest.loggedUser as UserModelResponse
+      const loggedUser = httpRequest.loggedUser as UserModelResponseWithoutPassword
       const { name, description, unitId, model, owner, imageURL } = httpRequest.body
       const result = await this.createAssetUseCase.create({
         name, description, unitId, model, owner, imageURL

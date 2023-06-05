@@ -1,5 +1,5 @@
 import { type User } from '@prisma/client'
-import { type UserModelResponseWithPassword, UserRoles } from '../../../domain/models/user'
+import { UserRoles, type UserModelResponse } from '../../../domain/models/user'
 
 type UserAndCompany = (User & {
   company: {
@@ -7,7 +7,7 @@ type UserAndCompany = (User & {
   }
 })
 
-export const adaptUser = (user: UserAndCompany): UserModelResponseWithPassword => {
+export const adaptUser = (user: UserAndCompany): UserModelResponse => {
   return {
     id: user.id,
     email: user.email,

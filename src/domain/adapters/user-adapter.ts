@@ -1,6 +1,6 @@
-import { type UserModelResponse, type UserModelResponseWithPassword } from '../models/user'
+import { type UserModelResponse, type UserModelResponseWithoutPassword } from '../models/user'
 
-export const removeUserPasswordAdapter = (user: UserModelResponseWithPassword): UserModelResponse => {
+export const removeUserPasswordAdapter = (user: UserModelResponse): UserModelResponseWithoutPassword => {
   return {
     id: user.id,
     email: user.email,

@@ -1,5 +1,5 @@
 import { AssetNotFoundError } from '../../errors'
-import { type UserModelResponse, UserRoles } from '../../models/user'
+import { UserRoles, type UserModelResponseWithoutPassword } from '../../models/user'
 import { type AssetRepository } from '../../protocols/repositories/asset-repository'
 
 export class DeleteAssetByIdUseCase {
@@ -7,7 +7,7 @@ export class DeleteAssetByIdUseCase {
     private readonly assetRepository: AssetRepository
   ) {}
 
-  async delete (assetId: string, loggedUser: UserModelResponse): Promise<boolean> {
+  async delete (assetId: string, loggedUser: UserModelResponseWithoutPassword): Promise<boolean> {
     const asset = await this.assetRepository.getById(assetId)
     if (!asset) throw new AssetNotFoundError()
     if (loggedUser.role !== UserRoles.SuperAdmin && asset.companyId !== loggedUser.companyId) { throw new AssetNotFoundError() }

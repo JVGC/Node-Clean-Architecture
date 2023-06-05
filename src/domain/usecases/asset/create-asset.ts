@@ -1,6 +1,6 @@
 import { UnitNotFoundError } from '../../errors'
 import { type AssetModelResponse } from '../../models/asset'
-import { type UserModelResponse, UserRoles } from '../../models/user'
+import { UserRoles, type UserModelResponseWithoutPassword } from '../../models/user'
 import { type AssetRepository } from '../../protocols/repositories/asset-repository'
 import { type UnitRepository } from '../../protocols/repositories/unit-repository'
 
@@ -19,7 +19,7 @@ export class CreateAssetUseCase {
     private readonly unitRepository: UnitRepository
   ) {}
 
-  async create (data: CreateAssetParams, loggedUser: UserModelResponse): Promise<AssetModelResponse> {
+  async create (data: CreateAssetParams, loggedUser: UserModelResponseWithoutPassword): Promise<AssetModelResponse> {
     const unit = await this.unitRepository.getById(data.unitId)
     if (!unit) throw new UnitNotFoundError()
     if (loggedUser.role === UserRoles.SuperAdmin || unit.companyId === loggedUser.companyId) {

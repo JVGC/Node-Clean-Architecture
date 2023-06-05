@@ -23,8 +23,6 @@ export interface UserModelResponse {
   companyId: string
   companyName: string
   role: UserRoles
-}
-
-export type UserModelResponseWithPassword = UserModelResponse & {
   password: string
 }
+export type UserModelResponseWithoutPassword = Omit<UserModelResponse, 'password'> & Partial<Record<'password', never>>

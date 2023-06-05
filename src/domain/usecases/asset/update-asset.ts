@@ -1,6 +1,6 @@
 import { AssetNotFoundError } from '../../errors'
 import { type AssetModelResponse, type AssetsStatus } from '../../models/asset'
-import { type UserModelResponse, UserRoles } from '../../models/user'
+import { UserRoles, type UserModelResponseWithoutPassword } from '../../models/user'
 import { type AssetRepository } from '../../protocols/repositories/asset-repository'
 
 // DUVIDA: Does health level has any relation with status?
@@ -22,7 +22,7 @@ export class UpdateAssetUseCase {
     private readonly assetRepository: AssetRepository
   ) {}
 
-  async update (assetId: string, data: UpdateAssetParams, loggedUser: UserModelResponse): Promise<AssetModelResponse> {
+  async update (assetId: string, data: UpdateAssetParams, loggedUser: UserModelResponseWithoutPassword): Promise<AssetModelResponse> {
     const asset = await this.assetRepository.update(assetId, data)
     if (!asset) throw new AssetNotFoundError()
 

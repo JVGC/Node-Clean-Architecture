@@ -1,5 +1,5 @@
 import { removeUserPasswordAdapter } from '../../adapters/user-adapter'
-import { type UserModelResponse } from '../../models/user'
+import { type UserModelResponseWithoutPassword } from '../../models/user'
 import { type Decrypter } from '../../protocols/criptography'
 import { type UserRepository } from '../../protocols/repositories/user-repository'
 
@@ -9,7 +9,7 @@ export class GetUserByTokenUseCase {
     private readonly decrypter: Decrypter
   ) {}
 
-  async get (token: string): Promise<UserModelResponse | null> {
+  async get (token: string): Promise<UserModelResponseWithoutPassword | null> {
     try {
       const accessToken = token.split('Bearer ')[1]
       const userId = this.decrypter.decrypt(accessToken)

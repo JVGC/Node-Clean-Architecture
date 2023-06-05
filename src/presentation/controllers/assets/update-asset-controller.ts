@@ -1,5 +1,5 @@
 import { AssetNotFoundError } from '../../../domain/errors'
-import { type UserModelResponse } from '../../../domain/models/user'
+import { type UserModelResponseWithoutPassword } from '../../../domain/models/user'
 import { type UpdateAssetUseCase } from '../../../domain/usecases/asset/update-asset'
 import { notFound, ok, serverError } from '../../helpers/http-helper'
 import { type Controller } from '../../protocols/controller'
@@ -12,7 +12,7 @@ export class UpdateAssetController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const loggedUser = httpRequest.loggedUser as UserModelResponse
+      const loggedUser = httpRequest.loggedUser as UserModelResponseWithoutPassword
       const { id: assetId } = httpRequest.params
       const { description, name, healthLevel, model, owner, status, unitId, imageURL } = httpRequest.body
       const result = await this.updateAssetUseCase.update(assetId, {

@@ -1,6 +1,6 @@
 import { CompanyNotFoundError } from '../../../domain/errors'
 import { type UnitModelResponse } from '../../../domain/models/unit'
-import { type UserModelResponse, UserRoles } from '../../../domain/models/user'
+import { UserRoles, type UserModelResponseWithoutPassword } from '../../../domain/models/user'
 import { type CreateUnitUseCase } from '../../../domain/usecases/unit/create-unit'
 import { notFound, ok, serverError } from '../../helpers/http-helper'
 import { type Controller } from '../../protocols/controller'
@@ -13,7 +13,7 @@ export class CreateUnitController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const loggedUser = httpRequest.loggedUser as UserModelResponse
+      const loggedUser = httpRequest.loggedUser as UserModelResponseWithoutPassword
       const { name, description, companyId } = httpRequest.body
       let result: UnitModelResponse
 
