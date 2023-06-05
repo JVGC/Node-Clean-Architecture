@@ -21,7 +21,7 @@ export class LoginUseCase {
     const user = await this.userRepository.getByEmail(data.email)
     if (!user) throw new UserNotFoundError()
 
-    const isValid = await this.hasher.compare(data.password, user.password!)
+    const isValid = await this.hasher.compare(data.password, user.password)
 
     if (!isValid) throw new UserNotFoundError()
 
