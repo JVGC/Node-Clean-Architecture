@@ -11,9 +11,9 @@ export class UpdateUserController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { id: user_id } = httpRequest.params
+      const { id: userId } = httpRequest.params
       const { email, name, password, role } = httpRequest.body
-      const result = await this.updateUserUseCase.update(user_id, {
+      const result = await this.updateUserUseCase.update(userId, {
         email, name, password, role
       })
       return ok(result)

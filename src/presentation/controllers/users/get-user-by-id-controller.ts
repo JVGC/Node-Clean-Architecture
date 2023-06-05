@@ -11,8 +11,8 @@ export class GetUserByIdController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { id: user_id } = httpRequest.params
-      const result = await this.getUserById.get(user_id)
+      const { id: userId } = httpRequest.params
+      const result = await this.getUserById.get(userId)
       return ok(result)
     } catch (error: any) {
       if (error instanceof UserNotFoundError) {

@@ -14,12 +14,12 @@ export class UpdateCompanyUseCase {
     private readonly companyRepository: CompanyRepository
   ) {}
 
-  async update (company_id: string, data: UpdateCompanyParams): Promise<CompanyModel> {
+  async update (companyId: string, data: UpdateCompanyParams): Promise<CompanyModel> {
     if (data.code) {
       const isCodeInUse = await this.companyRepository.getByCode(data.code)
       if (isCodeInUse) throw new CodeAlreadyInUse()
     }
-    const company = await this.companyRepository.update(company_id, data)
+    const company = await this.companyRepository.update(companyId, data)
     if (!company) throw new CompanyNotFoundError()
     return company
   }

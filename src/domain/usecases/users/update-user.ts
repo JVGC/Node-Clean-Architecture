@@ -16,12 +16,12 @@ export class UpdateUserUseCase {
     private readonly userRepository: UserRepository
   ) {}
 
-  async update (user_id: string, data: UpdateUserParams): Promise<UserModelResponse> {
+  async update (userId: string, data: UpdateUserParams): Promise<UserModelResponse> {
     if (data.email) {
       const isCodeInUse = await this.userRepository.getByEmail(data.email)
       if (isCodeInUse) throw new EmailAlreadyInUse()
     }
-    const user = await this.userRepository.update(user_id, data)
+    const user = await this.userRepository.update(userId, data)
     if (!user) throw new UserNotFoundError()
     delete user.password
     return user

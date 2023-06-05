@@ -7,8 +7,8 @@ export class DeleteCompanyByIdUseCase {
     private readonly companyRepository: CompanyRepository
   ) {}
 
-  async delete (company_id: string): Promise<boolean> {
-    const wasDeleted = await this.companyRepository.deleteById(company_id)
+  async delete (companyId: string): Promise<boolean> {
+    const wasDeleted = await this.companyRepository.deleteById(companyId)
     if (!wasDeleted) throw new CompanyNotFoundError()
     return wasDeleted
   }

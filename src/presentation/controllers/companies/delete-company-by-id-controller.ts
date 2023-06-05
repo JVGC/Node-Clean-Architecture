@@ -11,8 +11,8 @@ export class DeleteCompanyByIdController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { id: company_id } = httpRequest.params
-      const result = await this.deleteCompanyById.delete(company_id)
+      const { id: companyId } = httpRequest.params
+      const result = await this.deleteCompanyById.delete(companyId)
       return ok(result)
     } catch (error: any) {
       if (error instanceof CompanyNotFoundError) {

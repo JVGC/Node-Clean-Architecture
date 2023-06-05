@@ -11,9 +11,9 @@ export class UpdateCompanyController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { id: company_id } = httpRequest.params
+      const { id: companyId } = httpRequest.params
       const { name, code } = httpRequest.body
-      const result = await this.updateCompanyUseCase.update(company_id, {
+      const result = await this.updateCompanyUseCase.update(companyId, {
         name,
         code
       })
