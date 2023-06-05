@@ -117,3 +117,19 @@ In order to run the seeds:
 docker exec tractian-backend-test-api-1 yarn seed
 
 ```
+
+### Linting
+
+This project is using ESLint as the linter, following **standard-with-typescript** rules.
+
+You can run the lint command by running:
+
+```sh
+    yarn lint
+```
+
+Add the _--fix_ flag to fix auto-fixable problems:
+
+```sh
+    yarn lint --fix
+```
