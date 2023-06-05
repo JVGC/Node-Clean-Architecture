@@ -1,9 +1,11 @@
 import { faker } from '@faker-js/faker'
 import { UserRoles } from '@prisma/client'
 import { BcryptAdapter } from '../../infra/criptography/bcrypt'
+import { JWTEncrypter } from '../../infra/criptography/jwt'
 import prisma from '../../infra/prisma/client'
 
 interface FactoryModel {
+  id?: string
   name?: string
   email?: string
   password?: string
@@ -12,13 +14,15 @@ interface FactoryModel {
 }
 
 export class FactoryUser {
+  id: string
   name: string
   email: string
   companyId: string
   password: string
   role: UserRoles
 
-  constructor (name: string, email: string, password: string, companyId: string, role: UserRoles) {
+  constructor (id: string, name: string, email: string, password: string, companyId: string, role: UserRoles) {
+    this.id = id
     this.name = name
     this.email = email
     this.password = password
@@ -46,6 +50,7 @@ export class FactoryUser {
     })
 
     return new FactoryUser(
+      prismaUser.id,
       prismaUser.name,
       prismaUser.email,
       password,
@@ -60,5 +65,10 @@ export class FactoryUser {
         email: this.email
       }
     })
+  }
+
+  async login (): Promise<string> {
+    const jwtEncrypter = new JWTEncrypter(process.env.JWT_SECRET ?? '')
+    return jwtEncrypter.encrypt(this.id)
   }
 }
