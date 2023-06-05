@@ -63,6 +63,17 @@ describe('Login Tests', () => {
       it.skip('Should return a bad request error', async () => {
         const response = await request(expressApp).post('/login').send(
           {
+          }
+        )
+
+        expect(response.statusCode).toBe(400)
+      })
+    })
+    describe('When an incorrect email format is sent', () => {
+      it.skip('Should return a bad request error', async () => {
+        const response = await request(expressApp).post('/login').send(
+          {
+            email: faker.internet.password(),
             password: faker.internet.password()
           }
         )
