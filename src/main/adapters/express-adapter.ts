@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from 'express'
-import { AuthMiddleware } from '../../presentation/middlewares/auth-middleware'
-import { Controller } from '../../presentation/protocols/controller'
-import { HttpRequest } from '../../presentation/protocols/http'
-import { PermissionMiddleware } from '../../presentation/protocols/permission-middleware'
+import { type NextFunction, type Request, type Response } from 'express'
+import { type AuthMiddleware } from '../../presentation/middlewares/auth-middleware'
+import { type Controller } from '../../presentation/protocols/controller'
+import { type HttpRequest } from '../../presentation/protocols/http'
+import { type PermissionMiddleware } from '../../presentation/protocols/permission-middleware'
 
 export const adaptRoute = (controller: Controller) => {
   return async (req: Request, res: Response) => {
@@ -28,11 +28,11 @@ export const adaptAuthMiddleware = (authMiddleware: AuthMiddleware) => {
     const httpRequest: HttpRequest = {
       headers: req.headers
     }
-    const httpResponse= await authMiddleware.handle(httpRequest)
-    if(httpResponse.statusCode === 200){
+    const httpResponse = await authMiddleware.handle(httpRequest)
+    if (httpResponse.statusCode === 200) {
       Object.assign(req, httpResponse.body)
       next()
-    }else{
+    } else {
       res.status(httpResponse.statusCode).json({
         error: httpResponse.body.message
       })
@@ -46,11 +46,11 @@ export const adaptPermissionMiddleware = (permissionMiddleware: PermissionMiddle
       headers: req.headers,
       loggedUser: req.loggedUser
     }
-    const httpResponse= await permissionMiddleware.handle(httpRequest)
-    if(httpResponse.statusCode === 200){
+    const httpResponse = await permissionMiddleware.handle(httpRequest)
+    if (httpResponse.statusCode === 200) {
       Object.assign(req, httpResponse.body)
       next()
-    }else{
+    } else {
       res.status(httpResponse.statusCode).json({
         error: httpResponse.body.message
       })

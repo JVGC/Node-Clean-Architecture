@@ -1,9 +1,9 @@
-import { AssetNotFoundError } from "../../../domain/errors"
-import { UserModelResponse } from "../../../domain/models/user"
-import { UpdateAssetUseCase } from "../../../domain/usecases/asset/update-asset"
-import { notFound, ok, serverError } from "../../helpers/http-helper"
-import { Controller } from "../../protocols/controller"
-import { HttpRequest, HttpResponse } from "../../protocols/http"
+import { AssetNotFoundError } from '../../../domain/errors'
+import { type UserModelResponse } from '../../../domain/models/user'
+import { type UpdateAssetUseCase } from '../../../domain/usecases/asset/update-asset'
+import { notFound, ok, serverError } from '../../helpers/http-helper'
+import { type Controller } from '../../protocols/controller'
+import { type HttpRequest, type HttpResponse } from '../../protocols/http'
 
 export class UpdateAssetController implements Controller {
   constructor (
@@ -16,11 +16,11 @@ export class UpdateAssetController implements Controller {
       const { id: assetId } = httpRequest.params
       const { description, name, healthLevel, model, owner, status, unitId, imageURL } = httpRequest.body
       const result = await this.updateAssetUseCase.update(assetId, {
-        name, description, healthLevel, model, status, unitId, owner,  imageURL
+        name, description, healthLevel, model, status, unitId, owner, imageURL
       }, loggedUser)
       return ok(result)
     } catch (error: any) {
-      if(error instanceof AssetNotFoundError){
+      if (error instanceof AssetNotFoundError) {
         return notFound(error)
       }
       return serverError(error)

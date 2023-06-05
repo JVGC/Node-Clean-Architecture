@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { Hasher } from '../../domain/protocols/criptography'
+import { type Hasher } from '../../domain/protocols/criptography'
 
 export class BcryptAdapter implements Hasher {
   constructor (private readonly rounds: number) {}

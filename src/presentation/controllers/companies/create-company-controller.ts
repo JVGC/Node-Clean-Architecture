@@ -1,8 +1,8 @@
-import { CodeAlreadyInUse } from "../../../domain/errors"
-import { CreateCompanyUseCase } from "../../../domain/usecases/companies/create-company"
-import { badRequest, ok, serverError } from "../../helpers/http-helper"
-import { Controller } from "../../protocols/controller"
-import { HttpRequest, HttpResponse } from "../../protocols/http"
+import { CodeAlreadyInUse } from '../../../domain/errors'
+import { type CreateCompanyUseCase } from '../../../domain/usecases/companies/create-company'
+import { badRequest, ok, serverError } from '../../helpers/http-helper'
+import { type Controller } from '../../protocols/controller'
+import { type HttpRequest, type HttpResponse } from '../../protocols/http'
 
 export class CreateCompanyController implements Controller {
   constructor (
@@ -18,7 +18,7 @@ export class CreateCompanyController implements Controller {
       })
       return ok(result)
     } catch (error: any) {
-      if(error instanceof CodeAlreadyInUse){
+      if (error instanceof CodeAlreadyInUse) {
         return badRequest(error)
       }
       return serverError(error)

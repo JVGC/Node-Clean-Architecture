@@ -1,5 +1,5 @@
 declare module Express{
-    interface Request{
-        loggedUser?: any
-    }
+  interface Request {
+    loggedUser?: any
+  }
 }

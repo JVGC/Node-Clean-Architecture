@@ -1,8 +1,8 @@
-import { CompanyNotFoundError } from "../../../domain/errors"
-import { DeleteCompanyByIdUseCase } from "../../../domain/usecases/companies/delete-company"
-import { notFound, ok, serverError } from "../../helpers/http-helper"
-import { Controller } from "../../protocols/controller"
-import { HttpRequest, HttpResponse } from "../../protocols/http"
+import { CompanyNotFoundError } from '../../../domain/errors'
+import { type DeleteCompanyByIdUseCase } from '../../../domain/usecases/companies/delete-company'
+import { notFound, ok, serverError } from '../../helpers/http-helper'
+import { type Controller } from '../../protocols/controller'
+import { type HttpRequest, type HttpResponse } from '../../protocols/http'
 
 export class DeleteCompanyByIdController implements Controller {
   constructor (
@@ -15,7 +15,7 @@ export class DeleteCompanyByIdController implements Controller {
       const result = await this.deleteCompanyById.delete(company_id)
       return ok(result)
     } catch (error: any) {
-      if(error instanceof CompanyNotFoundError){
+      if (error instanceof CompanyNotFoundError) {
         return notFound(error)
       }
       return serverError(error)

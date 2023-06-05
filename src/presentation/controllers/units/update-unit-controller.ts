@@ -1,9 +1,9 @@
-import { UnitNotFoundError } from "../../../domain/errors"
-import { UserModelResponse } from "../../../domain/models/user"
-import { UpdateUnitUseCase } from "../../../domain/usecases/unit/update-unit"
-import { notFound, ok, serverError } from "../../helpers/http-helper"
-import { Controller } from "../../protocols/controller"
-import { HttpRequest, HttpResponse } from "../../protocols/http"
+import { UnitNotFoundError } from '../../../domain/errors'
+import { type UserModelResponse } from '../../../domain/models/user'
+import { type UpdateUnitUseCase } from '../../../domain/usecases/unit/update-unit'
+import { notFound, ok, serverError } from '../../helpers/http-helper'
+import { type Controller } from '../../protocols/controller'
+import { type HttpRequest, type HttpResponse } from '../../protocols/http'
 
 export class UpdateUnitController implements Controller {
   constructor (
@@ -20,7 +20,7 @@ export class UpdateUnitController implements Controller {
       }, loggedUser)
       return ok(result)
     } catch (error: any) {
-      if(error instanceof UnitNotFoundError){
+      if (error instanceof UnitNotFoundError) {
         return notFound(error)
       }
       return serverError(error)

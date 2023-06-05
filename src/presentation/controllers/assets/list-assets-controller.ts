@@ -1,7 +1,7 @@
-import { ListAssetsUseCase } from "../../../domain/usecases/asset/list-assets"
-import { ok, serverError } from "../../helpers/http-helper"
-import { Controller } from "../../protocols/controller"
-import { HttpRequest, HttpResponse } from "../../protocols/http"
+import { type ListAssetsUseCase } from '../../../domain/usecases/asset/list-assets'
+import { ok, serverError } from '../../helpers/http-helper'
+import { type Controller } from '../../protocols/controller'
+import { type HttpRequest, type HttpResponse } from '../../protocols/http'
 
 export class ListAssetsController implements Controller {
   constructor (

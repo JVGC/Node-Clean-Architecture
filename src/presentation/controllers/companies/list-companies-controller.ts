@@ -1,7 +1,7 @@
-import { ListCompaniesUseCase } from "../../../domain/usecases/companies/list-companies"
-import { ok, serverError } from "../../helpers/http-helper"
-import { Controller } from "../../protocols/controller"
-import { HttpRequest, HttpResponse } from "../../protocols/http"
+import { type ListCompaniesUseCase } from '../../../domain/usecases/companies/list-companies'
+import { ok, serverError } from '../../helpers/http-helper'
+import { type Controller } from '../../protocols/controller'
+import { type HttpRequest, type HttpResponse } from '../../protocols/http'
 
 export class ListCompaniesController implements Controller {
   constructor (

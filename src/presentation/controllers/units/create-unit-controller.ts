@@ -1,10 +1,10 @@
-import { CompanyNotFoundError } from "../../../domain/errors"
-import { UnitModelResponse } from "../../../domain/models/unit"
-import { UserModelResponse, UserRoles } from "../../../domain/models/user"
-import { CreateUnitUseCase } from "../../../domain/usecases/unit/create-unit"
-import { notFound, ok, serverError } from "../../helpers/http-helper"
-import { Controller } from "../../protocols/controller"
-import { HttpRequest, HttpResponse } from "../../protocols/http"
+import { CompanyNotFoundError } from '../../../domain/errors'
+import { type UnitModelResponse } from '../../../domain/models/unit'
+import { type UserModelResponse, UserRoles } from '../../../domain/models/user'
+import { type CreateUnitUseCase } from '../../../domain/usecases/unit/create-unit'
+import { notFound, ok, serverError } from '../../helpers/http-helper'
+import { type Controller } from '../../protocols/controller'
+import { type HttpRequest, type HttpResponse } from '../../protocols/http'
 
 export class CreateUnitController implements Controller {
   constructor (
@@ -17,18 +17,18 @@ export class CreateUnitController implements Controller {
       const { name, description, companyId } = httpRequest.body
       let result: UnitModelResponse
 
-      if(loggedUser.role !== UserRoles.SuperAdmin){
+      if (loggedUser.role !== UserRoles.SuperAdmin) {
         result = await this.createUnitUseCase.create({
           name, description, companyId: loggedUser.companyId
         })
-      }else{
+      } else {
         result = await this.createUnitUseCase.create({
           name, description, companyId
         })
       }
       return ok(result)
     } catch (error: any) {
-      if(error instanceof CompanyNotFoundError){
+      if (error instanceof CompanyNotFoundError) {
         return notFound(error)
       }
       return serverError(error)

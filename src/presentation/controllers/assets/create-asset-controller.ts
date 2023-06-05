@@ -1,9 +1,9 @@
-import { UnitNotFoundError } from "../../../domain/errors"
-import { UserModelResponse } from "../../../domain/models/user"
-import { CreateAssetUseCase } from "../../../domain/usecases/asset/create-asset"
-import { badRequest, ok, serverError } from "../../helpers/http-helper"
-import { Controller } from "../../protocols/controller"
-import { HttpRequest, HttpResponse } from "../../protocols/http"
+import { UnitNotFoundError } from '../../../domain/errors'
+import { type UserModelResponse } from '../../../domain/models/user'
+import { type CreateAssetUseCase } from '../../../domain/usecases/asset/create-asset'
+import { badRequest, ok, serverError } from '../../helpers/http-helper'
+import { type Controller } from '../../protocols/controller'
+import { type HttpRequest, type HttpResponse } from '../../protocols/http'
 
 export class CreateAssetController implements Controller {
   constructor (
@@ -19,7 +19,7 @@ export class CreateAssetController implements Controller {
       }, loggedUser)
       return ok(result)
     } catch (error: any) {
-      if(error instanceof UnitNotFoundError){
+      if (error instanceof UnitNotFoundError) {
         return badRequest(error)
       }
       return serverError(error)

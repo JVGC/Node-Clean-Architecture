@@ -1,8 +1,8 @@
-import { CodeAlreadyInUse, CompanyNotFoundError } from "../../../domain/errors"
-import { UpdateCompanyUseCase } from "../../../domain/usecases/companies/update-company"
-import { badRequest, notFound, ok, serverError } from "../../helpers/http-helper"
-import { Controller } from "../../protocols/controller"
-import { HttpRequest, HttpResponse } from "../../protocols/http"
+import { CodeAlreadyInUse, CompanyNotFoundError } from '../../../domain/errors'
+import { type UpdateCompanyUseCase } from '../../../domain/usecases/companies/update-company'
+import { badRequest, notFound, ok, serverError } from '../../helpers/http-helper'
+import { type Controller } from '../../protocols/controller'
+import { type HttpRequest, type HttpResponse } from '../../protocols/http'
 
 export class UpdateCompanyController implements Controller {
   constructor (
@@ -19,10 +19,10 @@ export class UpdateCompanyController implements Controller {
       })
       return ok(result)
     } catch (error: any) {
-      if(error instanceof CodeAlreadyInUse){
+      if (error instanceof CodeAlreadyInUse) {
         return badRequest(error)
       }
-      if(error instanceof CompanyNotFoundError){
+      if (error instanceof CompanyNotFoundError) {
         return notFound(error)
       }
       return serverError(error)
