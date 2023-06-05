@@ -1,6 +1,6 @@
 import { CompanyNotFoundError } from '../../../domain/errors'
 import { type DeleteCompanyByIdUseCase } from '../../../domain/usecases/companies/delete-company'
-import { notFound, ok, serverError } from '../../helpers/http-helper'
+import { noContent, notFound, serverError } from '../../helpers/http-helper'
 import { type Controller } from '../../protocols/controller'
 import { type HttpRequest, type HttpResponse } from '../../protocols/http'
 
@@ -12,8 +12,8 @@ export class DeleteCompanyByIdController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const { id: companyId } = httpRequest.params
-      const result = await this.deleteCompanyById.delete(companyId)
-      return ok(result)
+      await this.deleteCompanyById.delete(companyId)
+      return noContent()
     } catch (error: any) {
       if (error instanceof CompanyNotFoundError) {
         return notFound(error)

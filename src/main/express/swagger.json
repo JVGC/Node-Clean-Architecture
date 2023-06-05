@@ -189,16 +189,8 @@
                     "404":{
                         "description": "Company Not found"
                     },
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema":{
-                                    "type": "object",
-                                    "$ref": "#/components/schemas/Company"
-                                }
-                            }
-                        }
+                    "204": {
+                        "description": "Successfully deleted"
                     }
                 }
             },
