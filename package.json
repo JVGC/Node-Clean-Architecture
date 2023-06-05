@@ -10,7 +10,7 @@
     "seed": "tsx prisma/seed.ts",
     "start": "node dist/src/server.js",
     "db:migrate": "prisma db push",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src ./prisma"
   },
   "keywords": [],
   "author": "",
