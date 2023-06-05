@@ -26,5 +26,5 @@ export interface UserModelResponse {
 }
 
 export type UserModelResponseWithPassword = UserModelResponse & {
-  password?: string
+  password: string
 }

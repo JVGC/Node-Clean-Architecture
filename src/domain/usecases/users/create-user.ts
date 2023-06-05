@@ -1,3 +1,4 @@
+import { removeUserPasswordAdapter } from '../../adapters/user-adapter'
 import { CompanyNotFoundError, EmailAlreadyInUse } from '../../errors'
 import { type UserModelResponse, type UserRoles } from '../../models/user'
 import { type Hasher } from '../../protocols/criptography'
@@ -27,7 +28,6 @@ export class CreateUserUseCase {
 
     const hashedPassword = await this.hasher.hash(data.password)
     const user = await this.userRepository.create({ ...data, password: hashedPassword })
-    delete user.password
-    return user
+    return removeUserPasswordAdapter(user)
   }
 }

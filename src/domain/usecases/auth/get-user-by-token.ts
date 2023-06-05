@@ -1,3 +1,4 @@
+import { removeUserPasswordAdapter } from '../../adapters/user-adapter'
 import { type UserModelResponse } from '../../models/user'
 import { type Decrypter } from '../../protocols/criptography'
 import { type UserRepository } from '../../protocols/repositories/user-repository'
@@ -15,8 +16,7 @@ export class GetUserByTokenUseCase {
       if (!userId) return null
       const user = await this.userRepository.getById(userId)
       if (!user) return null
-      delete user.password
-      return user
+      return removeUserPasswordAdapter(user)
     } catch (error: any) {
       return null
     }

@@ -1,3 +1,4 @@
+import { removeUserPasswordAdapter } from '../../adapters/user-adapter'
 import { EmailAlreadyInUse, UserNotFoundError } from '../../errors'
 import { type UserModelResponse, type UserRoles } from '../../models/user'
 import { type UserRepository } from '../../protocols/repositories/user-repository'
@@ -23,7 +24,6 @@ export class UpdateUserUseCase {
     }
     const user = await this.userRepository.update(userId, data)
     if (!user) throw new UserNotFoundError()
-    delete user.password
-    return user
+    return removeUserPasswordAdapter(user)
   }
 }

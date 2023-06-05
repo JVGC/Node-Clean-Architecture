@@ -1,3 +1,4 @@
+import { removeUserPasswordAdapter } from '../../adapters/user-adapter'
 import { type UserModelResponse, type UserModelResponseWithPassword } from '../../models/user'
 import { type UserRepository } from '../../protocols/repositories/user-repository'
 
@@ -10,9 +11,6 @@ export class ListUsersUseCase {
     let users: UserModelResponseWithPassword[]
     if (companyId) { users = await this.userRepository.getMany(companyId) } else { users = await this.userRepository.getMany() }
 
-    return users.map(user => {
-      delete user.password
-      return user
-    })
+    return users.map(user => removeUserPasswordAdapter(user))
   }
 }

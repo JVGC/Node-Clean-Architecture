@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client'
 import { ObjectId } from 'mongodb'
-import { type UserModelResponse } from '../../../domain/models/user'
+import { type UserModelResponseWithPassword } from '../../../domain/models/user'
 import { type UserRepository } from '../../../domain/protocols/repositories/user-repository'
 import { type CreateUserParams } from '../../../domain/usecases/users/create-user'
 import { type UpdateUserParams } from '../../../domain/usecases/users/update-user'
@@ -8,7 +8,7 @@ import { adaptUser } from '../adapters/user-adapter'
 import prisma from '../client'
 
 export class PrismaUserRepository implements UserRepository {
-  async create ({ email, name, password, companyId, role }: CreateUserParams): Promise<UserModelResponse> {
+  async create ({ email, name, password, companyId, role }: CreateUserParams): Promise<UserModelResponseWithPassword> {
     const user = await prisma.user.create({
       data: {
         email,
@@ -29,7 +29,7 @@ export class PrismaUserRepository implements UserRepository {
     return adaptUser(user)
   }
 
-  async getById (id: string): Promise<UserModelResponse | null> {
+  async getById (id: string): Promise<UserModelResponseWithPassword | null> {
     const isIdValid = ObjectId.isValid(id)
     if (!isIdValid) return null
     const user = await prisma.user.findUnique({
@@ -48,7 +48,7 @@ export class PrismaUserRepository implements UserRepository {
     return adaptUser(user)
   }
 
-  async getByEmail (email: string): Promise<UserModelResponse | null> {
+  async getByEmail (email: string): Promise<UserModelResponseWithPassword | null> {
     const user = await prisma.user.findUnique({
       where: {
         email
@@ -65,7 +65,7 @@ export class PrismaUserRepository implements UserRepository {
     return adaptUser(user)
   }
 
-  async getMany (companyId?: string): Promise<UserModelResponse[]> {
+  async getMany (companyId?: string): Promise<UserModelResponseWithPassword[]> {
     let users
     if (companyId) {
       users = await prisma.user.findMany({
@@ -112,7 +112,7 @@ export class PrismaUserRepository implements UserRepository {
     }
   }
 
-  async update (id: string, { email, name, password, role }: UpdateUserParams): Promise<UserModelResponse | null> {
+  async update (id: string, { email, name, password, role }: UpdateUserParams): Promise<UserModelResponseWithPassword | null> {
     const isIdValid = ObjectId.isValid(id)
     if (!isIdValid) return null
     try {
