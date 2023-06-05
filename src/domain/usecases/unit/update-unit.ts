@@ -17,11 +17,11 @@ export class UpdateUnitUseCase {
   ) {}
 
   async update (unitId: string, data: UpdateUnitParams, loggedUser: UserModelResponseWithoutPassword): Promise<UnitModelResponse> {
-    let unit = await this.unitRepository.getById(unitId)
+    const unit = await this.unitRepository.getById(unitId)
     if (!unit) throw new UnitNotFoundError()
     if (loggedUser.role !== UserRoles.SuperAdmin && unit.companyId !== loggedUser.companyId) { throw new UnitNotFoundError() }
 
-    unit = await this.unitRepository.update(unitId, data)
-    return unit!
+    const updatedUnit = await this.unitRepository.update(unitId, data) as UnitModelResponse
+    return updatedUnit
   }
 }
