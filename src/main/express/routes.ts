@@ -1,4 +1,4 @@
-import { type Express, Router } from 'express'
+import { Router, type Express } from 'express'
 import { adaptRoute } from '../adapters/express-adapter'
 import { makeCreateAsset, makeDeleteAssetById, makeGetAssetById, makeListAssets, makeUpdateAsset } from '../factories/asset-controllers-factory'
 import { makeLogin } from '../factories/auth-controllers-factory'
@@ -21,10 +21,10 @@ export default (app: Express): void => {
 
   router.get('/company/:id', authMiddleware, adminMiddleware, adaptRoute(makeGetCompanyById()))
   router.post('/user', authMiddleware, adminMiddleware, adaptRoute(makeCreateUser()))
-  router.get('/user/:id', authMiddleware, adminMiddleware, adaptRoute(makeGetUserById()))
   router.delete('/user/:id', authMiddleware, adminMiddleware, adaptRoute(makeDeleteUserById()))
   router.get('/user', authMiddleware, adminMiddleware, adaptRoute(makeListUsers()))
 
+  router.get('/user/:id', authMiddleware, adaptRoute(makeGetUserById()))
   router.patch('/user/:id', authMiddleware, adaptRoute(makeUpdateUser()))
   router.post('/unit', authMiddleware, adaptRoute(makeCreateUnit()))
   router.get('/unit/:id', authMiddleware, adaptRoute(makeGetUnitById()))
