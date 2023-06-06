@@ -41,7 +41,7 @@ export class FactoryAsset {
   }
 
   static async create ({
-    name = faker.person.fullName(),
+    name = faker.commerce.product(),
     description = faker.internet.password(),
     model = faker.vehicle.model(),
     owner = faker.company.name(),

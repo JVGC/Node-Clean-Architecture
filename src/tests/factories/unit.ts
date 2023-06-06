@@ -21,7 +21,7 @@ export class FactoryUnit {
   }
 
   static async create ({
-    name = faker.person.fullName(),
+    name = faker.commerce.product(),
     description = faker.internet.password(),
     companyId
   }: FactoryModel): Promise<FactoryUnit> {
