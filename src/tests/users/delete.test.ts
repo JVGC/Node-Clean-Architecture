@@ -2,7 +2,7 @@ import { UserRoles } from '@prisma/client'
 import expressApp from '../../main/express/setup-express'
 
 import request from 'supertest'
-import { AccessDeniedError, CompanyNotFoundError, UserNotFoundError } from '../../domain/errors'
+import { AccessDeniedError, UserNotFoundError } from '../../domain/errors'
 import prisma from '../../infra/prisma/client'
 import { FactoryCompany } from '../factories/company'
 import { FactoryUser } from '../factories/user'
@@ -98,14 +98,14 @@ describe('Delete User Tests', () => {
         })
       })
       describe('And he wants to delete a user of another company', () => {
-        it('should return a Company Not Found error', async () => {
+        it('should return a User Not Found error', async () => {
           const anotherCompany = await FactoryCompany.create({})
           const anotherUser = await FactoryUser.create({ companyId: anotherCompany.id })
           const response = await request(expressApp).delete(`/user/${anotherUser.id}`)
             .set('Authorization', `Bearer ${adminToken}`)
 
-          expect(response.statusCode).toBe(400)
-          expect(response.body.error).toBe(new CompanyNotFoundError().message)
+          expect(response.statusCode).toBe(404)
+          expect(response.body.error).toBe(new UserNotFoundError().message)
 
           await anotherUser.delete()
           await anotherCompany.delete()
