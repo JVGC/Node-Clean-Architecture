@@ -1,6 +1,5 @@
 import expressApp from '../../main/express/setup-express'
 
-import { faker } from '@faker-js/faker'
 import { UserRoles } from '@prisma/client'
 import request from 'supertest'
 import { CompanyNotFoundError } from '../../domain/errors'
@@ -28,7 +27,7 @@ describe('Delete Company Tests', () => {
       await company.delete()
     })
     describe('When he is a SuperAdmin',() => {
-      describe('When the company exists', () => {
+      describe('And the company exists', () => {
         it('should delete the company', async () => {
           const companyToBeDeleted = await FactoryCompany.create({})
           const response = await request(expressApp).delete(`/company/${companyToBeDeleted.id}`)
@@ -43,14 +42,7 @@ describe('Delete Company Tests', () => {
           expect(findCompany).toBeNull()
         })
       })
-      describe('When the company does not exists', () => {
-        let anotherCompany: FactoryCompany
-        beforeAll(async () => {
-          anotherCompany = await FactoryCompany.create({})
-        })
-        afterAll(async () => {
-          await anotherCompany.delete()
-        })
+      describe('And the company does not exists', () => {
         it('should return a Company Not Found error', async () => {
           const response = await request(expressApp).delete('/company/123')
             .set('Authorization', `Bearer ${superAdminToken}`)
@@ -62,10 +54,8 @@ describe('Delete Company Tests', () => {
     })
     describe('When he is not a SuperAdmin', () => {
       it('should return an forbidden error', async () => {
-        const response = await request(expressApp).delete('/company/123').send({
-          name: faker.person.fullName(),
-          code: faker.internet.password()
-        }).set('Authorization', `Bearer ${normalUserToken}`)
+        const response = await request(expressApp).delete('/company/123')
+          .set('Authorization', `Bearer ${normalUserToken}`)
 
         expect(response.statusCode).toBe(403)
       })
