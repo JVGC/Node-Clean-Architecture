@@ -1,7 +1,6 @@
 import { UserRoles } from '@prisma/client'
 import expressApp from '../../main/express/setup-express'
 
-import { faker } from '@faker-js/faker'
 import request from 'supertest'
 import { AccessDeniedError, CompanyNotFoundError, UserNotFoundError } from '../../domain/errors'
 import prisma from '../../infra/prisma/client'
@@ -98,19 +97,17 @@ describe('Delete User Tests', () => {
           })
         })
       })
-      describe('And he wants to create a user for another company', () => {
+      describe('And he wants to delete a user of another company', () => {
         it('should return a Company Not Found error', async () => {
           const anotherCompany = await FactoryCompany.create({})
-          const response = await request(expressApp).post('/user').send({
-            name: faker.person.fullName(),
-            email: faker.internet.email({ provider: 'tractian.com' }),
-            password: faker.internet.password(),
-            role: UserRoles.User,
-            companyId: anotherCompany.id
-          }).set('Authorization', `Bearer ${adminToken}`)
+          const anotherUser = await FactoryUser.create({ companyId: anotherCompany.id })
+          const response = await request(expressApp).delete(`/user/${anotherUser.id}`)
+            .set('Authorization', `Bearer ${adminToken}`)
 
           expect(response.statusCode).toBe(400)
           expect(response.body.error).toBe(new CompanyNotFoundError().message)
+
+          await anotherUser.delete()
           await anotherCompany.delete()
         })
       })
