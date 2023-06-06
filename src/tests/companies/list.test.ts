@@ -46,6 +46,8 @@ describe('List Companies Tests', () => {
           expect(response.body.length).toBe(2)
           expect(response.body[0].id).toBe(company.id)
           expect(response.body[1].id).toBe(newCompany.id)
+
+          await newCompany.delete()
         })
       })
     })
