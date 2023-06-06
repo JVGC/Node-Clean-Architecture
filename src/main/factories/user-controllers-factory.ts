@@ -40,7 +40,9 @@ export const makeDeleteUserById = (): DeleteUserByIdController => {
 }
 
 export const makeUpdateUser = (): UpdateUserController => {
+  const salt = 12
+  const bcryptHasher = new BcryptAdapter(salt)
   const prismaUserRepository = new PrismaUserRepository()
-  const updateUserUseCase = new UpdateUserUseCase(prismaUserRepository)
+  const updateUserUseCase = new UpdateUserUseCase(prismaUserRepository, bcryptHasher)
   return new UpdateUserController(updateUserUseCase)
 }
