@@ -46,6 +46,7 @@ describe('Create Unit Tests', () => {
           expect(response.body.companyId).toBe(anotherCompany.id)
 
           await prisma.unit.delete({ where: { id: response.body.id } })
+          await anotherCompany.delete()
         })
       })
     })
