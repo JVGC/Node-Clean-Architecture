@@ -45,7 +45,7 @@ describe('Create User Tests', () => {
             companyId: anotherCompany.id
           }).set('Authorization', `Bearer ${superAdminToken}`)
 
-          expect(response.statusCode).toBe(200)
+          expect(response.statusCode).toBe(201)
           expect(response.body.email).toBe(userEmail)
           expect(response.body.role).toBe(UserRoles.SuperAdmin)
           expect(response.body.companyId).toBe(anotherCompany.id)
@@ -67,7 +67,7 @@ describe('Create User Tests', () => {
             companyId: anotherCompany.id
           }).set('Authorization', `Bearer ${superAdminToken}`)
 
-          expect(response.statusCode).toBe(200)
+          expect(response.statusCode).toBe(201)
           expect(response.body.email).toBe(userEmail)
           expect(response.body.role).toBe(UserRoles.Admin)
           expect(response.body.companyId).toBe(anotherCompany.id)
@@ -130,7 +130,7 @@ describe('Create User Tests', () => {
               companyId: company.id
             }).set('Authorization', `Bearer ${adminToken}`)
 
-            expect(response.statusCode).toBe(200)
+            expect(response.statusCode).toBe(201)
             expect(response.body.email).toBe(userEmail)
             expect(response.body.role).toBe(UserRoles.Admin)
             expect(response.body.companyId).toBe(company.id)
