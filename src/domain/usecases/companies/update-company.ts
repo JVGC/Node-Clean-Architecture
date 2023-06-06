@@ -16,8 +16,8 @@ export class UpdateCompanyUseCase {
 
   async update (companyId: string, data: UpdateCompanyParams): Promise<CompanyModel> {
     if (data.code) {
-      const isCodeInUse = await this.companyRepository.getByCode(data.code)
-      if (isCodeInUse) throw new CodeAlreadyInUse()
+      const companyWithCode = await this.companyRepository.getByCode(data.code)
+      if (companyWithCode && companyWithCode.id !== companyId) throw new CodeAlreadyInUse()
     }
     const company = await this.companyRepository.update(companyId, data)
     if (!company) throw new CompanyNotFoundError()
