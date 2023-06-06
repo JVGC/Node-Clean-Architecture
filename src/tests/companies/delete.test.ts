@@ -9,20 +9,20 @@ import { FactoryUser } from '../factories/user'
 
 describe('Delete Company Tests', () => {
   describe('Given an Authenticated User', () => {
-    let normalUser: FactoryUser,
+    let adminUser: FactoryUser,
       superAdminUser: FactoryUser,
       company: FactoryCompany,
-      normalUserToken: string,
+      adminToken: string,
       superAdminToken: string
     beforeAll(async () => {
       company = await FactoryCompany.create({})
-      normalUser = await FactoryUser.create({ companyId: company.id, role: UserRoles.User })
-      normalUserToken = await normalUser.login()
+      adminUser = await FactoryUser.create({ companyId: company.id, role: UserRoles.Admin })
+      adminToken = await adminUser.login()
       superAdminUser = await FactoryUser.create({ companyId: company.id, role: UserRoles.SuperAdmin })
       superAdminToken = await superAdminUser.login()
     })
     afterAll(async () => {
-      await normalUser.delete()
+      await adminUser.delete()
       await superAdminUser.delete()
       await company.delete()
     })
@@ -55,7 +55,7 @@ describe('Delete Company Tests', () => {
     describe('When he is not a SuperAdmin', () => {
       it('should return an forbidden error', async () => {
         const response = await request(expressApp).delete('/company/123')
-          .set('Authorization', `Bearer ${normalUserToken}`)
+          .set('Authorization', `Bearer ${adminToken}`)
 
         expect(response.statusCode).toBe(403)
       })
