@@ -22,8 +22,8 @@ export default (app: Express): void => {
   router.get('/company/:id', authMiddleware, adminMiddleware, adaptRoute(makeGetCompanyById()))
   router.post('/user', authMiddleware, adminMiddleware, adaptRoute(makeCreateUser()))
   router.delete('/user/:id', authMiddleware, adminMiddleware, adaptRoute(makeDeleteUserById()))
-  router.get('/user', authMiddleware, adminMiddleware, adaptRoute(makeListUsers()))
 
+  router.get('/user', authMiddleware, adaptRoute(makeListUsers()))
   router.get('/user/:id', authMiddleware, adaptRoute(makeGetUserById()))
   router.patch('/user/:id', authMiddleware, adaptRoute(makeUpdateUser()))
   router.post('/unit', authMiddleware, adaptRoute(makeCreateUnit()))

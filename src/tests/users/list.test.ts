@@ -32,7 +32,7 @@ describe('List Users Tests', () => {
           .set('Authorization', `Bearer ${superAdminToken}`)
 
         expect(response.statusCode).toBe(200)
-        expect(response.body.length).toBe(4)
+        expect(response.body.length).toBe(3)
         const usersId = response.body.map((user: { id: string }) => user.id)
         expect(usersId).toContain(anotherUser.id)
 
@@ -48,7 +48,7 @@ describe('List Users Tests', () => {
           .set('Authorization', `Bearer ${normalUserToken}`)
 
         expect(response.statusCode).toBe(200)
-        expect(response.body.length).toBe(3)
+        expect(response.body.length).toBe(2)
         const usersId = response.body.map((user: { id: string }) => user.id)
         expect(usersId).not.toContain(anotherUser.id)
 

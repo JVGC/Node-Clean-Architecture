@@ -9,7 +9,11 @@ export class ListUsersUseCase {
 
   async list (companyId?: string): Promise<UserModelResponseWithoutPassword[]> {
     let users: UserModelResponse[]
-    if (companyId) { users = await this.userRepository.getMany(companyId) } else { users = await this.userRepository.getMany() }
+    if (companyId) {
+      users = await this.userRepository.getMany(companyId)
+    } else {
+      users = await this.userRepository.getMany()
+    }
 
     return users.map(user => removeUserPasswordAdapter(user))
   }
