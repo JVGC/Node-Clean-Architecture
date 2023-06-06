@@ -49,6 +49,17 @@ describe('Create Unit Tests', () => {
           await anotherCompany.delete()
         })
       })
+      describe('And he sent invalid params', () => {
+        it.skip('should return a bad request error', async () => {
+          const response = await request(expressApp).post('/unit').send({
+            name: false,
+            description: [],
+            companyId: company.id
+          }).set('Authorization', `Bearer ${superAdminToken}`)
+
+          expect(response.statusCode).toBe(400)
+        })
+      })
     })
     describe('When he is not a SuperAdmin', () => {
       describe('And he wants to create a unit for another company', () => {
@@ -83,16 +94,16 @@ describe('Create Unit Tests', () => {
         })
       })
     })
-  })
-  describe('Given an Unauthenticated User', () => {
-    it('should return an unauthorized error', async () => {
-      const response = await request(expressApp).post('/unit').send({
-        name: faker.commerce.productName(),
-        description: faker.commerce.productDescription() ,
-        companyId: faker.database.mongodbObjectId()
-      })
+    describe('Given an Unauthenticated User', () => {
+      it('should return an unauthorized error', async () => {
+        const response = await request(expressApp).post('/unit').send({
+          name: faker.commerce.productName(),
+          description: faker.commerce.productDescription() ,
+          companyId: faker.database.mongodbObjectId()
+        })
 
-      expect(response.statusCode).toBe(401)
+        expect(response.statusCode).toBe(401)
+      })
     })
   })
 })

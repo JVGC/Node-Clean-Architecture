@@ -51,6 +51,17 @@ describe('Update Unit Tests', () => {
           await anotherCompany.delete()
         })
       })
+      describe('And he sends invalid params', () => {
+        it.skip('should return an bad request error', async () => {
+          const response = await request(expressApp).patch('/unit/123')
+            .send({
+              name: [],
+              description: false
+            })
+            .set('Authorization', `Bearer ${superAdminToken}`)
+          expect(response.statusCode).toBe(400)
+        })
+      })
     })
     describe('When he is not a SuperAdmin', () => {
       describe('And he wants to update a unit from another company', () => {
