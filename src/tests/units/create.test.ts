@@ -86,7 +86,7 @@ describe('Create Unit Tests', () => {
   describe('Given an Unauthenticated User', () => {
     it('should return an unauthorized error', async () => {
       const response = await request(expressApp).post('/unit').send({
-        name: faker.person.fullName(),
+        name: faker.commerce.productName(),
         description: faker.commerce.productDescription() ,
         companyId: faker.database.mongodbObjectId()
       })
