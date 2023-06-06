@@ -1,6 +1,6 @@
 import { removeUserPasswordAdapter } from '../../adapters/user-adapter'
-import { CompanyNotFoundError, EmailAlreadyInUse } from '../../errors'
-import { type UserModelResponseWithoutPassword, type UserRoles } from '../../models/user'
+import { AccessDeniedError, CompanyNotFoundError, EmailAlreadyInUse } from '../../errors'
+import { UserRoles, type UserModelResponseWithoutPassword } from '../../models/user'
 import { type Hasher } from '../../protocols/criptography'
 import { type CompanyRepository } from '../../protocols/repositories/company-repository'
 import { type UserRepository } from '../../protocols/repositories/user-repository'
@@ -20,7 +20,12 @@ export class CreateUserUseCase {
     private readonly hasher: Hasher
   ) {}
 
-  async create (data: CreateUserParams): Promise<UserModelResponseWithoutPassword> {
+  async create (data: CreateUserParams, loggedUser: UserModelResponseWithoutPassword): Promise<UserModelResponseWithoutPassword> {
+    if (loggedUser.role === UserRoles.Admin) {
+      if (data.role === UserRoles.SuperAdmin) throw new AccessDeniedError()
+      if (loggedUser.companyId !== data.companyId) { throw new CompanyNotFoundError() }
+    }
+
     const company = await this.companyRepository.getById(data.companyId)
     if (!company) throw new CompanyNotFoundError()
     const isEmailInUse = await this.userRepository.getByEmail(data.email)
