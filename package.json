@@ -11,7 +11,7 @@
     "start": "node dist/src/server.js",
     "db:migrate": "prisma db push",
     "lint": "eslint ./src ./prisma",
-    "test": "jest"
+    "test": "jest --runInBand"
   },
   "keywords": [],
   "author": "",
