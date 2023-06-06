@@ -13,7 +13,11 @@ export class ListUsersController implements Controller {
     try {
       const loggedUser = httpRequest.loggedUser as UserModelResponseWithoutPassword
       let result
-      if (loggedUser.role === UserRoles.Admin) { result = await this.listUsersUseCase.list(loggedUser.companyId) } else { result = await this.listUsersUseCase.list() }
+      if (loggedUser.role === UserRoles.Admin) {
+        result = await this.listUsersUseCase.list(loggedUser.companyId)
+      } else {
+        result = await this.listUsersUseCase.list()
+      }
       return ok(result)
     } catch (error: any) {
       return serverError(error)
