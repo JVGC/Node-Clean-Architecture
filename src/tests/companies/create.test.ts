@@ -64,7 +64,7 @@ describe('Create Company Tests', () => {
         })
       })
       describe('When not sending code/name', () => {
-        it.skip('should return a bad request error', async () => {
+        it('should return a bad request error', async () => {
           const response = await request(expressApp).post('/company').send({})
             .set('Authorization', `Bearer ${superAdminUser.token}`)
 

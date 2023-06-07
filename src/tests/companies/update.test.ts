@@ -84,7 +84,7 @@ describe('Update Company Tests', () => {
           })
         })
         describe('When sending incorrect params', () => {
-          it.skip('should return a bad request error', async () => {
+          it('should return a bad request error', async () => {
             const response = await request(expressApp).patch(`/company/${company.id}`)
               .send({
                 name: false,

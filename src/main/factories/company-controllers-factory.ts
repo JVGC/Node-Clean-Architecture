@@ -9,11 +9,14 @@ import { DeleteCompanyByIdController } from '../../presentation/controllers/comp
 import { GetCompanyByIdController } from '../../presentation/controllers/companies/get-company-by-id-controller'
 import { ListCompaniesController } from '../../presentation/controllers/companies/list-companies-controller'
 import { UpdateCompanyController } from '../../presentation/controllers/companies/update-company-controller'
+import { ZodValidator } from '../../presentation/helpers/zod-validator'
+import { zodCreateCompanyObject, zodUpdateCompanyObject } from '../../presentation/helpers/zod-validators/companies'
 
 export const makeCreateCompany = (): CreateCompanyController => {
   const prismaCompanyRepository = new PrismaCompanyRepository()
   const createCompanyUseCase = new CreateCompanyUseCase(prismaCompanyRepository)
-  return new CreateCompanyController(createCompanyUseCase)
+  const zodCreateCompanyValidator = new ZodValidator(zodCreateCompanyObject)
+  return new CreateCompanyController(createCompanyUseCase, zodCreateCompanyValidator)
 }
 
 export const makeGetCompanyById = (): GetCompanyByIdController => {
@@ -37,5 +40,6 @@ export const makeDeleteCompanyById = (): DeleteCompanyByIdController => {
 export const makeUpdateCompany = (): UpdateCompanyController => {
   const prismaCompanyRepository = new PrismaCompanyRepository()
   const updateCompanyUseCase = new UpdateCompanyUseCase(prismaCompanyRepository)
-  return new UpdateCompanyController(updateCompanyUseCase)
+  const zodUpdateCompanyValidator = new ZodValidator(zodUpdateCompanyObject)
+  return new UpdateCompanyController(updateCompanyUseCase, zodUpdateCompanyValidator)
 }
