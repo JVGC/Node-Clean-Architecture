@@ -61,7 +61,7 @@ describe('Login Tests', () => {
       })
     })
     describe('When email/password are not sent', () => {
-      it.skip('Should return a bad request error', async () => {
+      it('Should return a bad request error', async () => {
         const response = await request(expressApp).post('/login')
           .send(
             {}
@@ -71,7 +71,7 @@ describe('Login Tests', () => {
       })
     })
     describe('When an incorrect email format is sent', () => {
-      it.skip('Should return a bad request error', async () => {
+      it('Should return a bad request error', async () => {
         const response = await request(expressApp).post('/login').send(
           {
             email: faker.internet.password(),
