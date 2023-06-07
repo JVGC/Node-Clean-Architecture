@@ -46,7 +46,6 @@ describe('Create Asset Tests', () => {
             model: faker.vehicle.model(),
             owner: faker.company.name(),
             status: AssetsStatus.Running,
-            healthLevel: 100,
             imageURL: faker.image.url(),
             unitId: unitFromAnotherCompany.id
           }).set('Authorization', `Bearer ${superAdminUser.token}`)
@@ -68,7 +67,6 @@ describe('Create Asset Tests', () => {
             name: false,
             description: [],
             status: 'testing',
-            healthLevel: 1000,
             unitId: unit.id
           }).set('Authorization', `Bearer ${superAdminUser.token}`)
           expect(response.statusCode).toBe(400)
@@ -86,7 +84,6 @@ describe('Create Asset Tests', () => {
             model: faker.vehicle.model(),
             owner: faker.company.name(),
             status: AssetsStatus.Running,
-            healthLevel: 100,
             imageURL: faker.image.url(),
             unitId: faker.database.mongodbObjectId()
           }).set('Authorization', `Bearer ${normalUser.token}`)
@@ -106,7 +103,6 @@ describe('Create Asset Tests', () => {
             model: faker.vehicle.model(),
             owner: faker.company.name(),
             status: AssetsStatus.Running,
-            healthLevel: 100,
             imageURL: faker.image.url(),
             unitId: unit.id
           }).set('Authorization', `Bearer ${normalUser.token}`)
@@ -131,7 +127,6 @@ describe('Create Asset Tests', () => {
         model: faker.vehicle.model(),
         owner: faker.company.name(),
         status: AssetsStatus.Running,
-        healthLevel: 100,
         imageURL: faker.image.url(),
         unitId: faker.database.mongodbObjectId()
       })

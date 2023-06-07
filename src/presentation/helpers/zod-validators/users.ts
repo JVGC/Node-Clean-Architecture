@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { UserRoles } from '../../../domain/models/user'
 
-export const zodCreateUserObject = z.object({
+export const zodCreateUserObject = z.strictObject({
   email: z.string().email(),
   name: z.string(),
   password: z.string(),
@@ -9,7 +9,7 @@ export const zodCreateUserObject = z.object({
   companyId: z.string()
 })
 
-export const zodUpdateUserObject = z.object({
+export const zodUpdateUserObject = z.strictObject({
   email: z.string().email().optional(),
   name: z.string().optional(),
   password: z.string().optional(),

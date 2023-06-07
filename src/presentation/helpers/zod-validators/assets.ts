@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { AssetsStatus } from '../../../domain/models/asset'
 
-export const zodCreateAssetObject = z.object({
+export const zodCreateAssetObject = z.strictObject({
   name: z.string(),
   description: z.string(),
   status: z.nativeEnum(AssetsStatus),
@@ -11,7 +11,7 @@ export const zodCreateAssetObject = z.object({
   unitId: z.string()
 })
 
-export const zodUpdateAssetObject = z.object({
+export const zodUpdateAssetObject = z.strictObject({
   name: z.string().optional(),
   description: z.string().optional(),
   status: z.nativeEnum(AssetsStatus).optional(),
