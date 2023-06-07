@@ -1,3 +1,4 @@
+import { type UserModelResponseWithoutPassword } from '../../../domain/models/user'
 import { type ListAssetsUseCase } from '../../../domain/usecases/asset/list-assets'
 import { ok, serverError } from '../../helpers/http-helper'
 import { type Controller } from '../../protocols/controller'
@@ -10,7 +11,8 @@ export class ListAssetsController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const result = await this.listAssetsUseCase.list()
+      const loggedUser = httpRequest.loggedUser as UserModelResponseWithoutPassword
+      const result = await this.listAssetsUseCase.list(loggedUser)
       return ok(result)
     } catch (error: any) {
       return serverError(error)

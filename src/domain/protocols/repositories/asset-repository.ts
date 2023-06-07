@@ -5,7 +5,7 @@ import { type UpdateAssetParams } from '../../usecases/asset/update-asset'
 export interface AssetRepository {
   create: (data: CreateAssetParams) => Promise<AssetModelResponse>
   getById: (id: string) => Promise<AssetModelResponse | null>
-  getMany: () => Promise<AssetModelResponse[]>
+  getMany: (companyId?: string) => Promise<AssetModelResponse[]>
   deleteById: (id: string) => Promise<boolean>
   update: (id: string, updateData: UpdateAssetParams) => Promise<AssetModelResponse | null>
 }

@@ -59,8 +59,17 @@ export class PrismaAssetRepository implements AssetRepository {
     return adaptAsset(asset)
   }
 
-  async getMany (): Promise<AssetModelResponse[]> {
+  async getMany (companyId?: string): Promise<AssetModelResponse[]> {
+    let whereClause: object = {}
+    if (companyId) {
+      whereClause = {
+        unit: {
+          companyId
+        }
+      }
+    }
     const assets = await prisma.asset.findMany({
+      where: whereClause,
       include: {
         unit: {
           select: {
