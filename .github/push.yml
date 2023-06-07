@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [c/gh-actions]
+    branches: [ci/gh-actions]
 
 jobs:
   build:
