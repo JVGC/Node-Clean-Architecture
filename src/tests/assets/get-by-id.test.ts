@@ -30,6 +30,7 @@ describe('Get Unit By Id Tests', () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
+
     describe('When he is a SuperAdmin', () => {
       describe('And he wants to get an Asset of Another Company', () => {
         it('should get the Asset', async () => {
@@ -50,7 +51,7 @@ describe('Get Unit By Id Tests', () => {
       })
     })
     describe('When he is not a SuperAdmin', () => {
-      describe('And he wants to get an asset from another company', () => {
+      describe('And he wants to get an asset of another company', () => {
         it('Should return an Asset not Found error', async () => {
           const anotherCompany = await FactoryCompany.create({})
           const unitFromAnotherCompany = await FactoryUnit.create({ companyId: anotherCompany.id })

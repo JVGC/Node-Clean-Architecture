@@ -31,8 +31,9 @@ describe('Delete Asset Tests', () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
+
     describe('When he is a SuperAdmin', () => {
-      describe('And he wants to delete a Asset of Another Company', () => {
+      describe('And he wants to delete an Asset of Another Company', () => {
         it('should delete the Asset', async () => {
           const anotherCompany = await FactoryCompany.create({})
           const unitFromAnotherCompany = await FactoryUnit.create({ companyId: anotherCompany.id })
@@ -51,8 +52,8 @@ describe('Delete Asset Tests', () => {
       })
     })
     describe('When he is not a SuperAdmin', () => {
-      describe('And he wants to delete an asset from another company', () => {
-        it('Should return a Asset not Found error', async () => {
+      describe('And he wants to delete an asset of another company', () => {
+        it('Should return an Asset Not Found error', async () => {
           const anotherCompany = await FactoryCompany.create({})
           const unitFromAnotherCompany = await FactoryUnit.create({ companyId: anotherCompany.id })
           const AssetFromAnotherCompanyUnit = await FactoryAsset.create({ unitId: unitFromAnotherCompany.id })
@@ -78,7 +79,7 @@ describe('Delete Asset Tests', () => {
             expect(response.body.error).toBe(new AssetNotFoundError().message)
           })
         })
-        describe('When the asset exist', () => {
+        describe('When the asset exists', () => {
           it('should delete the Asset', async () => {
             const unit = await FactoryUnit.create({ companyId: company.id })
             const asset = await FactoryAsset.create({ unitId: unit.id })

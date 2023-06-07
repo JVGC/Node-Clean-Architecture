@@ -32,8 +32,9 @@ describe('Create Asset Tests', () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
+
     describe('When he is a SuperAdmin', () => {
-      describe('And he wants to create a Asset for Another Company', () => {
+      describe('And he wants to create an Asset for Another Company', () => {
         it('should create the Asset', async () => {
           const anotherCompany = await FactoryCompany.create({})
           const unitFromAnotherCompany = await FactoryUnit.create({ companyId: anotherCompany.id })
@@ -75,8 +76,8 @@ describe('Create Asset Tests', () => {
       })
     })
     describe('When he is not a SuperAdmin', () => {
-      describe('And he wants to create a asset for another company', () => {
-        it('Should return a Unit not Found error', async () => {
+      describe('And he wants to create an asset for another company', () => {
+        it('Should return an Unit not Found error', async () => {
           const response = await request(expressApp).post('/asset').send({
             name: faker.commerce.product(),
             description: faker.internet.password(),
@@ -92,7 +93,7 @@ describe('Create Asset Tests', () => {
           expect(response.body.error).toBe(new UnitNotFoundError().message)
         })
       })
-      describe('When he wants to create a asset for his own company', () => {
+      describe('When he wants to create an asset for his own company', () => {
         it('should create the Asset', async () => {
           const unit = await FactoryUnit.create({ companyId: company.id })
           const name = faker.commerce.product()

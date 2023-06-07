@@ -33,6 +33,7 @@ describe('Update Asset Tests', () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
+
     describe('When he is a SuperAdmin', () => {
       describe('And he wants to update an Asset of Another Company', () => {
         it('should update the Asset', async () => {
@@ -59,8 +60,8 @@ describe('Update Asset Tests', () => {
           await anotherCompany.delete()
         })
       })
-      describe('And he sends invalid params', () => {
-        it.skip('should return an bad request error', async () => {
+      describe('And he sent invalid params', () => {
+        it.skip('should return a bad request error', async () => {
           const response = await request(expressApp).patch('/asset/123')
             .send({
               name: false,
@@ -74,7 +75,7 @@ describe('Update Asset Tests', () => {
       })
     })
     describe('When he is not a SuperAdmin', () => {
-      describe('And he wants to update an asset from another company', () => {
+      describe('And he wants to update an asset of another company', () => {
         it('Should return an Asset not Found error', async () => {
           const anotherCompany = await FactoryCompany.create({})
           const unitFromAnotherCompany = await FactoryUnit.create({ companyId: anotherCompany.id })

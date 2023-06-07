@@ -29,6 +29,7 @@ describe('List Assets Tests', () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
+
     describe('When he is a SuperAdmin', () => {
       it('should return all the assets in the database', async () => {
         const anotherCompany = await FactoryCompany.create({})
