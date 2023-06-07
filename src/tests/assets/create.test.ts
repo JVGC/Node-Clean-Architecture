@@ -62,16 +62,18 @@ describe('Create Asset Tests', () => {
         })
       })
       describe('And he sent invalid params', () => {
-        it.skip('should return a bad request error', async () => {
+        it('should return a bad request error', async () => {
+          const unit = await FactoryUnit.create({ companyId: company.id })
           const response = await request(expressApp).post('/asset').send({
             name: false,
             description: [],
             status: 'testing',
             healthLevel: 1000,
-            companyId: company.id
+            unitId: unit.id
           }).set('Authorization', `Bearer ${superAdminUser.token}`)
-
           expect(response.statusCode).toBe(400)
+
+          await unit.delete()
         })
       })
     })

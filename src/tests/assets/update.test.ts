@@ -61,8 +61,10 @@ describe('Update Asset Tests', () => {
         })
       })
       describe('And he sent invalid params', () => {
-        it.skip('should return a bad request error', async () => {
-          const response = await request(expressApp).patch('/asset/123')
+        it('should return a bad request error', async () => {
+          const unit = await FactoryUnit.create({ companyId: company.id })
+          const asset = await FactoryAsset.create({ unitId: unit.id })
+          const response = await request(expressApp).patch(`/asset/${asset.id}`)
             .send({
               name: false,
               description: [],
@@ -71,6 +73,9 @@ describe('Update Asset Tests', () => {
             })
             .set('Authorization', `Bearer ${superAdminUser.token}`)
           expect(response.statusCode).toBe(400)
+
+          await asset.delete()
+          await unit.delete()
         })
       })
     })

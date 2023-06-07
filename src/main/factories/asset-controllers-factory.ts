@@ -10,12 +10,15 @@ import { DeleteAssetByIdController } from '../../presentation/controllers/assets
 import { GetAssetByIdController } from '../../presentation/controllers/assets/get-asset-by-id-controller'
 import { ListAssetsController } from '../../presentation/controllers/assets/list-assets-controller'
 import { UpdateAssetController } from '../../presentation/controllers/assets/update-asset-controller'
+import { ZodValidator } from '../../presentation/helpers/zod-validator'
+import { zodCreateAssetObject, zodUpdateAssetObject } from '../../presentation/helpers/zod-validators/assets'
 
 export const makeCreateAsset = (): CreateAssetController => {
   const prismaAssetRepository = new PrismaAssetRepository()
   const prismaUnitRepository = new PrismaUnitRepository()
   const createAssetUseCase = new CreateAssetUseCase(prismaAssetRepository, prismaUnitRepository)
-  return new CreateAssetController(createAssetUseCase)
+  const zodCreateAssetValidator = new ZodValidator(zodCreateAssetObject)
+  return new CreateAssetController(createAssetUseCase, zodCreateAssetValidator)
 }
 
 export const makeGetAssetById = (): GetAssetByIdController => {
@@ -39,5 +42,6 @@ export const makeDeleteAssetById = (): DeleteAssetByIdController => {
 export const makeUpdateAsset = (): UpdateAssetController => {
   const prismaAssetRepository = new PrismaAssetRepository()
   const updateAssetUseCase = new UpdateAssetUseCase(prismaAssetRepository)
-  return new UpdateAssetController(updateAssetUseCase)
+  const zodUpdateAssetValidator = new ZodValidator(zodUpdateAssetObject)
+  return new UpdateAssetController(updateAssetUseCase, zodUpdateAssetValidator)
 }
