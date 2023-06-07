@@ -35,8 +35,9 @@ describe('Get User By Id Tests', () => {
       await Promise.all([normalUser.delete(), adminUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
+
     describe('When he is a SuperAdmin',() => {
-      describe('And it is an user from another company', () => {
+      describe('And he wants to get an user from another company', () => {
         it('should return the user', async () => {
           const anotherCompany = await FactoryCompany.create({})
           const anotherUser = await FactoryUser.create({ companyId: anotherCompany.id })
@@ -56,7 +57,7 @@ describe('Get User By Id Tests', () => {
       })
     })
     describe('When he is a Admin', () => {
-      describe('And it is an user from another company', () => {
+      describe('And he wants to get an user from another company', () => {
         it('should return an User Not Found error', async () => {
           const anotherCompany = await FactoryCompany.create({})
           const anotherUser = await FactoryUser.create({ companyId: anotherCompany.id })
@@ -85,7 +86,7 @@ describe('Get User By Id Tests', () => {
           expect(response.body.password).toBeFalsy()
         })
       })
-      describe('And it is a user from the same company', () => {
+      describe('And it is ab user from the same company', () => {
         it('should return the user', async () => {
           const anotherUser = await FactoryUser.create({ companyId: company.id })
           const response = await request(expressApp).get(`/user/${anotherUser.id}`)

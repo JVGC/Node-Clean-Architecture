@@ -37,6 +37,7 @@ describe('Create User Tests', () => {
       await Promise.all([normalUser.delete(), adminUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
+
     describe('When he is a SuperAdmin',() => {
       describe('And he wants to create a Super Admin User', () => {
         it('should create a new user', async () => {
@@ -122,7 +123,7 @@ describe('Create User Tests', () => {
         })
       })
     })
-    describe('When he is a Admin', () => {
+    describe('When he is an Admin', () => {
       describe('And he wants to create a user for its own company', () => {
         describe('And it is an Admin user', () => {
           it('should create a new user', async () => {
@@ -145,7 +146,7 @@ describe('Create User Tests', () => {
           })
         })
         describe('And it is a SuperAdmin user', () => {
-          it('should return a access denied error', async () => {
+          it('should return an Access Denied error', async () => {
             const userEmail = faker.internet.email({ provider: 'tractian.com' })
             const response = await request(expressApp).post('/user').send({
               name: faker.person.fullName(),
@@ -178,7 +179,7 @@ describe('Create User Tests', () => {
       })
     })
     describe('When he is a Normal User', () => {
-      it('should return an forbidden error', async () => {
+      it('should return a forbidden error', async () => {
         const response = await request(expressApp).post('/user').send({
           name: faker.person.fullName(),
           email: faker.internet.email({ provider: 'tractian.com' }),

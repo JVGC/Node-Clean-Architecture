@@ -28,6 +28,7 @@ describe('List Users Tests', () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
+
     describe('When he is a SuperAdmin',() => {
       it('should return all the users in the database', async () => {
         const anotherCompany = await FactoryCompany.create({})
@@ -45,7 +46,7 @@ describe('List Users Tests', () => {
       })
     })
     describe('When he is not a SuperAdmin', () => {
-      it('should return only the information about the user from its own company', async () => {
+      it('should return only the information about the users from its own company', async () => {
         const anotherCompany = await FactoryCompany.create({})
         const anotherUser = await FactoryUser.create({ companyId: anotherCompany.id })
         const response = await request(expressApp).get('/user')

@@ -36,8 +36,9 @@ describe('Update User Tests', () => {
       await Promise.all([normalUser.delete(), adminUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
+
     describe('When he is a SuperAdmin', () => {
-      describe('And he wants to change a users role', () => {
+      describe('And he wants to change an users role', () => {
         it('should update the user', async () => {
           const anotherCompany = await FactoryCompany.create({})
           const anotherUser = await FactoryUser.create({ companyId: anotherCompany.id, role: UserRoles.Admin })
@@ -54,7 +55,7 @@ describe('Update User Tests', () => {
           await anotherCompany.delete()
         })
       })
-      describe('And he wants to update a user password besides himself', () => {
+      describe('And he wants to update ab user password besides himself', () => {
         it('should return an forbidden error', async () => {
           const response = await request(expressApp).patch(`/user/${adminUser.id}`)
             .send({
@@ -65,7 +66,7 @@ describe('Update User Tests', () => {
           expect(response.body.error).toBe(new AccessDeniedError().message)
         })
       })
-      describe('And he wants to update a user from another company', () => {
+      describe('And he wants to update an user from another company', () => {
         it('should update the user', async () => {
           const anotherCompany = await FactoryCompany.create({})
           const anotherUser = await FactoryUser.create({ companyId: anotherCompany.id, role: UserRoles.SuperAdmin })
@@ -84,7 +85,7 @@ describe('Update User Tests', () => {
         })
       })
       describe('And the email is already in use', () => {
-        describe('but it is the same user', () => {
+        describe('by the same user', () => {
           it('should update the user', async () => {
             const newName = faker.person.fullName()
             const response = await request(expressApp).patch(`/user/${adminUser.id}`)
@@ -114,11 +115,11 @@ describe('Update User Tests', () => {
         })
       })
     })
-    describe('When he is a Admin', () => {
-      describe('And he wants to update a user of its own company', () => {
+    describe('When he is an Admin', () => {
+      describe('And he wants to update an user of its own company', () => {
         describe('And it is an Admin user', () => {
           describe('And he wants to update its role to SuperAdmin', () => {
-            it('should return an forbidden error', async () => {
+            it('should return a Access Denied error', async () => {
               const anotherAdmin = await FactoryUser.create({ companyId: company.id, role: UserRoles.Admin })
               const response = await request(expressApp).patch(`/user/${anotherAdmin.id}`)
                 .send({
@@ -133,7 +134,7 @@ describe('Update User Tests', () => {
             })
           })
           describe('And he wants to update its password', () => {
-            it('should return an forbidden error', async () => {
+            it('should return a Access Denied error', async () => {
               const response = await request(expressApp).patch(`/user/${normalUser.id}`)
                 .send({
                   name: faker.person.fullName(),
@@ -160,7 +161,7 @@ describe('Update User Tests', () => {
           })
         })
         describe('And it is a SuperAdmin user', () => {
-          it('should return a access denied error', async () => {
+          it('should return a Access Denied error', async () => {
             const response = await request(expressApp).patch(`/user/${superAdminUser.id}`)
               .send({
                 name: faker.person.fullName()
@@ -173,7 +174,7 @@ describe('Update User Tests', () => {
         })
         describe('And it is himself', () => {
           describe('And he wants to update its own role', () => {
-            it('should return an forbidden error', async () => {
+            it('should return a Access Denied error', async () => {
               const response = await request(expressApp).patch(`/user/${adminUser.id}`)
                 .send({
                   role: UserRoles.SuperAdmin
@@ -208,8 +209,8 @@ describe('Update User Tests', () => {
           })
         })
       })
-      describe('And he wants to update a user from another company', () => {
-        it('should return a User Not Found error', async () => {
+      describe('And he wants to update an user from another company', () => {
+        it('should return ab User Not Found error', async () => {
           const anotherCompany = await FactoryCompany.create({})
           const anotherUser = await FactoryUser.create({ companyId: anotherCompany.id })
           const response = await request(expressApp).patch(`/user/${anotherUser.id}`)
@@ -227,7 +228,7 @@ describe('Update User Tests', () => {
     })
     describe('When he is a Normal User', () => {
       describe('And he wants to update another user', () => {
-        it('should return an forbidden error', async () => {
+        it('should return a Access Denied error', async () => {
           const response = await request(expressApp).patch(`/user/${adminUser.id}`)
             .set('Authorization', `Bearer ${normalUser.token}`)
 
@@ -237,7 +238,7 @@ describe('Update User Tests', () => {
       })
       describe('And he wants to update his own information', () => {
         describe('And he wants to update its own role', () => {
-          it('should return an forbidden error', async () => {
+          it('should return a Access Denied error', async () => {
             const response = await request(expressApp).patch(`/user/${normalUser.id}`)
               .send({
                 role: UserRoles.Admin
@@ -245,6 +246,7 @@ describe('Update User Tests', () => {
               .set('Authorization', `Bearer ${normalUser.token}`)
 
             expect(response.statusCode).toBe(403)
+            expect(response.body.error).toBe(new AccessDeniedError().message)
           })
         })
         it('should update the user', async () => {

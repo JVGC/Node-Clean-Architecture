@@ -36,6 +36,7 @@ describe('Delete User Tests', () => {
       await Promise.all([normalUser.delete(), adminUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
+
     describe('When he is a SuperAdmin',() => {
       describe('And he wants to delete a SuperAdmin User', () => {
         it('should delete the user', async () => {
@@ -69,8 +70,8 @@ describe('Delete User Tests', () => {
         })
       })
     })
-    describe('When he is a Admin', () => {
-      describe('And he wants to delete a user of its own company', () => {
+    describe('When he is an Admin', () => {
+      describe('And he wants to delete an user of its own company', () => {
         describe('And it is an Admin user', () => {
           it('should delete the user', async () => {
             const anotherAdmin = await FactoryUser.create({ companyId: company.id, role: UserRoles.Admin })
@@ -84,7 +85,7 @@ describe('Delete User Tests', () => {
           })
         })
         describe('And it is a SuperAdmin user', () => {
-          it('should return a access denied error', async () => {
+          it('should return an Access Denied error', async () => {
             const response = await request(expressApp).delete(`/user/${superAdminUser.id}`)
               .set('Authorization', `Bearer ${adminUser.token}`)
 
@@ -93,7 +94,7 @@ describe('Delete User Tests', () => {
           })
         })
         describe('And it is himself', () => {
-          it('should return a access denied error', async () => {
+          it('should return an Access Denied error', async () => {
             const response = await request(expressApp).delete(`/user/${adminUser.id}`)
               .set('Authorization', `Bearer ${adminUser.token}`)
 
@@ -102,8 +103,8 @@ describe('Delete User Tests', () => {
           })
         })
       })
-      describe('And he wants to delete a user of another company', () => {
-        it('should return a User Not Found error', async () => {
+      describe('And he wants to delete an user of another company', () => {
+        it('should return an User Not Found error', async () => {
           const anotherCompany = await FactoryCompany.create({})
           const anotherUser = await FactoryUser.create({ companyId: anotherCompany.id })
           const response = await request(expressApp).delete(`/user/${anotherUser.id}`)
@@ -118,7 +119,7 @@ describe('Delete User Tests', () => {
       })
     })
     describe('When he is a Normal User', () => {
-      it('should return an forbidden error', async () => {
+      it('should return a forbidden error', async () => {
         const response = await request(expressApp).delete('/user/123')
           .set('Authorization', `Bearer ${normalUser.token}`)
 
