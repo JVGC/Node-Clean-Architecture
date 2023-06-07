@@ -4,14 +4,20 @@ import { type CreateUnitUseCase } from '../../../domain/usecases/unit/create-uni
 import { badRequest, created, notFound, serverError } from '../../helpers/http-helper'
 import { type Controller } from '../../protocols/controller'
 import { type HttpRequest, type HttpResponse } from '../../protocols/http'
+import { type Validator } from '../../protocols/validator'
 
 export class CreateUnitController implements Controller {
   constructor (
-    private readonly createUnitUseCase: CreateUnitUseCase
+    private readonly createUnitUseCase: CreateUnitUseCase,
+    private readonly validator: Validator
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
+      const requestErrors = await this.validator.validate(httpRequest.body)
+      if (requestErrors) {
+        return badRequest(requestErrors)
+      }
       const loggedUser = httpRequest.loggedUser as UserModelResponseWithoutPassword
       const { name, description, companyId } = httpRequest.body
 

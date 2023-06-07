@@ -10,12 +10,15 @@ import { DeleteUnitByIdController } from '../../presentation/controllers/units/d
 import { GetUnitByIdController } from '../../presentation/controllers/units/get-unit-by-id-controller'
 import { ListUnitsController } from '../../presentation/controllers/units/list-units-controller'
 import { UpdateUnitController } from '../../presentation/controllers/units/update-unit-controller'
+import { ZodValidator } from '../../presentation/helpers/zod-validator'
+import { zodCreateUnitObject, zodUpdateUnitObject } from '../../presentation/helpers/zod-validators/units'
 
 export const makeCreateUnit = (): CreateUnitController => {
   const prismaUnitRepository = new PrismaUnitRepository()
   const prismacompanyRepository = new PrismaCompanyRepository()
   const createUnitUseCase = new CreateUnitUseCase(prismaUnitRepository, prismacompanyRepository)
-  return new CreateUnitController(createUnitUseCase)
+  const zodCreateUnitValidator = new ZodValidator(zodCreateUnitObject)
+  return new CreateUnitController(createUnitUseCase, zodCreateUnitValidator)
 }
 
 export const makeGetUnitById = (): GetUnitByIdController => {
@@ -39,5 +42,6 @@ export const makeDeleteUnitById = (): DeleteUnitByIdController => {
 export const makeUpdateUnit = (): UpdateUnitController => {
   const prismaUnitRepository = new PrismaUnitRepository()
   const updateUnitUseCase = new UpdateUnitUseCase(prismaUnitRepository)
-  return new UpdateUnitController(updateUnitUseCase)
+  const zodUpdateUnitValidator = new ZodValidator(zodUpdateUnitObject)
+  return new UpdateUnitController(updateUnitUseCase, zodUpdateUnitValidator)
 }

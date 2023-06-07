@@ -54,7 +54,7 @@ describe('Create Unit Tests', () => {
         })
       })
       describe('And he sent invalid params', () => {
-        it.skip('should return a bad request error', async () => {
+        it('should return a bad request error', async () => {
           const response = await request(expressApp).post('/unit').send({
             name: false,
             description: [],

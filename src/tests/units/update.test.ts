@@ -56,7 +56,7 @@ describe('Update Unit Tests', () => {
         })
       })
       describe('And he sends invalid params', () => {
-        it.skip('should return an bad request error', async () => {
+        it('should return an bad request error', async () => {
           const response = await request(expressApp).patch('/unit/123')
             .send({
               name: [],
