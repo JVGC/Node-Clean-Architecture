@@ -3,25 +3,6 @@ on:
     branches: [ci/gh-actions]
 
 jobs:
-  # build:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-
-  #     - name: Run Build
-  #       run: |
-  #         yarn
-  #         yarn build
-  # lint:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-  #     - name: Run lint
-  #       run: |
-  #         yarn
-  #         yarn lint
   test:
     runs-on: ubuntu-latest
     container: node:18
@@ -42,14 +23,14 @@ jobs:
           MONGO_REPLICA_PORT: 27017
     steps:
       - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.8.0
-      env:
+        uses: supercharge/mongodb-github-action@1.8.0
+        env:
           MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
           MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
           MONGO_INITDB_DATABASE: ${{ secrets.MONGO_INITDB_DATABASE }}
           MONGO_REPLICA_HOST: mongo
           MONGO_REPLICA_PORT: 27017
-      with:
-        mongodb-version: mongo:4
-        mongodb-replica-set: test-rs
-        mongodb-port: 27017
+        with:
+          mongodb-version: mongo:4
+          mongodb-replica-set: test-rs
+          mongodb-port: 27017
