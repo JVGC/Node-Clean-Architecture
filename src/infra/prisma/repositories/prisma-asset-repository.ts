@@ -104,7 +104,7 @@ export class PrismaAssetRepository implements AssetRepository {
     }
   }
 
-  async update (id: string, { name, description, healthLevel, model, owner, status, unitId }: UpdateAssetParams): Promise<AssetModelResponse | null> {
+  async update (id: string, { name, description, healthLevel, model, owner, status }: UpdateAssetParams): Promise<AssetModelResponse | null> {
     const isIdValid = ObjectId.isValid(id)
     if (!isIdValid) return null
     try {
@@ -118,8 +118,7 @@ export class PrismaAssetRepository implements AssetRepository {
           healthLevel,
           model,
           owner,
-          status,
-          unitId
+          status
         },
         include: {
           unit: {
