@@ -11,9 +11,7 @@ describe('List Assets Tests', () => {
   describe('Given an Authenticated User', () => {
     let normalUser: FactoryUser,
       superAdminUser: FactoryUser,
-      company: FactoryCompany,
-      normalUserToken: string,
-      superAdminToken: string
+      company: FactoryCompany
 
     beforeAll(async () => {
       company = await FactoryCompany.create({})
@@ -25,9 +23,7 @@ describe('List Assets Tests', () => {
       normalUser = users[0]
       superAdminUser = users[1]
 
-      const tokens = await Promise.all([normalUser.login(), superAdminUser.login()])
-      normalUserToken = tokens[0]
-      superAdminToken = tokens[1]
+      await Promise.all([normalUser.login(), superAdminUser.login()])
     })
     afterAll(async () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
@@ -42,7 +38,7 @@ describe('List Assets Tests', () => {
         const unit = await FactoryUnit.create({ companyId: company.id })
         const assetFromOwnCompany = await FactoryAsset.create({ unitId: unit.id })
         const response = await request(expressApp).get('/asset')
-          .set('Authorization', `Bearer ${superAdminToken}`)
+          .set('Authorization', `Bearer ${superAdminUser.token}`)
 
         expect(response.statusCode).toBe(200)
         expect(response.body.length).toBe(2)
@@ -66,7 +62,7 @@ describe('List Assets Tests', () => {
         const assetFromOwnCompany = await FactoryAsset.create({ unitId: unit.id })
 
         const response = await request(expressApp).get('/asset')
-          .set('Authorization', `Bearer ${normalUserToken}`)
+          .set('Authorization', `Bearer ${normalUser.token}`)
 
         expect(response.statusCode).toBe(200)
         expect(response.body.length).toBe(1)

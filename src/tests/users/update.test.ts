@@ -12,10 +12,7 @@ describe('Update User Tests', () => {
     let normalUser: FactoryUser,
       adminUser: FactoryUser,
       superAdminUser: FactoryUser,
-      company: FactoryCompany,
-      normalUserToken: string,
-      adminToken: string,
-      superAdminToken: string
+      company: FactoryCompany
 
     beforeAll(async () => {
       company = await FactoryCompany.create({})
@@ -29,14 +26,11 @@ describe('Update User Tests', () => {
       adminUser = users[1]
       superAdminUser = users[2]
 
-      const tokens = await Promise.all([
+      await Promise.all([
         normalUser.login(),
         adminUser.login(),
         superAdminUser.login()
       ])
-      normalUserToken = tokens[0]
-      adminToken = tokens[1]
-      superAdminToken = tokens[2]
     })
     afterAll(async () => {
       await Promise.all([normalUser.delete(), adminUser.delete(), superAdminUser.delete()])
@@ -50,7 +44,7 @@ describe('Update User Tests', () => {
           const response = await request(expressApp).patch(`/user/${anotherUser.id}`)
             .send({
               role: UserRoles.SuperAdmin
-            }).set('Authorization', `Bearer ${superAdminToken}`)
+            }).set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(200)
           expect(response.body.id).toBe(anotherUser.id)
@@ -65,7 +59,7 @@ describe('Update User Tests', () => {
           const response = await request(expressApp).patch(`/user/${adminUser.id}`)
             .send({
               password: faker.internet.password()
-            }).set('Authorization', `Bearer ${superAdminToken}`)
+            }).set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(403)
           expect(response.body.error).toBe(new AccessDeniedError().message)
@@ -79,7 +73,7 @@ describe('Update User Tests', () => {
           const response = await request(expressApp).patch(`/user/${anotherUser.id}`)
             .send({
               name: newName
-            }).set('Authorization', `Bearer ${superAdminToken}`)
+            }).set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(200)
           expect(response.body.id).toBe(anotherUser.id)
@@ -98,7 +92,7 @@ describe('Update User Tests', () => {
                 name: newName,
                 email: adminUser.email
               })
-              .set('Authorization', `Bearer ${adminToken}`)
+              .set('Authorization', `Bearer ${adminUser.token}`)
 
             expect(response.statusCode).toBe(200)
             expect(response.body.id).toBe(adminUser.id)
@@ -112,7 +106,7 @@ describe('Update User Tests', () => {
               .send({
                 email: normalUser.email
               })
-              .set('Authorization', `Bearer ${adminToken}`)
+              .set('Authorization', `Bearer ${adminUser.token}`)
 
             expect(response.statusCode).toBe(400)
             expect(response.body.error).toBe(new EmailAlreadyInUse().message)
@@ -130,7 +124,7 @@ describe('Update User Tests', () => {
                 .send({
                   role: UserRoles.SuperAdmin
                 })
-                .set('Authorization', `Bearer ${adminToken}`)
+                .set('Authorization', `Bearer ${adminUser.token}`)
 
               expect(response.statusCode).toBe(403)
               expect(response.body.error).toBe(new AccessDeniedError().message)
@@ -145,7 +139,7 @@ describe('Update User Tests', () => {
                   name: faker.person.fullName(),
                   password: faker.internet.password()
                 })
-                .set('Authorization', `Bearer ${adminToken}`)
+                .set('Authorization', `Bearer ${adminUser.token}`)
 
               expect(response.statusCode).toBe(403)
               expect(response.body.error).toBe(new AccessDeniedError().message)
@@ -158,7 +152,7 @@ describe('Update User Tests', () => {
               .send({
                 name: newName
               })
-              .set('Authorization', `Bearer ${adminToken}`)
+              .set('Authorization', `Bearer ${adminUser.token}`)
 
             expect(response.statusCode).toBe(200)
             expect(response.body.id).toBe(anotherAdmin.id)
@@ -171,7 +165,7 @@ describe('Update User Tests', () => {
               .send({
                 name: faker.person.fullName()
               })
-              .set('Authorization', `Bearer ${adminToken}`)
+              .set('Authorization', `Bearer ${adminUser.token}`)
 
             expect(response.statusCode).toBe(403)
             expect(response.body.error).toBe(new AccessDeniedError().message)
@@ -184,7 +178,7 @@ describe('Update User Tests', () => {
                 .send({
                   role: UserRoles.SuperAdmin
                 })
-                .set('Authorization', `Bearer ${adminToken}`)
+                .set('Authorization', `Bearer ${adminUser.token}`)
 
               expect(response.statusCode).toBe(403)
               expect(response.body.error).toBe(new AccessDeniedError().message)
@@ -198,7 +192,7 @@ describe('Update User Tests', () => {
                 name: newName,
                 password: newPassword
               })
-              .set('Authorization', `Bearer ${adminToken}`)
+              .set('Authorization', `Bearer ${adminUser.token}`)
 
             expect(response.statusCode).toBe(200)
             expect(response.body.id).toBe(adminUser.id)
@@ -221,7 +215,7 @@ describe('Update User Tests', () => {
           const response = await request(expressApp).patch(`/user/${anotherUser.id}`)
             .send({
               name: faker.person.fullName()
-            }).set('Authorization', `Bearer ${adminToken}`)
+            }).set('Authorization', `Bearer ${adminUser.token}`)
 
           expect(response.statusCode).toBe(404)
           expect(response.body.error).toBe(new UserNotFoundError().message)
@@ -235,7 +229,7 @@ describe('Update User Tests', () => {
       describe('And he wants to update another user', () => {
         it('should return an forbidden error', async () => {
           const response = await request(expressApp).patch(`/user/${adminUser.id}`)
-            .set('Authorization', `Bearer ${normalUserToken}`)
+            .set('Authorization', `Bearer ${normalUser.token}`)
 
           expect(response.statusCode).toBe(403)
           expect(response.body.error).toBe(new AccessDeniedError().message)
@@ -248,7 +242,7 @@ describe('Update User Tests', () => {
               .send({
                 role: UserRoles.Admin
               })
-              .set('Authorization', `Bearer ${normalUserToken}`)
+              .set('Authorization', `Bearer ${normalUser.token}`)
 
             expect(response.statusCode).toBe(403)
           })
@@ -261,7 +255,7 @@ describe('Update User Tests', () => {
               name: newName,
               password: newPassword
             })
-            .set('Authorization', `Bearer ${normalUserToken}`)
+            .set('Authorization', `Bearer ${normalUser.token}`)
 
           expect(response.statusCode).toBe(200)
           expect(response.body.id).toBe(normalUser.id)

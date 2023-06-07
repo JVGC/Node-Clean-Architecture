@@ -13,9 +13,7 @@ describe('Delete Asset Tests', () => {
   describe('Given an Authenticated User', () => {
     let normalUser: FactoryUser,
       superAdminUser: FactoryUser,
-      company: FactoryCompany,
-      normalUserToken: string,
-      superAdminToken: string
+      company: FactoryCompany
 
     beforeAll(async () => {
       company = await FactoryCompany.create({})
@@ -27,9 +25,7 @@ describe('Delete Asset Tests', () => {
       normalUser = users[0]
       superAdminUser = users[1]
 
-      const tokens = await Promise.all([normalUser.login(), superAdminUser.login()])
-      normalUserToken = tokens[0]
-      superAdminToken = tokens[1]
+      await Promise.all([normalUser.login(), superAdminUser.login()])
     })
     afterAll(async () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
@@ -43,7 +39,7 @@ describe('Delete Asset Tests', () => {
           const AssetFromAnotherCompanyUnit = await FactoryAsset.create({ unitId: unitFromAnotherCompany.id })
 
           const response = await request(expressApp).delete(`/asset/${AssetFromAnotherCompanyUnit.id}`)
-            .set('Authorization', `Bearer ${superAdminToken}`)
+            .set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(204)
           const findAsset = await prisma.asset.findUnique({ where: { id: AssetFromAnotherCompanyUnit.id } })
@@ -62,7 +58,7 @@ describe('Delete Asset Tests', () => {
           const AssetFromAnotherCompanyUnit = await FactoryAsset.create({ unitId: unitFromAnotherCompany.id })
 
           const response = await request(expressApp).delete(`/asset/${AssetFromAnotherCompanyUnit.id}`)
-            .set('Authorization', `Bearer ${normalUserToken}`)
+            .set('Authorization', `Bearer ${normalUser.token}`)
 
           expect(response.statusCode).toBe(404)
           expect(response.body.error).toBe(new AssetNotFoundError().message)
@@ -76,7 +72,7 @@ describe('Delete Asset Tests', () => {
         describe('When the Asset does not exist', () => {
           it('should return an Asset Not Find error', async () => {
             const response = await request(expressApp).delete('/asset/123')
-              .set('Authorization', `Bearer ${normalUserToken}`)
+              .set('Authorization', `Bearer ${normalUser.token}`)
 
             expect(response.statusCode).toBe(404)
             expect(response.body.error).toBe(new AssetNotFoundError().message)
@@ -87,7 +83,7 @@ describe('Delete Asset Tests', () => {
             const unit = await FactoryUnit.create({ companyId: company.id })
             const asset = await FactoryAsset.create({ unitId: unit.id })
             const response = await request(expressApp).delete(`/asset/${asset.id}`)
-              .set('Authorization', `Bearer ${normalUserToken}`)
+              .set('Authorization', `Bearer ${normalUser.token}`)
 
             expect(response.statusCode).toBe(204)
             const findAsset = await prisma.asset.findUnique({ where: { id: asset.id } })

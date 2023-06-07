@@ -12,9 +12,7 @@ describe('Create Unit Tests', () => {
   describe('Given an Authenticated User', () => {
     let normalUser: FactoryUser,
       superAdminUser: FactoryUser,
-      company: FactoryCompany,
-      normalUserToken: string,
-      superAdminToken: string
+      company: FactoryCompany
 
     beforeAll(async () => {
       company = await FactoryCompany.create({})
@@ -26,9 +24,7 @@ describe('Create Unit Tests', () => {
       normalUser = users[0]
       superAdminUser = users[1]
 
-      const tokens = await Promise.all([normalUser.login(), superAdminUser.login()])
-      normalUserToken = tokens[0]
-      superAdminToken = tokens[1]
+      await Promise.all([normalUser.login(), superAdminUser.login()])
     })
     afterAll(async () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
@@ -44,7 +40,7 @@ describe('Create Unit Tests', () => {
             name,
             description ,
             companyId: anotherCompany.id
-          }).set('Authorization', `Bearer ${superAdminToken}`)
+          }).set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(201)
           expect(response.body.id).toBeTruthy()
@@ -62,7 +58,7 @@ describe('Create Unit Tests', () => {
             name: false,
             description: [],
             companyId: company.id
-          }).set('Authorization', `Bearer ${superAdminToken}`)
+          }).set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(400)
         })
@@ -75,7 +71,7 @@ describe('Create Unit Tests', () => {
             name: faker.person.fullName(),
             description: faker.commerce.productDescription() ,
             companyId: faker.database.mongodbObjectId()
-          }).set('Authorization', `Bearer ${normalUserToken}`)
+          }).set('Authorization', `Bearer ${normalUser.token}`)
 
           expect(response.statusCode).toBe(400)
           expect(response.body.error).toBe(new CompanyNotFoundError().message)
@@ -89,7 +85,7 @@ describe('Create Unit Tests', () => {
             name,
             description ,
             companyId: company.id
-          }).set('Authorization', `Bearer ${normalUserToken}`)
+          }).set('Authorization', `Bearer ${normalUser.token}`)
 
           expect(response.statusCode).toBe(201)
           expect(response.body.id).toBeTruthy()

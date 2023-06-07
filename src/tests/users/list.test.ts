@@ -9,9 +9,7 @@ describe('List Users Tests', () => {
   describe('Given an Authenticated User', () => {
     let normalUser: FactoryUser,
       superAdminUser: FactoryUser,
-      company: FactoryCompany,
-      normalUserToken: string,
-      superAdminToken: string
+      company: FactoryCompany
 
     beforeAll(async () => {
       company = await FactoryCompany.create({})
@@ -23,9 +21,7 @@ describe('List Users Tests', () => {
       normalUser = users[0]
       superAdminUser = users[1]
 
-      const tokens = await Promise.all([normalUser.login(), superAdminUser.login()])
-      normalUserToken = tokens[0]
-      superAdminToken = tokens[1]
+      await Promise.all([normalUser.login(), superAdminUser.login()])
     })
 
     afterAll(async () => {
@@ -37,7 +33,7 @@ describe('List Users Tests', () => {
         const anotherCompany = await FactoryCompany.create({})
         const anotherUser = await FactoryUser.create({ companyId: anotherCompany.id })
         const response = await request(expressApp).get('/user')
-          .set('Authorization', `Bearer ${superAdminToken}`)
+          .set('Authorization', `Bearer ${superAdminUser.token}`)
 
         expect(response.statusCode).toBe(200)
         expect(response.body.length).toBe(3)
@@ -53,7 +49,7 @@ describe('List Users Tests', () => {
         const anotherCompany = await FactoryCompany.create({})
         const anotherUser = await FactoryUser.create({ companyId: anotherCompany.id })
         const response = await request(expressApp).get('/user')
-          .set('Authorization', `Bearer ${normalUserToken}`)
+          .set('Authorization', `Bearer ${normalUser.token}`)
 
         expect(response.statusCode).toBe(200)
         expect(response.body.length).toBe(2)

@@ -13,9 +13,7 @@ describe('Update Unit Tests', () => {
   describe('Given an Authenticated User', () => {
     let normalUser: FactoryUser,
       superAdminUser: FactoryUser,
-      company: FactoryCompany,
-      normalUserToken: string,
-      superAdminToken: string
+      company: FactoryCompany
 
     beforeAll(async () => {
       company = await FactoryCompany.create({})
@@ -27,9 +25,7 @@ describe('Update Unit Tests', () => {
       normalUser = users[0]
       superAdminUser = users[1]
 
-      const tokens = await Promise.all([normalUser.login(), superAdminUser.login()])
-      normalUserToken = tokens[0]
-      superAdminToken = tokens[1]
+      await Promise.all([normalUser.login(), superAdminUser.login()])
     })
     afterAll(async () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
@@ -47,7 +43,7 @@ describe('Update Unit Tests', () => {
               name: newName,
               description: newDescription
             })
-            .set('Authorization', `Bearer ${superAdminToken}`)
+            .set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(200)
           expect(response.body.id).toBe(unitFromAnotherCompany.id)
@@ -65,7 +61,7 @@ describe('Update Unit Tests', () => {
               name: [],
               description: false
             })
-            .set('Authorization', `Bearer ${superAdminToken}`)
+            .set('Authorization', `Bearer ${superAdminUser.token}`)
           expect(response.statusCode).toBe(400)
         })
       })
@@ -80,7 +76,7 @@ describe('Update Unit Tests', () => {
               name: faker.commerce.productName(),
               description: faker.commerce.productDescription()
             })
-            .set('Authorization', `Bearer ${normalUserToken}`)
+            .set('Authorization', `Bearer ${normalUser.token}`)
 
           expect(response.statusCode).toBe(404)
           expect(response.body.error).toBe(new UnitNotFoundError().message)
@@ -97,7 +93,7 @@ describe('Update Unit Tests', () => {
                 name: faker.commerce.productName(),
                 description: faker.commerce.productDescription()
               })
-              .set('Authorization', `Bearer ${normalUserToken}`)
+              .set('Authorization', `Bearer ${normalUser.token}`)
 
             expect(response.statusCode).toBe(404)
             expect(response.body.error).toBe(new UnitNotFoundError().message)
@@ -113,7 +109,7 @@ describe('Update Unit Tests', () => {
                 name: newName,
                 description: newDescription
               })
-              .set('Authorization', `Bearer ${normalUserToken}`)
+              .set('Authorization', `Bearer ${normalUser.token}`)
 
             expect(response.statusCode).toBe(200)
             expect(response.body.id).toBe(unit.id)

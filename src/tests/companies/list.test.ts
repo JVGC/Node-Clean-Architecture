@@ -9,9 +9,7 @@ describe('List Companies Tests', () => {
   describe('Given an Authenticated User', () => {
     let adminUser: FactoryUser,
       superAdminUser: FactoryUser,
-      company: FactoryCompany,
-      adminToken: string,
-      superAdminToken: string
+      company: FactoryCompany
     beforeAll(async () => {
       company = await FactoryCompany.create({})
 
@@ -22,9 +20,7 @@ describe('List Companies Tests', () => {
       adminUser = users[0]
       superAdminUser = users[1]
 
-      const tokens = await Promise.all([adminUser.login(), superAdminUser.login()])
-      adminToken = tokens[0]
-      superAdminToken = tokens[1]
+      await Promise.all([adminUser.login(), superAdminUser.login()])
     })
     afterAll(async () => {
       // TODO: Simplificar com o Promise.all
@@ -35,7 +31,7 @@ describe('List Companies Tests', () => {
       describe("And there is only the user's company", () => {
         it('should return the company', async () => {
           const response = await request(expressApp).get('/company')
-            .set('Authorization', `Bearer ${superAdminToken}`)
+            .set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(200)
           expect(response.body.length).toBe(1)
@@ -46,7 +42,7 @@ describe('List Companies Tests', () => {
         it('should return all the companies existed', async () => {
           const newCompany = await FactoryCompany.create({})
           const response = await request(expressApp).get('/company')
-            .set('Authorization', `Bearer ${superAdminToken}`)
+            .set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(200)
           expect(response.body.length).toBe(2)
@@ -60,7 +56,7 @@ describe('List Companies Tests', () => {
     describe('When he is not an SuperAdmin', () => {
       it('should return an forbidden error', async () => {
         const response = await request(expressApp).get('/company')
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', `Bearer ${adminUser.token}`)
 
         expect(response.statusCode).toBe(403)
       })

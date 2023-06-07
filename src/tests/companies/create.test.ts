@@ -12,9 +12,7 @@ describe('Create Company Tests', () => {
   describe('Given an Authenticated User', () => {
     let adminUser: FactoryUser,
       superAdminUser: FactoryUser,
-      company: FactoryCompany,
-      adminToken: string,
-      superAdminToken: string
+      company: FactoryCompany
 
     beforeAll(async () => {
       company = await FactoryCompany.create({})
@@ -26,9 +24,7 @@ describe('Create Company Tests', () => {
       adminUser = users[0]
       superAdminUser = users[1]
 
-      const tokens = await Promise.all([adminUser.login(), superAdminUser.login()])
-      adminToken = tokens[0]
-      superAdminToken = tokens[1]
+      await Promise.all([adminUser.login(), superAdminUser.login()])
     })
     afterAll(async () => {
       await Promise.all([adminUser.delete(), superAdminUser.delete()])
@@ -42,7 +38,7 @@ describe('Create Company Tests', () => {
           const response = await request(expressApp).post('/company').send({
             name: companyName,
             code: companyCode
-          }).set('Authorization', `Bearer ${superAdminToken}`)
+          }).set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(201)
           expect(response.body.name).toBe(companyName)
@@ -64,7 +60,7 @@ describe('Create Company Tests', () => {
           const response = await request(expressApp).post('/company').send({
             name: companyName,
             code: anotherCompany.code
-          }).set('Authorization', `Bearer ${superAdminToken}`)
+          }).set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(400)
           expect(response.body.error).toBe(new CodeAlreadyInUse().message)
@@ -73,7 +69,7 @@ describe('Create Company Tests', () => {
       describe('When not sending code/name', () => {
         it.skip('should return a bad request error', async () => {
           const response = await request(expressApp).post('/company').send({})
-            .set('Authorization', `Bearer ${superAdminToken}`)
+            .set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(400)
         })
@@ -84,7 +80,7 @@ describe('Create Company Tests', () => {
         const response = await request(expressApp).post('/company').send({
           name: faker.person.fullName(),
           code: faker.internet.password()
-        }).set('Authorization', `Bearer ${adminToken}`)
+        }).set('Authorization', `Bearer ${adminUser.token}`)
 
         expect(response.statusCode).toBe(403)
       })

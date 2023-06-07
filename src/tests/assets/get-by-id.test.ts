@@ -12,9 +12,7 @@ describe('Get Unit By Id Tests', () => {
   describe('Given an Authenticated User', () => {
     let normalUser: FactoryUser,
       superAdminUser: FactoryUser,
-      company: FactoryCompany,
-      normalUserToken: string,
-      superAdminToken: string
+      company: FactoryCompany
 
     beforeAll(async () => {
       company = await FactoryCompany.create({})
@@ -26,9 +24,7 @@ describe('Get Unit By Id Tests', () => {
       normalUser = users[0]
       superAdminUser = users[1]
 
-      const tokens = await Promise.all([normalUser.login(), superAdminUser.login()])
-      normalUserToken = tokens[0]
-      superAdminToken = tokens[1]
+      await Promise.all([normalUser.login(), superAdminUser.login()])
     })
     afterAll(async () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
@@ -42,7 +38,7 @@ describe('Get Unit By Id Tests', () => {
           const assetFromAnotherCompanyUnit = await FactoryAsset.create({ unitId: unitFromAnotherCompany.id })
 
           const response = await request(expressApp).get(`/asset/${assetFromAnotherCompanyUnit.id}`)
-            .set('Authorization', `Bearer ${superAdminToken}`)
+            .set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(200)
           expect(response.body.id).toBe(assetFromAnotherCompanyUnit.id)
@@ -61,7 +57,7 @@ describe('Get Unit By Id Tests', () => {
           const assetFromAnotherCompanyUnit = await FactoryAsset.create({ unitId: unitFromAnotherCompany.id })
 
           const response = await request(expressApp).get(`/asset/${assetFromAnotherCompanyUnit.id}`)
-            .set('Authorization', `Bearer ${normalUserToken}`)
+            .set('Authorization', `Bearer ${normalUser.token}`)
 
           expect(response.statusCode).toBe(404)
           expect(response.body.error).toBe(new AssetNotFoundError().message)
@@ -75,7 +71,7 @@ describe('Get Unit By Id Tests', () => {
         describe('When the asset does not exist', () => {
           it('should return an Asset Not Find error', async () => {
             const response = await request(expressApp).get('/asset/123')
-              .set('Authorization', `Bearer ${normalUserToken}`)
+              .set('Authorization', `Bearer ${normalUser.token}`)
 
             expect(response.statusCode).toBe(404)
             expect(response.body.error).toBe(new AssetNotFoundError().message)
@@ -87,7 +83,7 @@ describe('Get Unit By Id Tests', () => {
             const asset = await FactoryAsset.create({ unitId: unit.id })
 
             const response = await request(expressApp).get(`/asset/${asset.id}`)
-              .set('Authorization', `Bearer ${normalUserToken}`)
+              .set('Authorization', `Bearer ${normalUser.token}`)
 
             expect(response.statusCode).toBe(200)
             expect(response.body.id).toBe(asset.id)

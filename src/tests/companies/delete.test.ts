@@ -11,9 +11,7 @@ describe('Delete Company Tests', () => {
   describe('Given an Authenticated User', () => {
     let adminUser: FactoryUser,
       superAdminUser: FactoryUser,
-      company: FactoryCompany,
-      adminToken: string,
-      superAdminToken: string
+      company: FactoryCompany
 
     beforeAll(async () => {
       company = await FactoryCompany.create({})
@@ -25,9 +23,7 @@ describe('Delete Company Tests', () => {
       adminUser = users[0]
       superAdminUser = users[1]
 
-      const tokens = await Promise.all([adminUser.login(), superAdminUser.login()])
-      adminToken = tokens[0]
-      superAdminToken = tokens[1]
+      await Promise.all([adminUser.login(), superAdminUser.login()])
     })
     afterAll(async () => {
       await Promise.all([adminUser.delete(), superAdminUser.delete()])
@@ -38,7 +34,7 @@ describe('Delete Company Tests', () => {
         it('should delete the company', async () => {
           const companyToBeDeleted = await FactoryCompany.create({})
           const response = await request(expressApp).delete(`/company/${companyToBeDeleted.id}`)
-            .set('Authorization', `Bearer ${superAdminToken}`)
+            .set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(204)
           const findCompany = await prisma.company.findUnique({
@@ -52,7 +48,7 @@ describe('Delete Company Tests', () => {
       describe('And the company does not exists', () => {
         it('should return a Company Not Found error', async () => {
           const response = await request(expressApp).delete('/company/123')
-            .set('Authorization', `Bearer ${superAdminToken}`)
+            .set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(404)
           expect(response.body.error).toBe(new CompanyNotFoundError().message)
@@ -62,7 +58,7 @@ describe('Delete Company Tests', () => {
     describe('When he is not a SuperAdmin', () => {
       it('should return an forbidden error', async () => {
         const response = await request(expressApp).delete('/company/123')
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', `Bearer ${adminUser.token}`)
 
         expect(response.statusCode).toBe(403)
       })

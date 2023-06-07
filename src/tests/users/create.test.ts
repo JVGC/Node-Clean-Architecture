@@ -13,10 +13,7 @@ describe('Create User Tests', () => {
     let normalUser: FactoryUser,
       adminUser: FactoryUser,
       superAdminUser: FactoryUser,
-      company: FactoryCompany,
-      normalUserToken: string,
-      adminToken: string,
-      superAdminToken: string
+      company: FactoryCompany
 
     beforeAll(async () => {
       company = await FactoryCompany.create({})
@@ -30,14 +27,11 @@ describe('Create User Tests', () => {
       adminUser = users[1]
       superAdminUser = users[2]
 
-      const tokens = await Promise.all([
+      await Promise.all([
         normalUser.login(),
         adminUser.login(),
         superAdminUser.login()
       ])
-      normalUserToken = tokens[0]
-      adminToken = tokens[1]
-      superAdminToken = tokens[2]
     })
     afterAll(async () => {
       await Promise.all([normalUser.delete(), adminUser.delete(), superAdminUser.delete()])
@@ -54,7 +48,7 @@ describe('Create User Tests', () => {
             password: faker.internet.password(),
             role: UserRoles.SuperAdmin,
             companyId: anotherCompany.id
-          }).set('Authorization', `Bearer ${superAdminToken}`)
+          }).set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(201)
           expect(response.body.email).toBe(userEmail)
@@ -76,7 +70,7 @@ describe('Create User Tests', () => {
             password: faker.internet.password(),
             role: UserRoles.Admin,
             companyId: anotherCompany.id
-          }).set('Authorization', `Bearer ${superAdminToken}`)
+          }).set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(201)
           expect(response.body.email).toBe(userEmail)
@@ -96,7 +90,7 @@ describe('Create User Tests', () => {
             password: faker.internet.password(),
             role: 'new role',
             companyId: '123'
-          }).set('Authorization', `Bearer ${superAdminToken}`)
+          }).set('Authorization', `Bearer ${superAdminUser.token}`)
           expect(response.statusCode).toBe(400)
         })
       })
@@ -108,7 +102,7 @@ describe('Create User Tests', () => {
             password: faker.internet.password(),
             role: 'new role',
             companyId: '123'
-          }).set('Authorization', `Bearer ${superAdminToken}`)
+          }).set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(400)
         })
@@ -121,7 +115,7 @@ describe('Create User Tests', () => {
             password: faker.internet.password(),
             role: UserRoles.User,
             companyId: '123'
-          }).set('Authorization', `Bearer ${superAdminToken}`)
+          }).set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(400)
           expect(response.body.error).toBe(new CompanyNotFoundError().message)
@@ -139,7 +133,7 @@ describe('Create User Tests', () => {
               password: faker.internet.password(),
               role: UserRoles.Admin,
               companyId: company.id
-            }).set('Authorization', `Bearer ${adminToken}`)
+            }).set('Authorization', `Bearer ${adminUser.token}`)
 
             expect(response.statusCode).toBe(201)
             expect(response.body.email).toBe(userEmail)
@@ -159,7 +153,7 @@ describe('Create User Tests', () => {
               password: faker.internet.password(),
               role: UserRoles.SuperAdmin,
               companyId: company.id
-            }).set('Authorization', `Bearer ${adminToken}`)
+            }).set('Authorization', `Bearer ${adminUser.token}`)
 
             expect(response.statusCode).toBe(403)
             expect(response.body.error).toBe(new AccessDeniedError().message)
@@ -175,7 +169,7 @@ describe('Create User Tests', () => {
             password: faker.internet.password(),
             role: UserRoles.User,
             companyId: anotherCompany.id
-          }).set('Authorization', `Bearer ${adminToken}`)
+          }).set('Authorization', `Bearer ${adminUser.token}`)
 
           expect(response.statusCode).toBe(400)
           expect(response.body.error).toBe(new CompanyNotFoundError().message)
@@ -191,7 +185,7 @@ describe('Create User Tests', () => {
           password: faker.internet.password(),
           role: UserRoles.User,
           companyId: faker.database.mongodbObjectId()
-        }).set('Authorization', `Bearer ${normalUserToken}`)
+        }).set('Authorization', `Bearer ${normalUser.token}`)
 
         expect(response.statusCode).toBe(403)
       })

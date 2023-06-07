@@ -11,9 +11,8 @@ describe('Update Company Tests', () => {
   describe('Given an Authenticated User', () => {
     let adminUser: FactoryUser,
       superAdminUser: FactoryUser,
-      company: FactoryCompany,
-      adminToken: string,
-      superAdminToken: string
+      company: FactoryCompany
+
     beforeAll(async () => {
       company = await FactoryCompany.create({})
 
@@ -24,9 +23,7 @@ describe('Update Company Tests', () => {
       adminUser = users[0]
       superAdminUser = users[1]
 
-      const tokens = await Promise.all([adminUser.login(), superAdminUser.login()])
-      adminToken = tokens[0]
-      superAdminToken = tokens[1]
+      await Promise.all([adminUser.login(), superAdminUser.login()])
     })
     afterAll(async () => {
       await Promise.all([adminUser.delete(), superAdminUser.delete()])
@@ -36,7 +33,7 @@ describe('Update Company Tests', () => {
       describe('And the company does not exist', () => {
         it('should return a Company Not Found Error', async () => {
           const response = await request(expressApp).patch('/company/123')
-            .set('Authorization', `Bearer ${superAdminToken}`)
+            .set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(404)
           expect(response.body.error).toBe(new CompanyNotFoundError().message)
@@ -48,7 +45,7 @@ describe('Update Company Tests', () => {
             const newCompanyName = faker.person.fullName()
             const response = await request(expressApp).patch(`/company/${company.id}`).send({
               name: newCompanyName
-            }).set('Authorization', `Bearer ${superAdminToken}`)
+            }).set('Authorization', `Bearer ${superAdminUser.token}`)
 
             expect(response.statusCode).toBe(200)
             expect(response.body.name).toBe(newCompanyName)
@@ -60,7 +57,7 @@ describe('Update Company Tests', () => {
             const anotherCompany = await FactoryCompany.create({})
             const response = await request(expressApp).patch(`/company/${company.id}`).send({
               code: anotherCompany.code
-            }).set('Authorization', `Bearer ${superAdminToken}`)
+            }).set('Authorization', `Bearer ${superAdminUser.token}`)
 
             expect(response.statusCode).toBe(400)
             expect(response.body.error).toBe(new CodeAlreadyInUse().message)
@@ -73,7 +70,7 @@ describe('Update Company Tests', () => {
             const anotherCompany = await FactoryCompany.create({})
             const response = await request(expressApp).patch(`/company/${anotherCompany.id}`).send({
               code: anotherCompany.code
-            }).set('Authorization', `Bearer ${superAdminToken}`)
+            }).set('Authorization', `Bearer ${superAdminUser.token}`)
 
             expect(response.statusCode).toBe(200)
             expect(response.body.id).toBe(anotherCompany.id)
@@ -90,7 +87,7 @@ describe('Update Company Tests', () => {
         const response = await request(expressApp).patch(`/company/${company.id}`).send({
           name: faker.person.fullName(),
           code: faker.internet.password()
-        }).set('Authorization', `Bearer ${adminToken}`)
+        }).set('Authorization', `Bearer ${adminUser.token}`)
 
         expect(response.statusCode).toBe(403)
       })

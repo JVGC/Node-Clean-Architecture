@@ -11,9 +11,7 @@ describe('Get Unit By Id Tests', () => {
   describe('Given an Authenticated User', () => {
     let normalUser: FactoryUser,
       superAdminUser: FactoryUser,
-      company: FactoryCompany,
-      normalUserToken: string,
-      superAdminToken: string
+      company: FactoryCompany
 
     beforeAll(async () => {
       company = await FactoryCompany.create({})
@@ -25,9 +23,7 @@ describe('Get Unit By Id Tests', () => {
       normalUser = users[0]
       superAdminUser = users[1]
 
-      const tokens = await Promise.all([normalUser.login(), superAdminUser.login()])
-      normalUserToken = tokens[0]
-      superAdminToken = tokens[1]
+      await Promise.all([normalUser.login(), superAdminUser.login()])
     })
     afterAll(async () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
@@ -39,7 +35,7 @@ describe('Get Unit By Id Tests', () => {
           const anotherCompany = await FactoryCompany.create({})
           const unitFromAnotherCompany = await FactoryUnit.create({ companyId: anotherCompany.id })
           const response = await request(expressApp).get(`/unit/${unitFromAnotherCompany.id}`)
-            .set('Authorization', `Bearer ${superAdminToken}`)
+            .set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(200)
           expect(response.body.id).toBe(unitFromAnotherCompany.id)
@@ -55,7 +51,7 @@ describe('Get Unit By Id Tests', () => {
           const anotherCompany = await FactoryCompany.create({})
           const unitFromAnotherCompany = await FactoryUnit.create({ companyId: anotherCompany.id })
           const response = await request(expressApp).get(`/unit/${unitFromAnotherCompany.id}`)
-            .set('Authorization', `Bearer ${normalUserToken}`)
+            .set('Authorization', `Bearer ${normalUser.token}`)
 
           expect(response.statusCode).toBe(404)
           expect(response.body.error).toBe(new UnitNotFoundError().message)
@@ -68,7 +64,7 @@ describe('Get Unit By Id Tests', () => {
         describe('When the unit does not exist', () => {
           it('should return a Unit Not Find error', async () => {
             const response = await request(expressApp).get('/unit/123')
-              .set('Authorization', `Bearer ${normalUserToken}`)
+              .set('Authorization', `Bearer ${normalUser.token}`)
 
             expect(response.statusCode).toBe(404)
             expect(response.body.error).toBe(new UnitNotFoundError().message)
@@ -78,7 +74,7 @@ describe('Get Unit By Id Tests', () => {
           it('should get the Unit', async () => {
             const unit = await FactoryUnit.create({ companyId: company.id })
             const response = await request(expressApp).get(`/unit/${unit.id}`)
-              .set('Authorization', `Bearer ${normalUserToken}`)
+              .set('Authorization', `Bearer ${normalUser.token}`)
 
             expect(response.statusCode).toBe(200)
             expect(response.body.id).toBe(unit.id)

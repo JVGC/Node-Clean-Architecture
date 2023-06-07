@@ -20,6 +20,7 @@ export class FactoryUser {
   companyId: string
   password: string
   role: UserRoles
+  token?: string
 
   constructor (id: string, name: string, email: string, password: string, companyId: string, role: UserRoles) {
     this.id = id
@@ -67,8 +68,8 @@ export class FactoryUser {
     })
   }
 
-  async login (): Promise<string> {
+  async login (): Promise<void> {
     const jwtEncrypter = new JWTEncrypter(process.env.JWT_SECRET ?? '')
-    return jwtEncrypter.encrypt(this.id)
+    this.token = jwtEncrypter.encrypt(this.id)
   }
 }

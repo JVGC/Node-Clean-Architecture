@@ -12,9 +12,7 @@ describe('Delete Unit Tests', () => {
   describe('Given an Authenticated User', () => {
     let normalUser: FactoryUser,
       superAdminUser: FactoryUser,
-      company: FactoryCompany,
-      normalUserToken: string,
-      superAdminToken: string
+      company: FactoryCompany
 
     beforeAll(async () => {
       company = await FactoryCompany.create({})
@@ -26,9 +24,7 @@ describe('Delete Unit Tests', () => {
       normalUser = users[0]
       superAdminUser = users[1]
 
-      const tokens = await Promise.all([normalUser.login(), superAdminUser.login()])
-      normalUserToken = tokens[0]
-      superAdminToken = tokens[1]
+      await Promise.all([normalUser.login(), superAdminUser.login()])
     })
     afterAll(async () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
@@ -40,7 +36,7 @@ describe('Delete Unit Tests', () => {
           const anotherCompany = await FactoryCompany.create({})
           const unitFromAnotherCompany = await FactoryUnit.create({ companyId: anotherCompany.id })
           const response = await request(expressApp).delete(`/unit/${unitFromAnotherCompany.id}`)
-            .set('Authorization', `Bearer ${superAdminToken}`)
+            .set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(204)
           const findUnit = await prisma.unit.findUnique({ where: { id: unitFromAnotherCompany.id } })
@@ -56,7 +52,7 @@ describe('Delete Unit Tests', () => {
           const anotherCompany = await FactoryCompany.create({})
           const unitFromAnotherCompany = await FactoryUnit.create({ companyId: anotherCompany.id })
           const response = await request(expressApp).delete(`/unit/${unitFromAnotherCompany.id}`)
-            .set('Authorization', `Bearer ${normalUserToken}`)
+            .set('Authorization', `Bearer ${normalUser.token}`)
 
           expect(response.statusCode).toBe(404)
           expect(response.body.error).toBe(new UnitNotFoundError().message)
@@ -69,7 +65,7 @@ describe('Delete Unit Tests', () => {
         describe('When the unit does not exist', () => {
           it('should return a Unit Not Find error', async () => {
             const response = await request(expressApp).delete('/unit/123')
-              .set('Authorization', `Bearer ${normalUserToken}`)
+              .set('Authorization', `Bearer ${normalUser.token}`)
 
             expect(response.statusCode).toBe(404)
             expect(response.body.error).toBe(new UnitNotFoundError().message)
@@ -79,7 +75,7 @@ describe('Delete Unit Tests', () => {
           it('should delete the Unit', async () => {
             const unit = await FactoryUnit.create({ companyId: company.id })
             const response = await request(expressApp).delete(`/unit/${unit.id}`)
-              .set('Authorization', `Bearer ${normalUserToken}`)
+              .set('Authorization', `Bearer ${normalUser.token}`)
 
             expect(response.statusCode).toBe(204)
             const findUnit = await prisma.unit.findUnique({ where: { id: unit.id } })

@@ -11,10 +11,7 @@ describe('Get Company By ID Tests', () => {
     let normalUser: FactoryUser,
       adminUser: FactoryUser,
       superAdminUser: FactoryUser,
-      company: FactoryCompany,
-      normalUserToken: string,
-      adminToken: string,
-      superAdminToken: string
+      company: FactoryCompany
 
     beforeAll(async () => {
       company = await FactoryCompany.create({})
@@ -28,14 +25,11 @@ describe('Get Company By ID Tests', () => {
       adminUser = users[1]
       superAdminUser = users[2]
 
-      const tokens = await Promise.all([
+      await Promise.all([
         normalUser.login(),
         adminUser.login(),
         superAdminUser.login()
       ])
-      normalUserToken = tokens[0]
-      adminToken = tokens[1]
-      superAdminToken = tokens[2]
     })
     afterAll(async () => {
       // TODO: Simplificar com o Promise.all
@@ -47,7 +41,7 @@ describe('Get Company By ID Tests', () => {
         it('should return the company', async () => {
           const newCompany = await FactoryCompany.create({})
           const response = await request(expressApp).get(`/company/${newCompany.id}`)
-            .set('Authorization', `Bearer ${superAdminToken}`)
+            .set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(200)
           expect(response.body.id).toBe(newCompany.id)
@@ -58,7 +52,7 @@ describe('Get Company By ID Tests', () => {
       describe('And the company does not exists', () => {
         it('should return a Company Not Found error', async () => {
           const response = await request(expressApp).delete('/company/123')
-            .set('Authorization', `Bearer ${superAdminToken}`)
+            .set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(404)
           expect(response.body.error).toBe(new CompanyNotFoundError().message)
@@ -69,7 +63,7 @@ describe('Get Company By ID Tests', () => {
       describe('And he tries to get information about its own company', () => {
         it.skip('Should return the company',async () => {
           const response = await request(expressApp).get(`/company/${company.id}`)
-            .set('Authorization', `Bearer ${adminToken}`)
+            .set('Authorization', `Bearer ${adminUser.token}`)
 
           expect(response.statusCode).toBe(200)
           expect(response.body.id).toBe(company.id)
@@ -79,7 +73,7 @@ describe('Get Company By ID Tests', () => {
         it('should return a company not found error', async () => {
           const anotherCompany = await FactoryCompany.create({})
           const response = await request(expressApp).get(`/company/${anotherCompany.id}`)
-            .set('Authorization', `Bearer ${adminToken}`)
+            .set('Authorization', `Bearer ${adminUser.token}`)
 
           expect(response.statusCode).toBe(404)
           expect(response.body.error).toBe(new CompanyNotFoundError().message)
@@ -91,7 +85,7 @@ describe('Get Company By ID Tests', () => {
     describe('When he is an normal User', () => {
       it('should return an forbidden error', async () => {
         const response = await request(expressApp).get('/company/123')
-          .set('Authorization', `Bearer ${normalUserToken}`)
+          .set('Authorization', `Bearer ${normalUser.token}`)
 
         expect(response.statusCode).toBe(403)
       })

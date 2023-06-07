@@ -14,9 +14,7 @@ describe('Create Asset Tests', () => {
   describe('Given an Authenticated User', () => {
     let normalUser: FactoryUser,
       superAdminUser: FactoryUser,
-      company: FactoryCompany,
-      normalUserToken: string,
-      superAdminToken: string
+      company: FactoryCompany
 
     beforeAll(async () => {
       company = await FactoryCompany.create({})
@@ -28,9 +26,7 @@ describe('Create Asset Tests', () => {
       normalUser = users[0]
       superAdminUser = users[1]
 
-      const tokens = await Promise.all([normalUser.login(), superAdminUser.login()])
-      normalUserToken = tokens[0]
-      superAdminToken = tokens[1]
+      await Promise.all([normalUser.login(), superAdminUser.login()])
     })
     afterAll(async () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
@@ -52,7 +48,7 @@ describe('Create Asset Tests', () => {
             healthLevel: 100,
             imageURL: faker.image.url(),
             unitId: unitFromAnotherCompany.id
-          }).set('Authorization', `Bearer ${superAdminToken}`)
+          }).set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(201)
           expect(response.body.id).toBeTruthy()
@@ -72,7 +68,7 @@ describe('Create Asset Tests', () => {
             status: 'testing',
             healthLevel: 1000,
             companyId: company.id
-          }).set('Authorization', `Bearer ${superAdminToken}`)
+          }).set('Authorization', `Bearer ${superAdminUser.token}`)
 
           expect(response.statusCode).toBe(400)
         })
@@ -90,7 +86,7 @@ describe('Create Asset Tests', () => {
             healthLevel: 100,
             imageURL: faker.image.url(),
             unitId: faker.database.mongodbObjectId()
-          }).set('Authorization', `Bearer ${normalUserToken}`)
+          }).set('Authorization', `Bearer ${normalUser.token}`)
 
           expect(response.statusCode).toBe(400)
           expect(response.body.error).toBe(new UnitNotFoundError().message)
@@ -110,7 +106,7 @@ describe('Create Asset Tests', () => {
             healthLevel: 100,
             imageURL: faker.image.url(),
             unitId: unit.id
-          }).set('Authorization', `Bearer ${normalUserToken}`)
+          }).set('Authorization', `Bearer ${normalUser.token}`)
 
           expect(response.statusCode).toBe(201)
           expect(response.body.id).toBeTruthy()
