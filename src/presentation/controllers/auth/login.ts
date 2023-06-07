@@ -12,12 +12,12 @@ export class LoginController implements Controller {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const requestErrors = await this.validator.validate(httpRequest.body)
-    if (requestErrors) {
-      return badRequest(requestErrors)
-    }
-    const { email, password } = httpRequest.body
     try {
+      const requestErrors = await this.validator.validate(httpRequest.body)
+      if (requestErrors) {
+        return badRequest(requestErrors)
+      }
+      const { email, password } = httpRequest.body
       const result = await this.loginUseCase.login({ email, password })
       return ok(result)
     } catch (error: any) {
