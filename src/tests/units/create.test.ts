@@ -30,6 +30,7 @@ describe('Create Unit Tests', () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
+
     describe('When he is a SuperAdmin', () => {
       describe('And he wants to create a Unit for Another Company', () => {
         it('should create the Unit', async () => {
@@ -77,7 +78,7 @@ describe('Create Unit Tests', () => {
           expect(response.body.error).toBe(new CompanyNotFoundError().message)
         })
       })
-      describe('When he wants to create a unit his own company', () => {
+      describe('When he wants to create a unit for his own company', () => {
         it('should create the Unit', async () => {
           const name = faker.commerce.product()
           const description = faker.commerce.productDescription()

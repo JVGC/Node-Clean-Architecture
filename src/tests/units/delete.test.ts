@@ -30,6 +30,7 @@ describe('Delete Unit Tests', () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
+
     describe('When he is a SuperAdmin', () => {
       describe('And he wants to delete a Unit of Another Company', () => {
         it('should delete the Unit', async () => {

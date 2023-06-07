@@ -9,8 +9,9 @@ import { FactoryUser } from '../factories/user'
 describe('Login Tests', () => {
   describe('Given a Login Request', () => {
     describe('When the user exists', () => {
-      let user: FactoryUser
-      let company: FactoryCompany
+      let user: FactoryUser,
+        company: FactoryCompany
+
       beforeAll(async () => {
         company = await FactoryCompany.create({})
         user = await FactoryUser.create({ companyId: company.id })
@@ -61,10 +62,10 @@ describe('Login Tests', () => {
     })
     describe('When email/password are not sent', () => {
       it.skip('Should return a bad request error', async () => {
-        const response = await request(expressApp).post('/login').send(
-          {
-          }
-        )
+        const response = await request(expressApp).post('/login')
+          .send(
+            {}
+          )
 
         expect(response.statusCode).toBe(400)
       })

@@ -31,8 +31,9 @@ describe('Update Unit Tests', () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
+
     describe('When he is a SuperAdmin', () => {
-      describe('And he wants to update a Unit of Another Company', () => {
+      describe('And he wants to update an Unit of Another Company', () => {
         it('should update the Unit', async () => {
           const newName = faker.commerce.productName()
           const newDescription = faker.commerce.productDescription()
@@ -67,8 +68,8 @@ describe('Update Unit Tests', () => {
       })
     })
     describe('When he is not a SuperAdmin', () => {
-      describe('And he wants to update a unit from another company', () => {
-        it('Should return a Unit not Found error', async () => {
+      describe('And he wants to update an unit from another company', () => {
+        it('Should return an Unit not Found error', async () => {
           const anotherCompany = await FactoryCompany.create({})
           const unitFromAnotherCompany = await FactoryUnit.create({ companyId: anotherCompany.id })
           const response = await request(expressApp).patch(`/unit/${unitFromAnotherCompany.id}`)
@@ -85,9 +86,9 @@ describe('Update Unit Tests', () => {
           await anotherCompany.delete()
         })
       })
-      describe('When he wants to update a unit from its own company', () => {
+      describe('When he wants to update an unit from its own company', () => {
         describe('When the unit does not exist', () => {
-          it('should return a Unit Not Find error', async () => {
+          it('should return an Unit Not Find error', async () => {
             const response = await request(expressApp).patch('/unit/123')
               .send({
                 name: faker.commerce.productName(),
@@ -99,8 +100,8 @@ describe('Update Unit Tests', () => {
             expect(response.body.error).toBe(new UnitNotFoundError().message)
           })
         })
-        describe('When the unit exist', () => {
-          it('should get the Unit', async () => {
+        describe('When the unit exists', () => {
+          it('should update the Unit', async () => {
             const newName = faker.commerce.productName()
             const newDescription = faker.commerce.productDescription()
             const unit = await FactoryUnit.create({ companyId: company.id })
