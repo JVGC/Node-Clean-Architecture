@@ -84,7 +84,7 @@ describe('Create User Tests', () => {
         })
       })
       describe('And he sends an invalid email', () => {
-        it.skip('should return a bad request error', async () => {
+        it('should return a bad request error', async () => {
           const response = await request(expressApp).post('/user').send({
             name: faker.person.fullName(),
             email: faker.internet.email({ provider: 'tractian.com' }),
@@ -96,7 +96,7 @@ describe('Create User Tests', () => {
         })
       })
       describe('And he sends an invalid role', () => {
-        it.skip('should return a bad request error', async () => {
+        it('should return a bad request error', async () => {
           const response = await request(expressApp).post('/user').send({
             name: faker.person.fullName(),
             email: faker.internet.email({ provider: 'tractian.com' }),

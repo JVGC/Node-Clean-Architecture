@@ -55,7 +55,7 @@ describe('Update User Tests', () => {
           await anotherCompany.delete()
         })
       })
-      describe('And he wants to update ab user password besides himself', () => {
+      describe('And he wants to update an user password besides himself', () => {
         it('should return an forbidden error', async () => {
           const response = await request(expressApp).patch(`/user/${adminUser.id}`)
             .send({
@@ -112,6 +112,33 @@ describe('Update User Tests', () => {
             expect(response.statusCode).toBe(400)
             expect(response.body.error).toBe(new EmailAlreadyInUse().message)
           })
+        })
+      })
+      describe('And he sends an invalid email', () => {
+        it('should return a bad request error', async () => {
+          const response = await request(expressApp).patch(`/user/${adminUser.id}`)
+            .send({
+              name: faker.person.fullName(),
+              email: faker.internet.email({ provider: 'tractian.com' }),
+              password: faker.internet.password(),
+              role: 'new role',
+              companyId: '123'
+            }).set('Authorization', `Bearer ${superAdminUser.token}`)
+          expect(response.statusCode).toBe(400)
+        })
+      })
+      describe('And he sends an invalid role', () => {
+        it('should return a bad request error', async () => {
+          const response = await request(expressApp).patch(`/user/${adminUser.id}`)
+            .send({
+              name: faker.person.fullName(),
+              email: faker.internet.email({ provider: 'tractian.com' }),
+              password: faker.internet.password(),
+              role: 'new role',
+              companyId: '123'
+            }).set('Authorization', `Bearer ${superAdminUser.token}`)
+
+          expect(response.statusCode).toBe(400)
         })
       })
     })

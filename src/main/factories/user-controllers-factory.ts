@@ -11,6 +11,8 @@ import { DeleteUserByIdController } from '../../presentation/controllers/users/d
 import { GetUserByIdController } from '../../presentation/controllers/users/get-user-by-id-controller'
 import { ListUsersController } from '../../presentation/controllers/users/list-users-controller'
 import { UpdateUserController } from '../../presentation/controllers/users/update-user-controller'
+import { ZodValidator } from '../../presentation/helpers/zod-validator'
+import { zodCreateUserObject, zodUpdateUserObject } from '../../presentation/helpers/zod-validators/users'
 
 export const makeCreateUser = (): CreateUserController => {
   const salt = 12
@@ -18,7 +20,8 @@ export const makeCreateUser = (): CreateUserController => {
   const prismaUserRepository = new PrismaUserRepository()
   const prismacompanyRepository = new PrismaCompanyRepository()
   const createUserUseCase = new CreateUserUseCase(prismaUserRepository, prismacompanyRepository, bcryptHasher)
-  return new CreateUserController(createUserUseCase)
+  const zodCreateUserValidator = new ZodValidator(zodCreateUserObject)
+  return new CreateUserController(createUserUseCase, zodCreateUserValidator)
 }
 
 export const makeGetUserById = (): GetUserByIdController => {
@@ -44,5 +47,6 @@ export const makeUpdateUser = (): UpdateUserController => {
   const bcryptHasher = new BcryptAdapter(salt)
   const prismaUserRepository = new PrismaUserRepository()
   const updateUserUseCase = new UpdateUserUseCase(prismaUserRepository, bcryptHasher)
-  return new UpdateUserController(updateUserUseCase)
+  const zodUpdateUserValidator = new ZodValidator(zodUpdateUserObject)
+  return new UpdateUserController(updateUserUseCase, zodUpdateUserValidator)
 }
