@@ -12,7 +12,6 @@ export interface UpdateAssetParams {
   model?: string
   owner?: string
   imageURL?: string
-  unitId?: string
   healthLevel?: number
   status?: AssetsStatus
 }
@@ -23,10 +22,13 @@ export class UpdateAssetUseCase {
   ) {}
 
   async update (assetId: string, data: UpdateAssetParams, loggedUser: UserModelResponseWithoutPassword): Promise<AssetModelResponse> {
-    const asset = await this.assetRepository.update(assetId, data)
+    const asset = await this.assetRepository.getById(assetId)
     if (!asset) throw new AssetNotFoundError()
 
     if (loggedUser.role !== UserRoles.SuperAdmin && asset.companyId !== loggedUser.companyId) { throw new AssetNotFoundError() }
-    return asset
+    const updatedAsset = await this.assetRepository.update(assetId, data)
+
+    if (!updatedAsset) throw new AssetNotFoundError()
+    return updatedAsset
   }
 }
