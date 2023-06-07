@@ -14,10 +14,17 @@ describe('List Companies Tests', () => {
       superAdminToken: string
     beforeAll(async () => {
       company = await FactoryCompany.create({})
-      superAdminUser = await FactoryUser.create({ companyId: company.id, role: UserRoles.SuperAdmin })
-      superAdminToken = await superAdminUser.login()
-      adminUser = await FactoryUser.create({ companyId: company.id, role: UserRoles.Admin })
-      adminToken = await adminUser.login()
+
+      const users = await Promise.all([
+        FactoryUser.create({ companyId: company.id, role: UserRoles.Admin }),
+        FactoryUser.create({ companyId: company.id, role: UserRoles.SuperAdmin })]
+      )
+      adminUser = users[0]
+      superAdminUser = users[1]
+
+      const tokens = await Promise.all([adminUser.login(), superAdminUser.login()])
+      adminToken = tokens[0]
+      superAdminToken = tokens[1]
     })
     afterAll(async () => {
       // TODO: Simplificar com o Promise.all

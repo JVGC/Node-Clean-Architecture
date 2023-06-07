@@ -15,14 +15,27 @@ describe('Get Company By ID Tests', () => {
       normalUserToken: string,
       adminToken: string,
       superAdminToken: string
+
     beforeAll(async () => {
       company = await FactoryCompany.create({})
-      normalUser = await FactoryUser.create({ companyId: company.id, role: UserRoles.User })
-      normalUserToken = await normalUser.login()
-      superAdminUser = await FactoryUser.create({ companyId: company.id, role: UserRoles.SuperAdmin })
-      superAdminToken = await superAdminUser.login()
-      adminUser = await FactoryUser.create({ companyId: company.id, role: UserRoles.Admin })
-      adminToken = await adminUser.login()
+
+      const users = await Promise.all([
+        FactoryUser.create({ companyId: company.id, role: UserRoles.User }),
+        FactoryUser.create({ companyId: company.id, role: UserRoles.Admin }),
+        FactoryUser.create({ companyId: company.id, role: UserRoles.SuperAdmin })
+      ])
+      normalUser = users[0]
+      adminUser = users[1]
+      superAdminUser = users[2]
+
+      const tokens = await Promise.all([
+        normalUser.login(),
+        adminUser.login(),
+        superAdminUser.login()
+      ])
+      normalUserToken = tokens[0]
+      adminToken = tokens[1]
+      superAdminToken = tokens[2]
     })
     afterAll(async () => {
       // TODO: Simplificar com o Promise.all

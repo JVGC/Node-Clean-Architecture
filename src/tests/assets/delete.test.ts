@@ -16,12 +16,20 @@ describe('Delete Asset Tests', () => {
       company: FactoryCompany,
       normalUserToken: string,
       superAdminToken: string
+
     beforeAll(async () => {
       company = await FactoryCompany.create({})
-      normalUser = await FactoryUser.create({ companyId: company.id, role: UserRoles.User })
-      normalUserToken = await normalUser.login()
-      superAdminUser = await FactoryUser.create({ companyId: company.id, role: UserRoles.SuperAdmin })
-      superAdminToken = await superAdminUser.login()
+
+      const users = await Promise.all([
+        FactoryUser.create({ companyId: company.id, role: UserRoles.User }),
+        FactoryUser.create({ companyId: company.id, role: UserRoles.SuperAdmin })]
+      )
+      normalUser = users[0]
+      superAdminUser = users[1]
+
+      const tokens = await Promise.all([normalUser.login(), superAdminUser.login()])
+      normalUserToken = tokens[0]
+      superAdminToken = tokens[1]
     })
     afterAll(async () => {
       await Promise.all([normalUser.delete(), superAdminUser.delete()])
