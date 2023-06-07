@@ -89,8 +89,8 @@ describe('Create Asset Tests', () => {
           expect(response.body.error).toBe(new UnitNotFoundError().message)
         })
       })
-      describe('When he wants to create a unit for his own company', () => {
-        it('should create the Unit', async () => {
+      describe('When he wants to create a asset for his own company', () => {
+        it('should create the Asset', async () => {
           const unit = await FactoryUnit.create({ companyId: company.id })
           const name = faker.commerce.product()
           const description = faker.commerce.productDescription()
