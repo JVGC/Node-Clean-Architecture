@@ -1,0 +1,15 @@
+on:
+  push:
+    branches: [c/gh-actions]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    step:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run Build
+        run: |
+          yarn
+          yarn build
