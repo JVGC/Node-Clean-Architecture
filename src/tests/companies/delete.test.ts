@@ -29,6 +29,7 @@ describe('Delete Company Tests', () => {
       await Promise.all([adminUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
+
     describe('When he is a SuperAdmin',() => {
       describe('And the company exists', () => {
         it('should delete the company', async () => {
@@ -45,7 +46,7 @@ describe('Delete Company Tests', () => {
           expect(findCompany).toBeNull()
         })
       })
-      describe('And the company does not exists', () => {
+      describe('And the company does not exist', () => {
         it('should return a Company Not Found error', async () => {
           const response = await request(expressApp).delete('/company/123')
             .set('Authorization', `Bearer ${superAdminUser.token}`)

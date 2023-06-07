@@ -30,6 +30,7 @@ describe('Create Company Tests', () => {
       await Promise.all([adminUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
+
     describe('When he is a SuperAdmin',() => {
       describe('When sending all correct params', () => {
         it('should create a new company', async () => {
@@ -48,14 +49,8 @@ describe('Create Company Tests', () => {
         })
       })
       describe('When sending a code that is already being used', () => {
-        let anotherCompany: FactoryCompany
-        beforeAll(async () => {
-          anotherCompany = await FactoryCompany.create({})
-        })
-        afterAll(async () => {
-          await anotherCompany.delete()
-        })
         it('should return a Code is Already being Used error', async () => {
+          const anotherCompany = await FactoryCompany.create({})
           const companyName = faker.person.fullName()
           const response = await request(expressApp).post('/company').send({
             name: companyName,
@@ -64,6 +59,8 @@ describe('Create Company Tests', () => {
 
           expect(response.statusCode).toBe(400)
           expect(response.body.error).toBe(new CodeAlreadyInUse().message)
+
+          await anotherCompany.delete()
         })
       })
       describe('When not sending code/name', () => {

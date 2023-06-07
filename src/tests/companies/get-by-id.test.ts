@@ -32,10 +32,10 @@ describe('Get Company By ID Tests', () => {
       ])
     })
     afterAll(async () => {
-      // TODO: Simplificar com o Promise.all
       await Promise.all([normalUser.delete(), adminUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
+
     describe('When he is a SuperAdmin',() => {
       describe('And the company exists', () => {
         it('should return the company', async () => {
@@ -61,7 +61,7 @@ describe('Get Company By ID Tests', () => {
     })
     describe('When he is an Admin', () => {
       describe('And he tries to get information about its own company', () => {
-        it.skip('Should return the company',async () => {
+        it('Should return the company', async () => {
           const response = await request(expressApp).get(`/company/${company.id}`)
             .set('Authorization', `Bearer ${adminUser.token}`)
 
@@ -70,7 +70,7 @@ describe('Get Company By ID Tests', () => {
         })
       })
       describe('And he tries to get information about another company', () => {
-        it('should return a company not found error', async () => {
+        it('should return a Company Not Found error', async () => {
           const anotherCompany = await FactoryCompany.create({})
           const response = await request(expressApp).get(`/company/${anotherCompany.id}`)
             .set('Authorization', `Bearer ${adminUser.token}`)

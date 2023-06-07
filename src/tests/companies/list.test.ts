@@ -10,6 +10,7 @@ describe('List Companies Tests', () => {
     let adminUser: FactoryUser,
       superAdminUser: FactoryUser,
       company: FactoryCompany
+
     beforeAll(async () => {
       company = await FactoryCompany.create({})
 
@@ -39,7 +40,7 @@ describe('List Companies Tests', () => {
         })
       })
       describe('And there is at least 2 companies', () => {
-        it('should return all the companies existed', async () => {
+        it('should return all the companies in the database', async () => {
           const newCompany = await FactoryCompany.create({})
           const response = await request(expressApp).get('/company')
             .set('Authorization', `Bearer ${superAdminUser.token}`)
