@@ -26,9 +26,7 @@ describe('Get Company By ID Tests', () => {
     })
     afterAll(async () => {
       // TODO: Simplificar com o Promise.all
-      await normalUser.delete()
-      await adminUser.delete()
-      await superAdminUser.delete()
+      await Promise.all([normalUser.delete(), adminUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
     describe('When he is a SuperAdmin',() => {

@@ -25,8 +25,7 @@ describe('Create Asset Tests', () => {
       superAdminToken = await superAdminUser.login()
     })
     afterAll(async () => {
-      await normalUser.delete()
-      await superAdminUser.delete()
+      await Promise.all([normalUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
     describe('When he is a SuperAdmin', () => {

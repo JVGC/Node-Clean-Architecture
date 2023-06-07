@@ -22,8 +22,7 @@ describe('Delete Company Tests', () => {
       superAdminToken = await superAdminUser.login()
     })
     afterAll(async () => {
-      await adminUser.delete()
-      await superAdminUser.delete()
+      await Promise.all([adminUser.delete(), superAdminUser.delete()])
       await company.delete()
     })
     describe('When he is a SuperAdmin',() => {
