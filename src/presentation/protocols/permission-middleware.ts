@@ -1,5 +1,5 @@
-import { HttpRequest, HttpResponse } from "./http";
+import { type HttpRequest, type HttpResponse } from './http'
 
-export interface PermissionMiddleware{
-    handle(httpRequest: HttpRequest): Promise<HttpResponse>
+export interface PermissionMiddleware {
+  handle: (httpRequest: HttpRequest) => Promise<HttpResponse>
 }

@@ -1,9 +1,9 @@
-import { UnitNotFoundError } from "../../../domain/errors"
-import { UserModelResponse } from "../../../domain/models/user"
-import { DeleteUnitByIdUseCase } from "../../../domain/usecases/unit/delete-unit"
-import { notFound, ok, serverError } from "../../helpers/http-helper"
-import { Controller } from "../../protocols/controller"
-import { HttpRequest, HttpResponse } from "../../protocols/http"
+import { UnitNotFoundError } from '../../../domain/errors'
+import { type UserModelResponseWithoutPassword } from '../../../domain/models/user'
+import { type DeleteUnitByIdUseCase } from '../../../domain/usecases/unit/delete-unit'
+import { noContent, notFound, serverError } from '../../helpers/http-helper'
+import { type Controller } from '../../protocols/controller'
+import { type HttpRequest, type HttpResponse } from '../../protocols/http'
 
 export class DeleteUnitByIdController implements Controller {
   constructor (
@@ -12,12 +12,12 @@ export class DeleteUnitByIdController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const loggedUser = httpRequest.loggedUser as UserModelResponse
+      const loggedUser = httpRequest.loggedUser as UserModelResponseWithoutPassword
       const { id: unitId } = httpRequest.params
-      const result = await this.deleteUnitById.delete(unitId, loggedUser)
-      return ok(result)
+      await this.deleteUnitById.delete(unitId, loggedUser)
+      return noContent()
     } catch (error: any) {
-      if(error instanceof UnitNotFoundError){
+      if (error instanceof UnitNotFoundError) {
         return notFound(error)
       }
       return serverError(error)

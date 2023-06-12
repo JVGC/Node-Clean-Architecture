@@ -1,4 +1,4 @@
-import { Express, Router } from 'express'
+import { Router, type Express } from 'express'
 import { adaptRoute } from '../adapters/express-adapter'
 import { makeCreateAsset, makeDeleteAssetById, makeGetAssetById, makeListAssets, makeUpdateAsset } from '../factories/asset-controllers-factory'
 import { makeLogin } from '../factories/auth-controllers-factory'
@@ -9,33 +9,32 @@ import { authMiddleware } from './middlewares/auth-middlewares'
 import { adminMiddleware, superAdminMiddleware } from './middlewares/permissions-middleware'
 
 export default (app: Express): void => {
+  const router = Router()
+  app.use('/', router)
 
-    const router = Router()
-    app.use('/', router)
+  router.post('/login', adaptRoute(makeLogin()))
 
-    router.post('/login', adaptRoute(makeLogin()))
+  router.post('/company', authMiddleware, superAdminMiddleware, adaptRoute(makeCreateCompany()))
+  router.delete('/company/:id', authMiddleware, superAdminMiddleware, adaptRoute(makeDeleteCompanyById()))
+  router.get('/company', authMiddleware, superAdminMiddleware, adaptRoute(makeListCompanies()))
+  router.patch('/company/:id', authMiddleware, superAdminMiddleware, adaptRoute(makeUpdateCompany()))
 
-    router.post('/company', authMiddleware, superAdminMiddleware, adaptRoute(makeCreateCompany()))
-    router.delete('/company/:id', authMiddleware, superAdminMiddleware, adaptRoute(makeDeleteCompanyById()))
-    router.get('/company', authMiddleware, superAdminMiddleware, adaptRoute(makeListCompanies()))
-    router.patch('/company/:id', authMiddleware, superAdminMiddleware, adaptRoute(makeUpdateCompany()))
+  router.get('/company/:id', authMiddleware, adminMiddleware, adaptRoute(makeGetCompanyById()))
+  router.post('/user', authMiddleware, adminMiddleware, adaptRoute(makeCreateUser()))
+  router.delete('/user/:id', authMiddleware, adminMiddleware, adaptRoute(makeDeleteUserById()))
 
-    router.get('/company/:id', authMiddleware, adminMiddleware, adaptRoute(makeGetCompanyById()))
-    router.post('/user', authMiddleware, adminMiddleware, adaptRoute(makeCreateUser()))
-    router.get('/user/:id', authMiddleware, adminMiddleware, adaptRoute(makeGetUserById()))
-    router.delete('/user/:id', authMiddleware, adminMiddleware, adaptRoute(makeDeleteUserById()))
-    router.get('/user', authMiddleware, adminMiddleware, adaptRoute(makeListUsers()))
+  router.get('/user', authMiddleware, adaptRoute(makeListUsers()))
+  router.get('/user/:id', authMiddleware, adaptRoute(makeGetUserById()))
+  router.patch('/user/:id', authMiddleware, adaptRoute(makeUpdateUser()))
+  router.post('/unit', authMiddleware, adaptRoute(makeCreateUnit()))
+  router.get('/unit/:id', authMiddleware, adaptRoute(makeGetUnitById()))
+  router.delete('/unit/:id', authMiddleware, adaptRoute(makeDeleteUnitById()))
+  router.get('/unit', authMiddleware, adaptRoute(makeListUnits()))
+  router.patch('/unit/:id', authMiddleware, adaptRoute(makeUpdateUnit()))
 
-    router.patch('/user/:id', authMiddleware, adaptRoute(makeUpdateUser()))
-    router.post('/unit', authMiddleware, adaptRoute(makeCreateUnit()))
-    router.get('/unit/:id', authMiddleware, adaptRoute(makeGetUnitById()))
-    router.delete('/unit/:id', authMiddleware, adaptRoute(makeDeleteUnitById()))
-    router.get('/unit', authMiddleware, adaptRoute(makeListUnits()))
-    router.patch('/unit/:id', authMiddleware, adaptRoute(makeUpdateUnit()))
-
-    router.post('/asset', authMiddleware, adaptRoute(makeCreateAsset()))
-    router.get('/asset/:id', authMiddleware, adaptRoute(makeGetAssetById()))
-    router.delete('/asset/:id', authMiddleware, adaptRoute(makeDeleteAssetById()))
-    router.get('/asset', authMiddleware, adaptRoute(makeListAssets()))
-    router.patch('/asset/:id', authMiddleware, adaptRoute(makeUpdateAsset()))
-  }
+  router.post('/asset', authMiddleware, adaptRoute(makeCreateAsset()))
+  router.get('/asset/:id', authMiddleware, adaptRoute(makeGetAssetById()))
+  router.delete('/asset/:id', authMiddleware, adaptRoute(makeDeleteAssetById()))
+  router.get('/asset', authMiddleware, adaptRoute(makeListAssets()))
+  router.patch('/asset/:id', authMiddleware, adaptRoute(makeUpdateAsset()))
+}

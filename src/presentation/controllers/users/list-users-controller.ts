@@ -1,8 +1,8 @@
-import { UserModelResponse, UserRoles } from "../../../domain/models/user"
-import { ListUsersUseCase } from "../../../domain/usecases/users/list-users"
-import { ok, serverError } from "../../helpers/http-helper"
-import { Controller } from "../../protocols/controller"
-import { HttpRequest, HttpResponse } from "../../protocols/http"
+import { UserRoles, type UserModelResponseWithoutPassword } from '../../../domain/models/user'
+import { type ListUsersUseCase } from '../../../domain/usecases/users/list-users'
+import { ok, serverError } from '../../helpers/http-helper'
+import { type Controller } from '../../protocols/controller'
+import { type HttpRequest, type HttpResponse } from '../../protocols/http'
 
 export class ListUsersController implements Controller {
   constructor (
@@ -11,12 +11,13 @@ export class ListUsersController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const loggedUser = httpRequest.loggedUser as UserModelResponse
+      const loggedUser = httpRequest.loggedUser as UserModelResponseWithoutPassword
       let result
-      if(loggedUser.role === UserRoles.Admin)
+      if (loggedUser.role !== UserRoles.SuperAdmin) {
         result = await this.listUsersUseCase.list(loggedUser.companyId)
-      else
+      } else {
         result = await this.listUsersUseCase.list()
+      }
       return ok(result)
     } catch (error: any) {
       return serverError(error)

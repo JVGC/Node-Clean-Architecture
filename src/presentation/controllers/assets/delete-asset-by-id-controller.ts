@@ -1,9 +1,9 @@
-import { AssetNotFoundError } from "../../../domain/errors"
-import { UserModelResponse } from "../../../domain/models/user"
-import { DeleteAssetByIdUseCase } from "../../../domain/usecases/asset/delete-asset"
-import { notFound, ok, serverError } from "../../helpers/http-helper"
-import { Controller } from "../../protocols/controller"
-import { HttpRequest, HttpResponse } from "../../protocols/http"
+import { AssetNotFoundError } from '../../../domain/errors'
+import { type UserModelResponseWithoutPassword } from '../../../domain/models/user'
+import { type DeleteAssetByIdUseCase } from '../../../domain/usecases/asset/delete-asset'
+import { noContent, notFound, serverError } from '../../helpers/http-helper'
+import { type Controller } from '../../protocols/controller'
+import { type HttpRequest, type HttpResponse } from '../../protocols/http'
 
 export class DeleteAssetByIdController implements Controller {
   constructor (
@@ -12,12 +12,12 @@ export class DeleteAssetByIdController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const loggedUser = httpRequest.loggedUser as UserModelResponse
+      const loggedUser = httpRequest.loggedUser as UserModelResponseWithoutPassword
       const { id: assetId } = httpRequest.params
-      const result = await this.deleteAssetById.delete(assetId, loggedUser)
-      return ok(result)
+      await this.deleteAssetById.delete(assetId, loggedUser)
+      return noContent()
     } catch (error: any) {
-      if(error instanceof AssetNotFoundError){
+      if (error instanceof AssetNotFoundError) {
         return notFound(error)
       }
       return serverError(error)

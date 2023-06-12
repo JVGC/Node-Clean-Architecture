@@ -1,37 +1,35 @@
-import { CompanyNotFoundError, EmailAlreadyInUse } from "../../../domain/errors"
-import { UserModelResponse, UserRoles } from "../../../domain/models/user"
-import { CreateUserUseCase } from "../../../domain/usecases/users/create-user"
-import { badRequest, ok, serverError } from "../../helpers/http-helper"
-import { Controller } from "../../protocols/controller"
-import { HttpRequest, HttpResponse } from "../../protocols/http"
+import { AccessDeniedError, CompanyNotFoundError, EmailAlreadyInUse } from '../../../domain/errors'
+import { type UserModelResponseWithoutPassword } from '../../../domain/models/user'
+import { type CreateUserUseCase } from '../../../domain/usecases/users/create-user'
+import { badRequest, created, forbidden, serverError } from '../../helpers/http-helper'
+import { type Controller } from '../../protocols/controller'
+import { type HttpRequest, type HttpResponse } from '../../protocols/http'
+import { type Validator } from '../../protocols/validator'
 
 export class CreateUserController implements Controller {
   constructor (
-    private readonly createUserUseCase: CreateUserUseCase
+    private readonly createUserUseCase: CreateUserUseCase,
+    private readonly validator: Validator
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const loggedUser = httpRequest.loggedUser as UserModelResponse
-      const { email, name,  password, role, companyId } = httpRequest.body
-      let result: UserModelResponse
-
-      if(loggedUser.role !== UserRoles.SuperAdmin){
-        result = await this.createUserUseCase.create({
-          email, name,  password, role, companyId: loggedUser.companyId
-        })
-      }else{
-        result = await this.createUserUseCase.create({
-          email, name,  password, role, companyId
-        })
+      const requestErrors = await this.validator.validate(httpRequest.body)
+      if (requestErrors) {
+        return badRequest(requestErrors)
       }
-      return ok(result)
+      const loggedUser = httpRequest.loggedUser as UserModelResponseWithoutPassword
+      const { email, name, password, role, companyId } = httpRequest.body
+      const result = await this.createUserUseCase.create({
+        email, name, password, role, companyId
+      }, loggedUser)
+      return created(result)
     } catch (error: any) {
-      if(error instanceof EmailAlreadyInUse){
+      if (error instanceof EmailAlreadyInUse || error instanceof CompanyNotFoundError) {
         return badRequest(error)
       }
-      if(error instanceof CompanyNotFoundError){
-        return badRequest(error)
+      if (error instanceof AccessDeniedError) {
+        return forbidden(error)
       }
       return serverError(error)
     }
