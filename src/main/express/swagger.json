@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "API Tractian Backend Role Test",
-        "description": "Essa API tem como objetivo documentar as rotas do teste da Tractian",
+        "title": "API Company Backend Role Test",
+        "description": "Essa API tem como objetivo documentar as rotas do teste da Company",
         "contact": {
             "email": "joaovictorgarciacoelho@gmail.com"
         },
@@ -82,8 +82,8 @@
                             "examples": {
                                 "company": {
                                     "value": {
-                                        "name": "Tractian",
-                                        "code": "Tractian CPNJ"
+                                        "name": "Company",
+                                        "code": "Company CPNJ"
                                     }
                                 }
                             }
@@ -211,8 +211,8 @@
                             "examples": {
                                 "company": {
                                     "value": {
-                                        "name": "Tractian",
-                                        "code": "Tractian CPNJ"
+                                        "name": "Company",
+                                        "code": "Company CPNJ"
                                     }
                                 }
                             }
@@ -260,8 +260,8 @@
                                 "unit": {
                                     "value": {
                                         "name": "Unit 1",
-                                        "description": "Tractian Unit 1",
-                                        "companyId": "TRACTIAN_ID"
+                                        "description": "Company Unit 1",
+                                        "companyId": "COMPANY_ID"
                                     }
                                 }
                             }
