@@ -35,7 +35,7 @@ export class FactoryUser {
     companyId,
     name = faker.person.fullName(),
     password = faker.internet.password(),
-    email = faker.internet.email({ provider: 'tractian.com' }),
+    email = faker.internet.email({ provider: 'provider.com' }),
     role = UserRoles.SuperAdmin
   }: FactoryModel): Promise<FactoryUser> {
     const hasher = new BcryptAdapter(12)

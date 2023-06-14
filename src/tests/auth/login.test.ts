@@ -51,7 +51,7 @@ describe('Login Tests', () => {
       it('Should return an User Not Found error', async () => {
         const response = await request(expressApp).post('/login').send(
           {
-            email: faker.internet.email({ provider: 'tractian.com' }),
+            email: faker.internet.email({ provider: 'provider.com' }),
             password: faker.internet.password()
           }
         )

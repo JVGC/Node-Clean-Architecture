@@ -119,7 +119,7 @@ describe('Update User Tests', () => {
           const response = await request(expressApp).patch(`/user/${adminUser.id}`)
             .send({
               name: faker.person.fullName(),
-              email: faker.internet.email({ provider: 'tractian.com' }),
+              email: faker.internet.email({ provider: 'provider.com' }),
               password: faker.internet.password(),
               role: 'new role',
               companyId: '123'
@@ -132,7 +132,7 @@ describe('Update User Tests', () => {
           const response = await request(expressApp).patch(`/user/${adminUser.id}`)
             .send({
               name: faker.person.fullName(),
-              email: faker.internet.email({ provider: 'tractian.com' }),
+              email: faker.internet.email({ provider: 'provider.com' }),
               password: faker.internet.password(),
               role: 'new role',
               companyId: '123'

@@ -42,7 +42,7 @@ describe('Create User Tests', () => {
       describe('And he wants to create a Super Admin User', () => {
         it('should create a new user', async () => {
           const anotherCompany = await FactoryCompany.create({})
-          const userEmail = faker.internet.email({ provider: 'tractian.com' })
+          const userEmail = faker.internet.email({ provider: 'provider.com' })
           const response = await request(expressApp).post('/user').send({
             name: faker.person.fullName(),
             email: userEmail,
@@ -64,7 +64,7 @@ describe('Create User Tests', () => {
       describe('And he wants to create a user for an another company', () => {
         it('should create a new user', async () => {
           const anotherCompany = await FactoryCompany.create({})
-          const userEmail = faker.internet.email({ provider: 'tractian.com' })
+          const userEmail = faker.internet.email({ provider: 'provider.com' })
           const response = await request(expressApp).post('/user').send({
             name: faker.person.fullName(),
             email: userEmail,
@@ -87,7 +87,7 @@ describe('Create User Tests', () => {
         it('should return a bad request error', async () => {
           const response = await request(expressApp).post('/user').send({
             name: faker.person.fullName(),
-            email: faker.internet.email({ provider: 'tractian.com' }),
+            email: faker.internet.email({ provider: 'provider.com' }),
             password: faker.internet.password(),
             role: 'new role',
             companyId: '123'
@@ -99,7 +99,7 @@ describe('Create User Tests', () => {
         it('should return a bad request error', async () => {
           const response = await request(expressApp).post('/user').send({
             name: faker.person.fullName(),
-            email: faker.internet.email({ provider: 'tractian.com' }),
+            email: faker.internet.email({ provider: 'provider.com' }),
             password: faker.internet.password(),
             role: 'new role',
             companyId: '123'
@@ -112,7 +112,7 @@ describe('Create User Tests', () => {
         it('should return a Company Not Found Error', async () => {
           const response = await request(expressApp).post('/user').send({
             name: faker.person.fullName(),
-            email: faker.internet.email({ provider: 'tractian.com' }),
+            email: faker.internet.email({ provider: 'provider.com' }),
             password: faker.internet.password(),
             role: UserRoles.User,
             companyId: '123'
@@ -127,7 +127,7 @@ describe('Create User Tests', () => {
       describe('And he wants to create a user for its own company', () => {
         describe('And it is an Admin user', () => {
           it('should create a new user', async () => {
-            const userEmail = faker.internet.email({ provider: 'tractian.com' })
+            const userEmail = faker.internet.email({ provider: 'provider.com' })
             const response = await request(expressApp).post('/user').send({
               name: faker.person.fullName(),
               email: userEmail,
@@ -147,7 +147,7 @@ describe('Create User Tests', () => {
         })
         describe('And it is a SuperAdmin user', () => {
           it('should return an Access Denied error', async () => {
-            const userEmail = faker.internet.email({ provider: 'tractian.com' })
+            const userEmail = faker.internet.email({ provider: 'provider.com' })
             const response = await request(expressApp).post('/user').send({
               name: faker.person.fullName(),
               email: userEmail,
@@ -166,7 +166,7 @@ describe('Create User Tests', () => {
           const anotherCompany = await FactoryCompany.create({})
           const response = await request(expressApp).post('/user').send({
             name: faker.person.fullName(),
-            email: faker.internet.email({ provider: 'tractian.com' }),
+            email: faker.internet.email({ provider: 'provider.com' }),
             password: faker.internet.password(),
             role: UserRoles.User,
             companyId: anotherCompany.id
@@ -182,7 +182,7 @@ describe('Create User Tests', () => {
       it('should return a forbidden error', async () => {
         const response = await request(expressApp).post('/user').send({
           name: faker.person.fullName(),
-          email: faker.internet.email({ provider: 'tractian.com' }),
+          email: faker.internet.email({ provider: 'provider.com' }),
           password: faker.internet.password(),
           role: UserRoles.User,
           companyId: faker.database.mongodbObjectId()
@@ -196,7 +196,7 @@ describe('Create User Tests', () => {
     it('should return an unauthorized error', async () => {
       const response = await request(expressApp).post('/user').send({
         name: faker.person.fullName(),
-        email: faker.internet.email({ provider: 'tractian.com' }),
+        email: faker.internet.email({ provider: 'provider.com' }),
         password: faker.internet.password(),
         role: UserRoles.User,
         companyId: faker.database.mongodbObjectId()
