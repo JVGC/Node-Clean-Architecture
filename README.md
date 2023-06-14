@@ -1,6 +1,6 @@
-# Tractian-Backend-Test
+# Node Clean Architecture
 
-Backend Test for Tractian's Backend Role.
+NodeJS backend created using Clean Architecture Principles.
 
 ## Project Structure
 
@@ -72,7 +72,7 @@ This application has 3 roles for users, and depending on each type, you can aces
 
 ### How to use the API
 
-In order to use the API, please take a look at the [swagger DOCS](http://tractiantest.us-east-2.elasticbeanstalk.com/docs/).
+In order to use the API, please take a look at the [swagger DOCS](http://localhost:3000/docs/).
 
 ### Deployment
 
@@ -80,9 +80,7 @@ All of the project was build using Docker. So, in the root folder you can find 2
 
 The Docker image is built using the Multi Stage feature, and also uses the Node-alpine for production which is much ligther.
 
-The deployment was done using [AWS Elastic Beanstalck](https://aws.amazon.com/pt/elasticbeanstalk/), and you can access the production URL [here](http://tractiantest.us-east-2.elasticbeanstalk.com/).
-
-**Note**: Unfortunately, I didn't have time to set up SSL Certificates for it, so it only uses HTTP and not HTTPS.
+You can deploy the app using the [docker compose for production file](./docker-compose-prod.yml)
 
 ## Running Locally
 
@@ -114,7 +112,7 @@ In order to run the seeds:
 2. Run the **yarn seed** command inside the container:
 
 ```sh
-docker exec tractian-backend-test-api-1 yarn seed
+docker exec node-clean-architecture-api-1 yarn seed
 
 ```
 
