@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "API Company Backend Role Test",
-        "description": "Essa API tem como objetivo documentar as rotas do teste da Company",
+        "description": "This API has a goal to document all the app's routes.",
         "contact": {
             "email": "joaovictorgarciacoelho@gmail.com"
         },
@@ -17,8 +17,8 @@
     "paths": {
         "/login":{
             "post":{
-                "summary": "Login de Usuário",
-                "description": "Rota de login do usuário. Retorna um token de acesso",
+                "summary": "User Login",
+                "description": "User Login Route. Return an Access Token",
                 "tags": ["Auth"],
                 "requestBody":{
                     "content": {
@@ -69,8 +69,8 @@
         },
         "/company":{
             "post":{
-                "summary": "Cadastro de empresa",
-                "description": "Essa rota será responsável por cadastrar um nova empresa. Apenas Super Admins podem acessar essa rota.",
+                "summary": "Company Register",
+                "description":"This route is responsible for registering a new company. Only Super Admins can access it",
                 "tags": ["Companies"],
                 "security": [{ "bearerAuth": []}],
                 "requestBody":{
@@ -112,8 +112,8 @@
                 }
             },
             "get":{
-                "summary": "Listagem de Empresas",
-                "description": "Essa rota será responsável por listar todas as empresas. Apenas Super Admins podem acessar essa rota.",
+                "summary": "List Companies",
+                "description": "This route is responsible for listing all the companies. Only Super Admins can access it.",
                 "tags": ["Companies"],
                 "security": [{ "bearerAuth": []}],
                 "responses":{
@@ -138,14 +138,14 @@
         },
         "/company/{id}":{
             "get":{
-                "summary": "Busca uma Company pelo ID",
-                "description": "Essa rota será reponsável por retornar as informações de uma empresa pelo seu ID. Apenas Super Admins podem acessar essa rota. Admins só podem buscar pela própria empresa.",
+                "summary": "Get company by its ID",
+                "description": "This route is responsible for return all company's information based on its ID. Only Super Admins can access it. Admins can only access for their own company.",
                 "tags": ["Companies"],
                 "security": [{ "bearerAuth": []}],
                 "parameters": [{
                     "name": "id",
                     "in": "path",
-                    "description": "ID da Empresa",
+                    "description": "Company ID",
                     "required": true
                 }],
                 "responses":{
@@ -169,14 +169,14 @@
                 }
             },
             "delete":{
-                "summary": "Deleta uma Company pelo ID",
-                "description": "Essa rota será reponsável por deletar as informações de uma empresa pelo seu ID. Apenas Super Admins podem acessar essa rota.",
+                "summary": "Delets a Company by its ID",
+                "description": "This route is responsible for deleting all company's information based on its ID. Only Super Admins can access it",
                 "tags": ["Companies"],
                 "security": [{ "bearerAuth": []}],
                 "parameters": [{
                     "name": "id",
                     "in": "path",
-                    "description": "ID da Empresa",
+                    "description": "Company ID",
                     "required": true
                 }],
                 "responses":{
@@ -192,14 +192,14 @@
                 }
             },
             "patch":{
-                "summary": "Atualiza os dados de uma empresa",
-                "description": "Essa rota será reponsável atualizar as informações de uma empresa pelo seu ID. Apenas Super Admins podem acessar essa rota.",
+                "summary": "Updates company information",
+                "description": "This route is responsible for updating all company's information based on its ID. Only Super Admins can access it",
                 "tags": ["Companies"],
                 "security": [{ "bearerAuth": []}],
                 "parameters": [{
                     "name": "id",
                     "in": "path",
-                    "description": "ID da Empresa",
+                    "description": "Company ID",
                     "required": true
                 }],
                 "requestBody":{
@@ -246,8 +246,8 @@
         },
         "/unit":{
             "post":{
-                "summary": "Cadastro de Unidade",
-                "description": "Essa rota será responsável por cadastrar um nova unidade.",
+                "summary": "Unit Register",
+                "description": "This route is responsible for registering a new unit.",
                 "tags": ["Units"],
                 "security": [{ "bearerAuth": []}],
                 "requestBody":{
@@ -290,8 +290,8 @@
                 }
             },
             "get":{
-                "summary": "Listagem de Unidades",
-                "description": "Essa rota será responsável por listar as unidades. \nAdmins e usuários normais verão apenas as unidades da sua empresa.\nSuper Admins poderão ver todas.",
+                "summary": "List Units",
+                "description": "This route is responsible for listing all the units. Admins and normal users can only see the units from their own company. Super Admins can see all the units from all companies",
                 "tags": ["Units"],
                 "security": [{ "bearerAuth": []}],
                 "responses":{
@@ -316,14 +316,14 @@
         },
         "/unit/{id}":{
             "get":{
-                "summary": "Busca uma Unidade pelo ID",
-                "description": "Essa rota será reponsável por retornar as informações de uma unidade pelo seu ID. \n Admins e usuários normais só poderão buscar informações sobre unidades da sua empresa.",
+                "summary": "Get unit by its ID",
+                "description": "This route is responsible for return all unit's information based on its ID. Admins and normal users can only see the units from their own company. Super Admins can see all the units from all companies",
                 "tags": ["Units"],
                 "security": [{ "bearerAuth": []}],
                 "parameters": [{
                     "name": "id",
                     "in": "path",
-                    "description": "ID da Unidade",
+                    "description": "Unit ID",
                     "required": true
                 }],
                 "responses":{
@@ -347,14 +347,14 @@
                 }
             },
             "delete":{
-                "summary": "Deleta uma Unidade pelo ID",
-                "description": "Essa rota será reponsável por deletar as informações de uma unidade pelo seu ID. \n Admins e usuários normais só poderão deletar unidades da sua empresa.",
+                "summary": "Delets an Unit by its ID",
+                "description": "This route is responsible for deleting all unit's information based on its ID. Admins and normal users can only delete the units from their own company.",
                 "tags": ["Units"],
                 "security": [{ "bearerAuth": []}],
                 "parameters": [{
                     "name": "id",
                     "in": "path",
-                    "description": "ID da Unidade",
+                    "description": "Unit ID",
                     "required": true
                 }],
                 "responses":{
@@ -378,14 +378,14 @@
                 }
             },
             "patch":{
-                "summary": "Atualiza os dados de uma unidade",
-                "description": "Essa rota será reponsável atualizar as informações de uma unidade pelo seu ID. \n Admins e usuários normais só poderão atualizar unidades da sua empresa.",
+                "summary": "Updates unit information",
+                "description": "This route is responsible for updating all unit's information based on its ID. Admins and normal users can only update the units from their own company.",
                 "tags": ["Units"],
                 "security": [{ "bearerAuth": []}],
                 "parameters": [{
                     "name": "id",
                     "in": "path",
-                    "description": "ID da Unidade",
+                    "description": "Unit ID",
                     "required": true
                 }],
                 "requestBody":{
@@ -398,7 +398,7 @@
                                 "unit": {
                                     "value": {
                                         "name": "Unit 1",
-                                        "description": "Nova descrição"
+                                        "description": "New Description"
                                     }
                                 }
                             }
@@ -429,8 +429,8 @@
         },
         "/asset":{
             "post":{
-                "summary": "Cadastro de Asset",
-                "description": "Essa rota será responsável por cadastrar um nova máquina.",
+                "summary": "Asset Register",
+                "description": "This route is responsible for registering a new machine.",
                 "tags": ["Assets"],
                 "security": [{ "bearerAuth": []}],
                 "requestBody":{
@@ -476,8 +476,8 @@
                 }
             },
             "get":{
-                "summary": "Listagem de Assets",
-                "description": "Essa rota será responsável por listar as assets. \nAdmins e usuários normais verão apenas as máquinas da sua empresa.\nSuper Admins poderão ver todas.",
+                "summary": "List Assets",
+                "description": "This route is responsible for listing all the assets. Admins and normal users can only see the units from their own company. Super Admins can see all the units from all companies",
                 "tags": ["Assets"],
                 "security": [{ "bearerAuth": []}],
                 "responses":{
@@ -502,14 +502,14 @@
         },
         "/asset/{id}":{
             "get":{
-                "summary": "Busca um Asset pelo ID",
-                "description": "Essa rota será reponsável por retornar as informações de um asset pelo seu ID. \n Admins e usuários normais só poderão buscar informações sobre assets da sua empresa.",
+                "summary": "Get asset by its ID",
+                "description": "This route is responsible for return all asset's information based on its ID. Admins and normal users can only see the assets from their own company. Super Admins can see all the assets from all companies",
                 "tags": ["Assets"],
                 "security": [{ "bearerAuth": []}],
                 "parameters": [{
                     "name": "id",
                     "in": "path",
-                    "description": "ID do Asset",
+                    "description": "Asset ID",
                     "required": true
                 }],
                 "responses":{
@@ -533,14 +533,14 @@
                 }
             },
             "delete":{
-                "summary": "Deleta um Asset pelo ID",
-                "description": "Essa rota será reponsável por deletar as informações de um asset pelo seu ID. \n Admins e usuários normais só poderão deletar assets da sua empresa.",
+                "summary": "Delets an Asset by its ID",
+                "description": "This route is responsible for deleting all assets's information based on its ID. Admins and normal users can only delete the assets from their own company.",
                 "tags": ["Assets"],
                 "security": [{ "bearerAuth": []}],
                 "parameters": [{
                     "name": "id",
                     "in": "path",
-                    "description": "ID do Asset",
+                    "description": "Asset ID",
                     "required": true
                 }],
                 "responses":{
@@ -564,14 +564,14 @@
                 }
             },
             "patch":{
-                "summary": "Atualiza os dados de um asset",
-                "description": "Essa rota será reponsável atualizar as informações de um asset pelo seu ID. \n Admins e usuários normais só poderão atualizar assets da sua empresa.",
+                "summary": "Updates asset information",
+                "description": "This route is responsible for updating all assets's information based on its ID. Admins and normal users can only update the assets from their own company.",
                 "tags": ["Assets"],
                 "security": [{ "bearerAuth": []}],
                 "parameters": [{
                     "name": "id",
                     "in": "path",
-                    "description": "ID do Asset",
+                    "description": "Asset ID",
                     "required": true
                 }],
                 "requestBody":{
@@ -619,8 +619,8 @@
         },
         "/user":{
             "post":{
-                "summary": "Cadastro de Usuário",
-                "description": "Essa rota será responsável por cadastrar um novo usuário. \n Super Admins podem cadastrar usuário para qualquer empresa, enquanto admins podem somente para sua própria empresa.",
+                "summary": "User Register",
+                "description": "This route is responsible for registering a new user. Super Admins can register a user for any company, while admins can only create users for their own company.",
                 "tags": ["Users"],
                 "security": [{ "bearerAuth": []}],
                 "requestBody":{
@@ -665,7 +665,7 @@
                 }
             },
             "get":{
-                "summary": "Listagem de Usuários",
+                "summary": "List Users",
                 "description": "Essa rota será responsável por listar as unidades. \nAdmins verão apenas as unidades da sua empresa.\nSuper Admins poderão ver todas.",
                 "tags": ["Users"],
                 "security": [{ "bearerAuth": []}],
@@ -691,14 +691,14 @@
         },
         "/user/{id}":{
             "get":{
-                "summary": "Busca um Usuário pelo ID",
-                "description": "Essa rota será reponsável por retornar as informações de um usuário pelo seu ID. \n Admins só poderão buscar informações sobre usuários da sua empresa.",
+                "summary": "Get user by its ID",
+                "description": "This route is responsible for return all user's information based on its ID. Admins can only see the users from their own company. Super Admins can see all the assets from all companies",
                 "tags": ["Users"],
                 "security": [{ "bearerAuth": []}],
                 "parameters": [{
                     "name": "id",
                     "in": "path",
-                    "description": "ID do Usuário",
+                    "description": "User ID",
                     "required": true
                 }],
                 "responses":{
@@ -722,14 +722,14 @@
                 }
             },
             "delete":{
-                "summary": "Deleta um Usuário pelo ID",
-                "description": "Essa rota será reponsável por deletar as informações de um usuário pelo seu ID. \n Admins só poderão deletar usuários da sua empresa.",
+                "summary": "Delets an User by its ID",
+                "description": "This route is responsible for deleting all user's information based on its ID. Admins can only delete users from their own company.",
                 "tags": ["Users"],
                 "security": [{ "bearerAuth": []}],
                 "parameters": [{
                     "name": "id",
                     "in": "path",
-                    "description": "ID do Usuário",
+                    "description": "User ID",
                     "required": true
                 }],
                 "responses":{
@@ -753,14 +753,14 @@
                 }
             },
             "patch":{
-                "summary": "Atualiza os dados de um usuário",
-                "description": "Essa rota será reponsável por atualizar as informações de um usuário pelo seu ID. \n Admins só poderão atualizar usuários da sua empresa.",
+                "summary": "Updates user information",
+                "description": "This route is responsible for updating all users's information based on its ID. Admins can only update the users from their own company. Normal Users can only update themselves. Only the user can update its password.",
                 "tags": ["Users"],
                 "security": [{ "bearerAuth": []}],
                 "parameters": [{
                     "name": "id",
                     "in": "path",
-                    "description": "ID do Usuário",
+                    "description": "User ID",
                     "required": true
                 }],
                 "requestBody":{
