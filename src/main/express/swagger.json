@@ -169,7 +169,7 @@
                 }
             },
             "delete":{
-                "summary": "Delets a Company by its ID",
+                "summary": "Deletes a Company by its ID",
                 "description": "This route is responsible for deleting all company's information based on its ID. Only Super Admins can access it",
                 "tags": ["Companies"],
                 "security": [{ "bearerAuth": []}],
@@ -276,8 +276,8 @@
                     "404": {
                         "description": "Company Not found"
                     },
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "content": {
                             "application/json": {
                                 "schema":{
@@ -347,7 +347,7 @@
                 }
             },
             "delete":{
-                "summary": "Delets an Unit by its ID",
+                "summary": "Deletes an Unit by its ID",
                 "description": "This route is responsible for deleting all unit's information based on its ID. Admins and normal users can only delete the units from their own company.",
                 "tags": ["Units"],
                 "security": [{ "bearerAuth": []}],
@@ -364,16 +364,8 @@
                     "404":{
                         "description": "Unit Not found"
                     },
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema":{
-                                    "type": "object",
-                                    "$ref": "#/components/schemas/Unit"
-                                }
-                            }
-                        }
+                    "204": {
+                        "description": "Successfully deleted"
                     }
                 }
             },
@@ -462,8 +454,8 @@
                     "404": {
                         "description": "Company Not found"
                     },
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "content": {
                             "application/json": {
                                 "schema":{
@@ -533,7 +525,7 @@
                 }
             },
             "delete":{
-                "summary": "Delets an Asset by its ID",
+                "summary": "Deletes an Asset by its ID",
                 "description": "This route is responsible for deleting all assets's information based on its ID. Admins and normal users can only delete the assets from their own company.",
                 "tags": ["Assets"],
                 "security": [{ "bearerAuth": []}],
@@ -550,16 +542,8 @@
                     "404":{
                         "description": "Asset Not found"
                     },
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema":{
-                                    "type": "object",
-                                    "$ref": "#/components/schemas/Asset"
-                                }
-                            }
-                        }
+                    "204": {
+                        "description": "Successfully deleted"
                     }
                 }
             },
@@ -651,8 +635,8 @@
                     "404": {
                         "description": "Company Not found"
                     },
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "content": {
                             "application/json": {
                                 "schema":{
@@ -722,7 +706,7 @@
                 }
             },
             "delete":{
-                "summary": "Delets an User by its ID",
+                "summary": "Deletes an User by its ID",
                 "description": "This route is responsible for deleting all user's information based on its ID. Admins can only delete users from their own company.",
                 "tags": ["Users"],
                 "security": [{ "bearerAuth": []}],
@@ -739,16 +723,8 @@
                     "404":{
                         "description": "User Not Found"
                     },
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema":{
-                                    "type": "object",
-                                    "$ref": "#/components/schemas/User"
-                                }
-                            }
-                        }
+                    "204": {
+                        "description": "Successfully deleted"
                     }
                 }
             },
